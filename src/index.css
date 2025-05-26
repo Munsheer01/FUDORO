@@ -1,13 +1,106 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* global.css or index.css */
+
+/* Define CSS Variables (Theme Colors) */
+:root {
+  --primary-bg: #0F4B2E; /* Dark Green */
+  --heading-color: #EDD49B; /* Light Gold/Beige */
+  --text-color: #D4AF37; /* Gold */
+  --accent: #0A5247; /* Darker Teal/Green */
+  --white: #ffffff;
+  --light-gray: #f8f9fa; /* Very light gray for subtle backgrounds */
+  --medium-gray: #e9ecef; /* For borders or slightly darker UI elements */
+  --dark-text: #343a40; /* For body text on light backgrounds */
+  --border-color: #ced4da; /* Standard border color */
+
+  /* Font Stacks */
+  --font-primary: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-headings: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Can be same or different */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Basic Reset and Global Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px; /* Base for rem units (1rem = 16px) */
+  scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6; /* Improved readability */
+  background-color: var(--primary-bg); /* Default background from your theme */
+  color: var(--text-color);           /* Default text color from your theme */
+  min-height: 100vh;
+  display: flex; /* Helps with footer pushing if content is short */
+  flex-direction: column; /* Ensures body takes up full height */
+  -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit */
+  -moz-osx-font-smoothing: grayscale;  /* Smoother fonts on Firefox */
+  text-rendering: optimizeLegibility; /* Prioritize legibility */
+}
+
+/* Make body's direct child (often your main app wrapper) take remaining height */
+/* This is useful if you have a sticky footer pattern */
+/* For example, if your <div id="root"> or <App> is the direct child */
+/* body > #root, body > main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+} */
+
+
+/* Responsive Images and Media */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block; /* Remove extra space below images */
+  max-width: 100%; /* Ensure they don't overflow their containers */
+  height: auto;    /* Maintain aspect ratio by default */
+}
+
+/* Form Elements Font Inheritance */
+input,
+button,
+textarea,
+select {
+  font: inherit; /* Make form elements inherit font properties */
+  color: inherit;
+}
+
+/* Button Reset (Basic) */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Links Basic Styling */
+a {
+  color: var(--accent); /* Or your preferred link color */
+  text-decoration: none; /* Common to remove underline by default */
+}
+
+a:hover {
+  text-decoration: underline; /* Add underline on hover for clarity */
+}
+
+/* Utility class for screen readers only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
