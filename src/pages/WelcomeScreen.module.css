@@ -196,6 +196,7 @@
 .tagline {
   font-size: clamp(1rem, 4vw, 1.3rem);
   color: var(--heading-color);
+  color: var(--heading-color);
   margin-bottom: 1.75rem; /* Increased margin */
   font-weight: 500;
   word-break: break-word;
@@ -227,6 +228,7 @@
 
 /* --- General Section Styling --- */
 .sectionTitle {
+  color: var(--accent);
   color: var(--accent);
   font-size: clamp(1.4rem, 5vw, 2rem); /* Fluid typography */
   font-weight: bold;
@@ -369,6 +371,7 @@
   background: #176943; /* Darken accent */
   transform: scale(1.02); /* Subtle scale effect */
 }
+
 
 
 
