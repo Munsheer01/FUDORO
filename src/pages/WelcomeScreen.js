@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./WelcomeScreen.module.css";
 
-
 const placeholderImage = (width, height, text = "Image") =>
   `https://placehold.co/${width}x${height}/EBF0F5/777777?text=${encodeURIComponent(
     text
@@ -174,8 +173,8 @@ function WelcomeScreen() {
       </section>
 
       {/* Accordion Sections */}
-      <main className={`${styles.accordionMain}${styles.gridMain}`}>
-        <div className={`${styles.gridRow}${styles.dropdownul}`}>
+      <main className={`${styles.accordionMain} ${styles.gridMain}`}>
+        <div className={`${styles.gridRow} ${styles.dropdownul}`}> 
         <AccordionSection
           title="Services We Offer"
           id="servicesAccordion"
@@ -369,13 +368,10 @@ function WelcomeScreen() {
         </div>
       </main>
 
-      
-
-      
       {/* Footer */}
+      
       <div className={styles.footer}>          
       <footer className={styles.footerIcons}>
-        
           <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg width="24" height="24" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
               <path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.056 1.97.24 2.43.41a4.92 4.92 0 0 1 1.77 1.03 4.92 4.92 0 0 1 1.03 1.77c.17.46.354 1.26.41 2.43.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.24 1.97-.41 2.43a4.92 4.92 0 0 1-1.03 1.77 4.92 4.92 0 0 1-1.77 1.03c-.46.17-1.26.354-2.43.41-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.24-2.43-.41a4.92 4.92 0 0 1-1.77-1.03 4.92 4.92 0 0 1-1.03-1.77c-.17-.46-.354-1.26-.41-2.43C2.212 15.784 2.2 15.4 2.2 12.2s.012-3.584.07-4.85c.056-1.17.24-1.97.41-2.43A4.92 4.92 0 0 1 3.71 3.15a4.92 4.92 0 0 1 1.77-1.03c.46-.17 1.26-.354 2.43-.41C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.736 0 8.332.013 7.052.072 5.77.13 4.73.31 3.89.57a7.07 7.07 0 0 0-2.56 1.64A7.07 7.07 0 0 0 .57 4.89c-.26.84-.44 1.88-.5 3.16C.013 8.332 0 8.736 0 12c0 3.264.013 3.668.072 4.948.06 1.28.24 2.32.5 3.16a7.07 7.07 0 0 0 1.64 2.56 7.07 7.07 0 0 0 2.56 1.64c.84.26 1.88.44 3.16.5C8.332 23.987 8.736 24 12 24s3.668-.013 4.948-.072c1.28-.06 2.32-.24 3.16-.5a7.07 7.07 0 0 0 2.56-1.64 7.07 7.07 0 0 0 1.64-2.56c.26-.84.44-1.88.5-3.16.059-1.28.072-1.684.072-4.948s-.013-3.668-.072-4.948c-.06-1.28-.24-2.32-.5-3.16a7.07 7.07 0 0 0-1.64-2.56A7.07 7.07 0 0 0 20.11.57c-.84-.26-1.88-.44-3.16-.5C15.668.013 15.264 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm7.844-10.406a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
