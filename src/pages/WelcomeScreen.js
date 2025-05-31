@@ -174,8 +174,8 @@ function WelcomeScreen() {
       </section>
 
       {/* Accordion Sections */}
-      <main className={`${styles.accordionMain}${styles.gridMain}`}>
-        <div className={`${styles.gridRow}${styles.dropdownul}`}>
+      <main className={`${styles.accordionMain} ${styles.gridMain}`}>
+        <div className={`${styles.gridRow} ${styles.dropdownul}`}> 
         <AccordionSection
           title="Services We Offer"
           id="servicesAccordion"
