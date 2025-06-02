@@ -1,0 +1,349 @@
+/* FUDORO MealBoxScreen.module.css - Enhanced for MealBoxScreen.js */
+
+/* Brand Colors as CSS Variables */
+:root {
+  --fudoro-text-color: #D4AF37;
+  --fudoro-background-color: #0F4B2E;
+  --fudoro-heading-color: #EDD49B;
+  --fudoro-green-text-color: #0A5247;
+  --fudoro-accent-color: #D4AF37;
+  --fudoro-card-bg-color: #1a593a;
+  --fudoro-inner-card-bg-color: #10442a;
+  --fudoro-border-color: #D4AF37;
+  --fudoro-error-text-color: #f87171;
+}
+
+/* Page Container */
+.fudoroPageContainer {
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--fudoro-background-color);
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Main App Wrapper */
+.fudoroAppWrapper {
+  background: var(--fudoro-card-bg-color);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 32px 0 rgba(212, 175, 55, 0.08);
+  width: 100%;
+  max-width: 480px;
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.fudoroHeading {
+  color: var(--fudoro-heading-color);
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  letter-spacing: 1px;
+}
+.fudoroText {
+  color: var(--fudoro-text-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.fudoroGreenText {
+  color: var(--fudoro-green-text-color);
+  font-weight: 600;
+}
+.fudoroAccent {
+  color: var(--fudoro-accent-color);
+}
+.errorText {
+  color: var(--fudoro-error-text-color);
+  font-weight: 600;
+}
+
+/* Progress Indicator */
+.progressIndicator {
+  color: var(--fudoro-accent-color);
+  background: var(--fudoro-inner-card-bg-color);
+  border-radius: 0.7rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Step 1: Meal Box Selection */
+.spaceY4 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.mealBoxCard {
+  background: var(--fudoro-inner-card-bg-color);
+  border: 2px solid var(--fudoro-border-color);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.07);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.mealBoxCard:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px 0 rgba(237, 212, 155, 0.13);
+  border-color: var(--fudoro-accent-color);
+}
+.mealBoxImgWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.mealBoxImg {
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 0.7rem;
+  object-fit: cover;
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.10);
+  background: #222;
+}
+.customizeBtn {
+  margin-top: 1rem;
+  background: var(--fudoro-accent-color);
+  color: var(--fudoro-background-color);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.08);
+}
+.customizeBtn:hover,
+.customizeBtn:focus {
+  background: #c8a030;
+  color: #fff;
+}
+
+/* Step 2: Accordion for Compartments */
+.flexRow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+.backBtn {
+  background: none;
+  color: var(--fudoro-accent-color);
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.7rem;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+.backBtn:hover,
+.backBtn:focus {
+  background: var(--fudoro-inner-card-bg-color);
+}
+.spaceY3 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.accordionItem {
+  border: 1.5px solid var(--fudoro-border-color);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background: var(--fudoro-inner-card-bg-color);
+  margin-bottom: 0.2rem;
+}
+.accordionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 1.2rem;
+  background: var(--fudoro-card-bg-color);
+  transition: background 0.2s;
+  user-select: none;
+}
+.accordionHeader.active,
+.accordionHeader:hover {
+  background: var(--fudoro-green-text-color);
+}
+.chevronIcon {
+  font-size: 1.3rem;
+  color: var(--fudoro-accent-color);
+  transition: transform 0.3s;
+}
+.rotate180 {
+  transform: rotate(180deg);
+}
+.accordionContent {
+  background: var(--fudoro-inner-card-bg-color);
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.3s;
+  padding: 0 1.2rem;
+}
+
+/* Food Item Cards */
+.scrollableList {
+  overflow-y: auto;
+  max-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+.scrollableList::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollableList::-webkit-scrollbar-track {
+  background: var(--fudoro-card-bg-color);
+  border-radius: 10px;
+}
+.scrollableList::-webkit-scrollbar-thumb {
+  background-color: var(--fudoro-accent-color);
+  border-radius: 10px;
+  border: 2px solid var(--fudoro-card-bg-color);
+}
+.scrollableList {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fudoro-accent-color) var(--fudoro-card-bg-color);
+}
+.foodItemCard {
+  background: var(--fudoro-background-color);
+  border: 1.5px solid var(--fudoro-border-color);
+  border-radius: 0.6rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  margin-bottom: 0.2rem;
+}
+.foodItemCard:hover {
+  background: #206843;
+  border-color: var(--fudoro-green-text-color);
+}
+.selected {
+  background: var(--fudoro-green-text-color);
+  border-color: var(--fudoro-accent-color);
+}
+.foodItemCard.selected .itemName,
+.foodItemCard.selected .itemDescription {
+  color: var(--fudoro-heading-color);
+}
+.itemName {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--fudoro-heading-color);
+  margin-bottom: 0.1rem;
+}
+.itemDescription {
+  font-size: 0.98rem;
+  color: var(--fudoro-text-color);
+}
+
+/* Validation Message */
+.validationMessage {
+  color: var(--fudoro-error-text-color);
+  font-size: 0.98rem;
+  padding: 0.3rem 0.2rem 0.2rem 0.2rem;
+  font-weight: 600;
+}
+
+/* Step 3: Summary & Quantity */
+.summaryContainer {
+  background: var(--fudoro-inner-card-bg-color);
+  border-radius: 0.7rem;
+  padding: 1.2rem 1rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.06);
+}
+.summaryList {
+  list-style: none;
+  padding: 0;
+  margin: 0.7rem 0 0 0;
+}
+.summaryList li {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+.quantitySection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.quantityInput {
+  width: 60px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid var(--fudoro-border-color);
+  font-size: 1.1rem;
+  background: var(--fudoro-background-color);
+  color: var(--fudoro-heading-color);
+  outline: none;
+  transition: border 0.2s;
+}
+.quantityInput:focus {
+  border-color: var(--fudoro-heading-color);
+  box-shadow: 0 0 0 2px #EDD49B33;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .fudoroAppWrapper {
+    padding: 1.2rem 0.3rem 1.5rem 0.3rem;
+    max-width: 99vw;
+  }
+  .header {
+    font-size: 1.2rem;
+  }
+  .summaryContainer {
+    padding: 0.7rem 0.5rem;
+  }
+  .accordionHeader {
+    padding: 0.7rem 0.7rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .mealBoxCard {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem 1.5rem;
+  }
+  .mealBoxImgWrapper {
+    width: 120px;
+    min-width: 120px;
+    margin-bottom: 0;
+  }
+  .mealBoxImg {
+    width: 120px;
+    height: 120px;
+  }
+  .mealBoxCardContent {
+    flex: 1;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+}
