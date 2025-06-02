@@ -15,7 +15,7 @@
   margin: 0 auto;
 }
 .logo {
-  color: #EDD49B;
+  color: var(--heading-color);
   font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -26,7 +26,7 @@
   gap: 1.2rem;
 }
 .navLink {
-  color: #D4AF37;
+  color: var(--heading-color);
   background: transparent;
   border: 2px solid transparent;
   border-radius: 2rem;
@@ -49,6 +49,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  
 }
 .cartBtn svg {
   display: block;
@@ -102,7 +103,7 @@
   to { right: 0; }
 }
 .mobileNavLink {
-  color: #D4AF37;
+  color: var(--heading-color);
   font-size: 1.2rem;
   font-weight: 600;
   text-decoration: none;
@@ -131,7 +132,7 @@
 }
 .mobileCartBtn:hover,
 .mobileCartBtn:focus {
-  background: #D4AF37;
+  background: var(--heading-color);
   color: #0F4B2E;
 }
 .menuOverlay {
@@ -142,24 +143,48 @@
 }
 
 /* Footer */
-.globalFooter {
+/* ...existing header and nav styles... */
+
+/* Footer - Consistent with WelcomeScreen.module.css */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  background: #0F4B2E;
-  color: #D4AF37;
-  padding: 2rem 1rem 1.2rem 1rem;
-  box-shadow: 0 -2px 8px 0 rgba(15,75,46,0.07);
+  background-color: var(--primary-bg);
+  color: var(--heading-color);
+  text-align: center;
+  padding: 0.5rem rem;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px 12px 0 0;
   margin-top: 2rem;
 }
-.footerContent {
-  max-width: 1200px;
-  margin: 0 auto;
+
+.footerIcons {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.6rem;
 }
+
+.footerIcons a {
+  
+  transition: color 0.2s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.footerIcons a:hover,
+.footerIcons a:focus {
+  color: #ffb347;
+  transform: scale(1.15);
+  outline: none;
+}
+
+/* Remove old .globalFooter, .footerContent, .contactSection, .profileSection, .iconLink if not used elsewhere */
 .contactSection {
   display: flex;
   align-items: center;
@@ -178,7 +203,7 @@
 }
 .iconLink:hover,
 .iconLink:focus {
-  background: #D4AF37;
+  background: var(--heading-color);
 }
 .profileSection {
   font-size: 1rem;
