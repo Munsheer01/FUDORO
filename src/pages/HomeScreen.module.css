@@ -140,7 +140,7 @@
 }
 
 .sectionDesc {
-  color: var(--text-color);
+  color: var(--heading-color);
   font-size: 1.05rem;
   margin-bottom: 1.2rem;
   line-height: 1.6;
@@ -149,14 +149,18 @@
 .exploreLink {
   color: var(--green-text);
   background: #EDD49B;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 0.8rem;
   border-radius: 2rem;
   font-weight: 600;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.7rem;
   box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.08);
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .exploreLink:hover,
 .exploreLink:focus {
