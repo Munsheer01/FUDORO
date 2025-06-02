@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./WelcomeScreen.module.css";
+import { useNavigate } from "react-router-dom";
 
 const placeholderImage = (width, height, text = "Image") =>
   `https://placehold.co/${width}x${height}/EBF0F5/777777?text=${encodeURIComponent(
@@ -56,6 +57,7 @@ function WelcomeScreen() {
   const loginRef = useRef(null);
   const [otpSent, setOtpSent] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Responsive: expanded accordions on desktop, collapsed on mobile
   const [isMobile, setIsMobile] = useState(() =>
@@ -79,7 +81,10 @@ function WelcomeScreen() {
     setOtpSent(true);
     setTimeout(() => setOtpSent(false), 2000);
   };
-
+  const handleClick = () => {
+    navigate("/home");
+    // This is where you would handle the login verification logic
+  }
   const handleVerifyLogin = (e) => {
     e.preventDefault();
     alert("Login verification logic goes here!");
@@ -165,7 +170,7 @@ function WelcomeScreen() {
               required
               className={styles.paleInput}
             />
-            <button type="submit" className={styles.verifyBtn}>
+            <button type="submit" className={styles.verifyBtn} onClick={handleClick}>
               Verify &amp; Login
             </button>
           </form>
