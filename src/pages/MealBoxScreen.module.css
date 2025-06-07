@@ -52,7 +52,7 @@
   letter-spacing: 1px;
 }
 .fudoroText {
-  color: var(--fudoro-text-color);
+  color: var(--heading-color);
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 0.2rem;
@@ -71,7 +71,7 @@
 
 /* Progress Indicator */
 .progressIndicator {
-  color: var(--fudoro-accent-color);
+  color: var(--heading-color);
   background: var(--fudoro-inner-card-bg-color);
   border-radius: 0.7rem;
   padding: 0.6rem 1rem;
@@ -90,7 +90,7 @@
 }
 .mealBoxCard {
   background: var(--fudoro-inner-card-bg-color);
-  border: 2px solid var(--fudoro-border-color);
+  border: 2px solid var(--heading-color);
   border-radius: 1rem;
   box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.07);
   padding: 1rem;
@@ -124,7 +124,7 @@
 }
 .customizeBtn {
   margin-top: 1rem;
-  background: var(--fudoro-accent-color);
+  background: var(--heading-color);
   color: var(--fudoro-background-color);
   font-weight: 600;
   font-size: 1rem;
@@ -150,7 +150,7 @@
 }
 .backBtn {
   background: none;
-  color: var(--fudoro-accent-color);
+  color: var(--heading-color);
   border: none;
   font-size: 1rem;
   font-weight: 600;
@@ -221,7 +221,7 @@
   border-radius: 10px;
 }
 .scrollableList::-webkit-scrollbar-thumb {
-  background-color: var(--fudoro-accent-color);
+  background-color: var(--heading-color);
   border-radius: 10px;
   border: 2px solid var(--fudoro-card-bg-color);
 }
@@ -240,11 +240,11 @@
 }
 .foodItemCard:hover {
   background: #206843;
-  border-color: var(--fudoro-green-text-color);
+  border-color: var(--heading-color);
 }
 .selected {
   background: var(--fudoro-green-text-color);
-  border-color: var(--fudoro-accent-color);
+  border-color: var(--heading-color);
 }
 .foodItemCard.selected .itemName,
 .foodItemCard.selected .itemDescription {
@@ -257,8 +257,8 @@
   margin-bottom: 0.1rem;
 }
 .itemDescription {
-  font-size: 0.98rem;
-  color: var(--fudoro-text-color);
+  font-size: 0.98rem; 
+  color: var(--heading-color);
 }
 
 /* Validation Message */
