@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Menus: anyone can get/list, only admin can create/update/delete
+    match /menus/{menuId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if request.auth.token.role == "admin";
+      allow update: if request.auth.token.role == "admin";
+      allow delete: if request.auth.token.role == "admin";
+    }
+    // Any collection/document: allow get/list, only admin can create/update/delete for "Authentic Platters"
+    match /{collection}/{docId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if collection == "Authentic Platters" && request.auth.token.role == "admin";
+      allow update: if collection == "Authentic Platters" && request.auth.token.role == "admin";
+      allow delete: if collection == "Authentic Platters" && request.auth.token.role == "admin";
+    }
+    // Default: deny all
+    match /{document=**} {
+      allow get, list, create, update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,207 @@
+/* src/components/BulkOrders.css */
+
+:root {
+  --text-color: #D4AF37; /* Gold/Yellow */
+  --bg-color: #FEFEFA; /* Off-white/Light background */
+  --heading-color: #EDD49B; /* Lighter Gold/Cream */
+  --green-text: #0A5247; /* Dark Green */
+  --dark-green-gradient-start: #0A5247;
+  --dark-green-gradient-end: #0F4B2E;
+  --light-green-gradient-start: #0F4B2E;
+  --light-green-gradient-end: #0A5247;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', Arial, sans-serif; /* Changed font to Poppins */
+  background-color: var(--bg-color); /* Changed background to home page bg-color */
+  color: var(--green-text); /* Default text color for the page */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.bulk-orders-wrapper {
+  min-height: 100vh;
+  background: var(--bg-color); /* Consistent with home page wrapper */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1.2rem 1rem 2.5rem 1rem; /* Adjusted padding to match home page main */
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Removed the old futuristic background patterns */
+.bulk-orders-wrapper::before {
+  content: none;
+}
+
+.bulk-orders-main {
+  width: 100%;
+  max-width: 900px; /* Consistent with home page main max-width */
+  margin: 0 auto;
+  text-align: center;
+  z-index: 1;
+  padding: 0; /* Padding handled by wrapper */
+}
+
+.bulk-orders-title {
+  font-size: 2.5rem; /* Adjusted font size */
+  color: var(--green-text); /* Changed to green-text for consistency */
+  font-weight: 700; /* Consistent with home page logo/title */
+  letter-spacing: 2px; /* Consistent with home page logo/title */
+  margin-bottom: 20px;
+  text-shadow: none; /* Removed text-shadow */
+  animation: none; /* Removed blinking animation */
+}
+
+.bulk-orders-description {
+  font-size: 1.05rem; /* Adjusted font size */
+  color: var(--green-text); /* Changed to green-text for consistency */
+  margin-bottom: 40px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-indicator,
+.error-message,
+.no-platters-found {
+  font-size: 1.2rem; /* Adjusted font size */
+  color: var(--green-text); /* Consistent with new palette */
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Spinner and animation removed as per request */
+
+/* Platter Card Styles - HomeScreen.module.css inspired */
+.platter-card {
+  background: linear-gradient(120deg, #0A5247 60%, #0F4B2E 100%);
+  border-radius: 1.3rem;
+  box-shadow: 0 4px 24px 0 rgba(212, 175, 55, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow 0.3s;
+}
+.platter-card:hover,
+.platter-card:focus-within {
+  box-shadow: 0 8px 32px 0 rgba(212, 175, 55, 0.18);
+}
+.platter-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #222;
+}
+.platter-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 1.3rem 1.3rem 0 0;
+  transition: filter 0.3s;
+}
+.platter-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15,75,46,0.1) 60%, rgba(15,75,46,0.85) 100%);
+  pointer-events: none;
+  border-radius: 1.3rem 1.3rem 0 0;
+}
+.platter-content {
+  padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+  background: linear-gradient(120deg, #0F4B2E 60%, #0A5247 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.platter-name {
+  color: var(--heading-color);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  letter-spacing: 1px;
+}
+.platter-description {
+  color: var(--heading-color);
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+.platter-price {
+  color: var(--green-text);
+  background: #EDD49B;
+  padding: 0.6rem 0.8rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.platter-price:hover,
+.platter-price:focus {
+  background: #D4AF37;
+  color: #0F4B2E;
+  box-shadow: 0 4px 16px 0 rgba(212, 175, 55, 0.18);
+}
+.platter-card-border-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 1.3rem;
+  box-shadow: 0 0 24px 4px rgba(212, 175, 55, 0.12);
+  z-index: 1;
+}
+
+.platters-grid {
+  
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem; /* Consistent with home page sectionsGrid gap for desktop */
+  padding: 20px 0;
+  justify-content: center;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Responsive adjustments based on home page breakpoints */
+@media (max-width: 699px) { /* Mobile styles */
+ .bulk-orders-wrapper {
+    padding: 1.2rem 0.5rem 2.5rem 0.5rem; /* Match home page main padding */
+  }
+ .bulk-orders-title {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+ .bulk-orders-description {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+  }
+ .platters-grid {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
+    gap: 2rem; /* Consistent with home page sectionsGrid gap for mobile */
+  }
+}
+
+@media (min-width: 700px) { /* Desktop styles */
+ .bulk-orders-title {
+    font-size: 3rem;
+  }
+}

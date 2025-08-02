@@ -5,13 +5,7 @@ import React, { useState } from "react";
 const CartIcon = () => (
   <svg width="24" height="24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h7.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
 );
-const HamburgerIcon = ({ open }) => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-    <rect y="5" width="24" height="2" rx="1" fill="#D4AF37" style={{ transition: "all .3s", transform: open ? "rotate(45deg) translate(5px,5px)" : "none" }} />
-    <rect y="11" width="24" height="2" rx="1" fill="#D4AF37" style={{ opacity: open ? 0 : 1, transition: "all .3s" }} />
-    <rect y="17" width="24" height="2" rx="1" fill="#D4AF37" style={{ transition: "all .3s", transform: open ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
-  </svg>
-);
+
 
 const navLinks = [
   { label: "Meal Boxes", href: "/meal-boxes" },
@@ -35,18 +29,11 @@ export function GlobalHeader() {
             </a>
           ))}
         </nav>
-        <a href="/cart" className="cartBtn" aria-label="Cart">
+        <a href="/cart-page" className="cartBtn" aria-label="Cart">
           <CartIcon />
         </a>
         {/* Mobile Hamburger */}
-        <button
-          className="hamburgerBtn"
-          aria-label="Open menu"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(v => !v)}
-        >
-          <HamburgerIcon open={menuOpen} />
-        </button>
+        
       </div>
       {/* Mobile Slide Menu */}
       <nav className={`mobileMenu${menuOpen ? " menuOpen" : ""}`}>
@@ -55,7 +42,7 @@ export function GlobalHeader() {
             {link.label}
           </a>
         ))}
-        <a href="/cart" className="mobileCartBtn" onClick={() => setMenuOpen(false)}>
+        <a href="/CartPage" className="mobileCartBtn" onClick={() => setMenuOpen(false)}>
           <CartIcon /> <span>Cart</span>
         </a>
       </nav>

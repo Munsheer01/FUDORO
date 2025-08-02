@@ -72,38 +72,6 @@
   pointer-events: auto; /* Allow interaction if needed */
 }
 
-.hamburger {
-  background: none;
-  border: none;
-  display: flex; /* Changed to flex for larger screens where it might be visible */
-  flex-direction: column;
-  gap: 5px; /* Increased gap for better visual separation */
-  cursor: pointer;
-  padding: 0.5rem; /* Make tappable area larger */
-  z-index: 1002; /* Above mobile nav, below login if it overlaps */
-  position: relative; /* For span animations */
-}
-
-.hamburger span {
-  display: block;
-  width: 28px;
-  height: 3px;
-  background: var(--heading-color);
-  border-radius: 2px;
-  transition: all 0.3s ease-in-out;
-}
-
-/* Hamburger animation for open state */
-.hamburgerOpen span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-.hamburgerOpen span:nth-child(2) {
-  opacity: 0;
-}
-.hamburgerOpen span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
-
 
 .floatingLoginBtn {
   background: var(--accent);
@@ -171,17 +139,18 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem; /* Vertical and horizontal padding */
+  margin-top: 1rem;
   text-align: center;
 }
 
 .heroContent {
   width: 100%;
   max-width: 520px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 3rem; /* Ensures content is pushed below the fixed header */
+  margin-bottom: 2rem;
 }
 
 .heroLogo {
@@ -451,7 +420,7 @@
 
   .hero {
     min-height: 45vh;
-    max-height: 600px;
+    max-height: 650px;
   }
 
   .cardsStack {
@@ -992,4 +961,23 @@
   color: #ffb347;
   transform: scale(1.15);
   outline: none;
+}
+
+.loginForm textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color, #cfd8dc);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--white, #fff);
+  width: 100%;
+  resize: vertical;
+  min-height: 40px;
+  max-height: 120px;
+}
+
+.loginForm textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(10, 82, 71, 0.15);
 }
