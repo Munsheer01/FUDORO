@@ -1,464 +1,312 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./WelcomeScreen.module.css";
 import { GlobalFooter } from "../components/GlobalHeader&Footer";
-import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateProfile, // Make sure updateProfile is imported
+  updateProfile,
 } from "firebase/auth";
-// Removed unused Firestore imports
 
-// Make sure db is exported from your firebase.js
-
-
-const placeholderImage = (width, height, text = "Image") =>
-  `https://placehold.co/${width}x${height}/EBF0F5/777777?text=${encodeURIComponent(
-    text
-  )}&font=poppins`;
-
-// MobileNavigationMenu removed
-
-// Accordion Section Component
-function AccordionSection({ title, children, defaultOpen = false, id }) {
-  const [open, setOpen] = useState(defaultOpen);
-
-  useEffect(() => {
-    setOpen(defaultOpen);
-  }, [defaultOpen]);
-
-  return (
-    <section className={styles.accordionSection}>
-      <button
-        className={styles.accordionHeader}
-        aria-expanded={open}
-        aria-controls={id}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span>{title}</span>
-        <span
-          className={`${styles.chevron} ${open ? styles.chevronOpen : ""}`}
-          aria-hidden="true"
-        >
-          &#9660; {/* Down arrow for chevron */}
-        </span>
-      </button>
-      <div
-        id={id}
-        className={`${styles.accordionPanel} ${open ? styles.panelOpen : ""}`}
-        role="region"
-        aria-labelledby={id + "-header"}
-        tabIndex={open ? 0 : -1}
-      >
-        {open && children}
-      </div>
-    </section>
-  );
-}
-
-function WelcomeScreen() {
-  const loginRef = useRef(null);
-  // Removed unused otpSent state
-  // Hamburger and mobile menu removed
-  const [authError, setAuthError] = useState("");
-  const [user, setUser] = useState(null);
+export default function WelcomeScreen() {
   const navigate = useNavigate();
-  const [displayName, setDisplayName] = useState("");
+
+  // User auth states and form states
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [photoURL, setPhotoURL] = useState("");
-  // const [customClaims, setCustomClaims] = useState("");
-  // Removed unused isAdmin state
-  // Responsive: expanded accordions on desktop, collapsed on mobile
-  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true); // toggle between login/signup
 
+  // Monitor auth state WITHOUT automatic redirect
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      // Removed setIsAdmin references (no admin logic)
+    const unsubscribe = onAuthStateChanged(auth, loggedInUser => {
+      setUser(loggedInUser);
+      setAuthChecked(true); // Mark that we've checked auth state
+      // NO automatic navigation here - let user stay on welcome page
     });
     return () => unsubscribe();
   }, []);
 
-  // Listen for auth state changes (redundant with the above, but harmless)
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLoginClick = () => {
-    loginRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Removed unused handleSendOtp function
-
-  // Firebase Auth login/signup logic
-  const handleVerifyLogin = async (e) => {
+  // Handle sign in with explicit navigation
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setAuthError("");
-
-    // --- IMPORTANT DEBUGGING STEP ---
-    // Log the email and password being used
-    console.log("Attempting to authenticate with Email:", email, "Password:", password);
-
+    setError("");
+    setLoading(true);
     try {
-      // Try to sign in
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Successfully signed in existing user.");
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      // Navigate only after successful sign in
       navigate("/home");
     } catch (err) {
-      console.error("Sign-in attempt failed:", err.code, err.message);
-
-      if (err.code === "auth/user-not-found") {
-        console.log("User not found, attempting to sign up new user...");
-        try {
-          // Sign up new user
-          const userCred = await createUserWithEmailAndPassword(auth, email, password);
-          console.log("User created successfully:", userCred.user);
-
-          // Set display name and photo URL
-          await updateProfile(userCred.user, {
-            displayName: displayName || null, // Use null for undefined to ensure Firebase accepts it
-            photoURL: photoURL || null,
-          });
-          console.log("User profile updated.");
-
-          // Save custom claims as a Firestore doc (for demo, since real custom claims require admin SDK)
-          // Your commented out code for custom claims (Firestore doc) is here.
-          // This part is NOT related to Firebase Authentication custom claims directly,
-          // which are set via the Firebase Admin SDK.
-          /*
-          if (customClaims) {
-            try {
-              const claimsObj = JSON.parse(customClaims);
-              await setDoc(doc(db, "userClaims", userCred.user.uid), claimsObj);
-              console.log("User claims document saved to Firestore.");
-            } catch (e) {
-              setAuthError("Invalid custom claims JSON. Error: " + e.message);
-              console.error("Error saving custom claims to Firestore:", e);
-              return; // Stop execution if claims JSON is invalid
-            }
-          }
-          */
-          navigate("/home");
-        } catch (signupErr) {
-          console.error("Signup failed:", signupErr.code, signupErr.message);
-          if (signupErr.code === "auth/weak-password") {
-              setAuthError("Password is too weak. Please use at least 6 characters.");
-          } else if (signupErr.code === "auth/email-already-in-use") {
-              setAuthError("This email is already in use. Please sign in or use a different email.");
-          } else if (signupErr.code === "auth/invalid-email") {
-              setAuthError("The email address is not valid.");
-          }
-          else {
-              setAuthError(signupErr.message); // Catch other specific errors
-          }
-        }
-      } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
-          setAuthError("Invalid login credentials. Please check your email and password.");
-      }
-      else {
-        // Catch any other unexpected errors during sign-in
-        setAuthError(err.message);
-      }
+      setError(err.message || "Failed to sign in.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Hamburger and mobile menu removed
+  // Handle sign up with explicit navigation
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      await updateProfile(userCredential.user, { 
+        displayName: email.split('@')[0] || "Fudoro User" 
+      });
+      // Navigate only after successful sign up
+      navigate("/home");
+    } catch (err) {
+      setError(err.message || "Failed to create account.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      setEmail("");
+      setPassword("");
+      setError("");
+    } catch (err) {
+      setError("Failed to sign out.");
+    }
+  };
+
+  // Show loading while checking auth state
+  if (!authChecked) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}>Loading FUDORO...</div>
+      </div>
+    );
+  }
+
+  // Authentication form component
+  const AuthForm = () => (
+    <form className={styles.loginForm} onSubmit={isLogin ? handleSignIn : handleSignUp} noValidate>
+      <label htmlFor="email" className={styles.label}>
+        Email
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+          className={styles.input}
+          autoComplete="email"
+        />
+      </label>
+      <label htmlFor="password" className={styles.label}>
+        Password
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+          className={styles.input}
+          autoComplete={isLogin ? "current-password" : "new-password"}
+          minLength={6}
+        />
+      </label>
+      {error && <div role="alert" className={styles.formError}>{error}</div>}
+      <button type="submit" disabled={loading} className={styles.authButton}>
+        {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
+      </button>
+      <div className={styles.toggleContainer}>
+        {isLogin ? (
+          <>
+            New to FUDORO?{" "}
+            <button
+              type="button"
+              onClick={() => { setIsLogin(false); setError(""); }}
+              className={styles.toggleButton}
+            >
+              Create an account
+            </button>
+          </>
+        ) : (
+          <>
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() => { setIsLogin(true); setError(""); }}
+              className={styles.toggleButton}
+            >
+              Sign In
+            </button>
+          </>
+        )}
+      </div>
+    </form>
+  );
+
+  // Service Cards component
+  const ServiceCard = ({ title, description }) => (
+    <div className={styles.card} tabIndex={0} aria-label={title}>
+      <h3 className={styles.cardTitle}>{title}</h3>
+      <p className={styles.cardDesc}>{description}</p>
+    </div>
+  );
 
   return (
-    <div className={styles.wrapper}>
-      {/* Header */}
+    <main className={styles.wrapper} role="main" tabIndex={-1}>
       <header className={styles.header}>
         <div className={styles.headerCenter}>
-          <div className={styles.logo}>FUDORO</div>
-          <div className={styles.tagline}>
-            Deliciously Delivered. Perfectly Catered.
-          </div>
+          <div className={styles.logo} aria-label="Fudoro logo">FUDORO</div>
+          <div className={styles.tagline}>Reliable, hygienic food delivery for your needs</div>
         </div>
-        <button className={styles.floatingLoginBtn} onClick={handleLoginClick}>
+        <button
+          className={styles.ctaBtn}
+          style={{
+            position: "absolute",
+            right: 32,
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: "0.95rem",
+            padding: "0.5rem 1.5rem",
+            minWidth: 100,
+            minHeight: 36
+          }}
+          onClick={() => {
+            const loginSection = document.querySelector(`.${styles.loginSection}`);
+            if (loginSection) {
+              const yOffset = -100; // offset for fixed header
+              const y = loginSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: y, behavior: "smooth" });
+            }
+          }}
+          aria-label="Login"
+        >
           Login
         </button>
       </header>
 
-      {/* Hero Section with Login */}
-            <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <form
-            id="book"
-            ref={loginRef}
-            className={`${styles.loginForm} ${styles.loginFormBg}`}
-            onSubmit={handleVerifyLogin}
-            aria-labelledby="login-title"
-            aria-describedby="login-description"
-          >
-            <h2 id="login-title" className={styles.sectionTitle}>
-              Login or Sign Up
-            </h2>
-            <div className={styles.formFeedback} aria-live="polite">
-              {authError && <span style={{ color: "red" }}>{authError}</span>}
-              {user && <span style={{ color: "green" }}>Logged in as {user.email}</span>}
-            </div>
-            <input
-              type="text"
-              name="displayName"
-              placeholder="Display Name (optional)"
-              aria-label="Display Name"
-              value={displayName}
-              onChange={e => setDisplayName(e.target.value)}
-              className={styles.paleInput}
-            />
-            <input
-              type="email" // Use type="email" for better browser validation
-              name="email"
-              placeholder="Email"
-              aria-label="Email"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className={styles.paleInput}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              aria-label="Password"
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className={styles.paleInput}
-            />
-            <input
-              type="url"
-              name="photoURL"
-              placeholder="Photo URL (optional)"
-              aria-label="Photo URL"
-              value={photoURL}
-              onChange={e => setPhotoURL(e.target.value)}
-              className={styles.paleInput}
-            />
-            <button type="submit" className={styles.verifyBtn}>
-              Login / Sign Up
-            </button>
-            {user && (
-              <button
-                type="button"
-                className={styles.verifyBtn}
-                style={{ marginTop: "1rem" }}
-                onClick={() => signOut(auth)}
-              >
-                Sign Out
-              </button>
-            )}
-          </form>
+      <section className={styles.hero} aria-labelledby="welcome-hero-title">
+        <h1 id="welcome-hero-title" className={styles.heroLogo}>Welcome to FUDORO</h1>
+        <p className={styles.heroTagline}>Bulk Meals • Event Catering • Daily Boxes</p>
+        <button
+          className={styles.ctaBtn}
+          onClick={() => navigate("/home")}
+          aria-label="Explore our services"
+        >
+          Explore Services
+        </button>
+      </section>
+
+      <section className={styles.servicesSection} aria-label="Our service offerings">
+        <h2 className={styles.sectionTitle}>Our Services</h2>
+        <div className={styles.cardsStack}>
+          <ServiceCard
+            title="Bulk Meal Delivery"
+            description="Reliable and hygienic food delivery for offices, hostels, and institutions."
+          />
+          <ServiceCard
+            title="Event Catering"
+            description="Customizable catering for weddings, parties, and corporate events."
+          />
+          <ServiceCard
+            title="Subscription Meals"
+            description="Healthy and tasty meals delivered daily with flexible subscription plans."
+          />
+          <ServiceCard
+            title="Custom Orders"
+            description="Tailor your menu to suit your taste and dietary preferences."
+          />
         </div>
       </section>
 
-      {/* Accordion Sections */}
-      <main className={`${styles.accordionMain} ${styles.gridMain}`}>
-        <div className={`${styles.gridRow} ${styles.dropdownul}`}>
-          <AccordionSection
-            title="Services We Offer"
-            id="servicesAccordion"
-            defaultOpen={!isMobile}
-          >
-            <div className={styles.cardsStack}>
-              <div className={styles.card}>
-                <img
-                  src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
-                  alt="Man holding a plate of diverse food items for bulk meal delivery"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = placeholderImage(400, 200, "Bulk Meals");
-                  }}
-                />
-                <div className={styles.cardContent}>
-                  <h3>Bulk Meal Delivery</h3>
-                  <p>
-                    Reliable and hygienic food delivery for offices, hostels, and
-                    institutions.
-                  </p>
-                </div>
-              </div>
-              <div className={styles.card}>
-                <img
-                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80"
-                  alt="Elegant table setting at a catered event"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = placeholderImage(400, 200, "Event Catering");
-                  }}
-                />
-                <div className={styles.cardContent}>
-                  <h3>Event Catering</h3>
-                  <p>
-                    Customizable catering for weddings, parties, and corporate
-                    events.
-                  </p>
-                </div>
-              </div>
-              <div className={styles.card}>
-                <img
-                  src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80"
-                  alt="Healthy subscription meal box with fresh ingredients"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = placeholderImage(400, 200, "Subscription");
-                  }}
-                />
-                <div className={styles.cardContent}>
-                  <h3>Subscription Meals</h3>
-                  <p>
-                    Healthy and tasty meals delivered daily with flexible
-                    subscription plans.
-                  </p>
-                </div>
-              </div>
-              <div className={styles.card}>
-                <img
-                  src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
-                  alt="Chef preparing a custom food order in a kitchen"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = placeholderImage(400, 200, "Custom Orders");
-                  }}
-                />
-                <div className={styles.cardContent}>
-                  <h3>Custom Orders</h3>
-                  <p>
-                    Tailor your menu to suit your taste and dietary preferences.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </AccordionSection>
-
-          <AccordionSection
-            title="How We Work"
-            id="howAccordion"
-            defaultOpen={!isMobile}
-          >
-            <ol className={styles.stepsList}>
-              <li>
-                <strong>Place Your Order:</strong> Choose your service and submit your requirements.
-              </li>
-              <li>
-                <strong>Confirmation:</strong> We confirm your order and delivery details.
-              </li>
-              <li>
-                <strong>Preparation:</strong> Our chefs prepare your meals fresh.
-              </li>
-              <li>
-                <strong>Delivery:</strong> Meals are delivered on time, hot and hygienic.
-              </li>
-              <li>
-                <strong>Enjoy:</strong> Savor your food and let us know your feedback!
-              </li>
-            </ol>
-          </AccordionSection>
-
-          <AccordionSection
-            title="Events We Cater"
-            id="eventsAccordion"
-            defaultOpen={!isMobile}
-          >
-            <div className={styles.eventsGrid}>
-              <div className={styles.eventType}>
-                <span role="img" aria-label="Wedding" className={styles.eventIcon}>&#128148;</span>
-                <span>Weddings</span>
-              </div>
-              <div className={styles.eventType}>
-                <span role="img" aria-label="Corporate" className={styles.eventIcon}>&#128188;</span>
-                <span>Corporate Events</span>
-              </div>
-              <div className={styles.eventType}>
-                <span role="img" aria-label="Party" className={styles.eventIcon}>&#127881;</span>
-                <span>Private Parties</span>
-              </div>
-              <div className={styles.eventType}>
-                <span role="img" aria-label="Birthday" className={styles.eventIcon}>&#127874;</span>
-                <span>Birthdays</span>
-              </div>
-            </div>
-          </AccordionSection>
-
-          <AccordionSection
-            title="Hear from Our Customers"
-            id="testimonialsAccordion"
-            defaultOpen={!isMobile}
-          >
-            <div className={styles.testimonials}>
-              <div className={styles.testimonialCard}>
-                <p>
-                  <span className={styles.quoteMark}>&ldquo;</span>
-                  The food was delicious and the service was prompt. Highly recommended!
-                  <span className={styles.quoteMark}>&rdquo;</span>
-                </p>
-                <div className={styles.testimonialAuthor}>- Priya S.</div>
-              </div>
-              <div className={styles.testimonialCard}>
-                <p>
-                  <span className={styles.quoteMark}>&ldquo;</span>
-                  Our corporate event was a hit thanks to FUDORO's catering!
-                  <span className={styles.quoteMark}>&rdquo;</span>
-                </p>
-                <div className={styles.testimonialAuthor}>- Rahul M.</div>
-              </div>
-            </div>
-          </AccordionSection>
-
-          <AccordionSection
-            title="Contact Us"
-            id="contactAccordion"
-            defaultOpen={!isMobile}
-          >
-            <form className={styles.contactForm} autoComplete="off">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                aria-label="Your Name"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                aria-label="Your Email"
-                required
-              />
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                aria-label="Your Message"
-                rows={3}
-                required
-              />
-              <button type="submit" className={styles.verifyBtn}>
-                Send Message
+      <section className={styles.loginSection} aria-label={user ? "User signed in" : "User sign in or sign up"}>
+        {user ? (
+          <div className={styles.signedInContainer}>
+            <h2 className={styles.sectionTitle}>Welcome back!</h2>
+            <p className={styles.userWelcome}>
+              Signed in as <strong>{user.displayName || user.email}</strong>
+            </p>
+            <div className={styles.signedInActions}>
+              <button 
+                onClick={() => navigate("/home")} 
+                className={styles.ctaBtn}
+              >
+                Go to Home
               </button>
-            </form>
-            <div className={styles.contactDetails}>
-              <div>
-                <strong>Email:</strong> <a href="mailto:info@fudoro.com">info@fudoro.com</a>
-              </div>
-              <div>
-                <strong>Phone:</strong> <a href="tel:+919999999999">+91 99999 99999</a>
-              </div>
+              <button 
+                onClick={handleSignOut} 
+                className={styles.signOutButton}
+              >
+                Sign Out
+              </button>
             </div>
-          </AccordionSection>
-        </div>
-      </main>
+          </div>
+        ) : (
+          <>
+            <h2 className={styles.sectionTitle}>Sign In / Register</h2>
+            <AuthForm />
+          </>
+        )}
+      </section>
 
-      {/* Footer */}
+      <section className={styles.howItWorksSection} aria-label="How FUDORO works">
+        <h2 className={styles.sectionTitle}>How We Work</h2>
+        <ol className={styles.stepsList}>
+          <li><b>Place Your Order:</b> Choose your service and submit your requirements.</li>
+          <li><b>Confirmation:</b> We confirm your order and delivery details.</li>
+          <li><b>Preparation:</b> Our chefs prepare your meals fresh.</li>
+          <li><b>Delivery:</b> Meals are delivered on time, hot and hygienic.</li>
+          <li><b>Enjoy:</b> Savor your food and let us know your feedback!</li>
+        </ol>
+      </section>
+
+      <section className={styles.eventsSection} aria-label="Events we cater">
+        <h2 className={styles.sectionTitle}>Events We Cater</h2>
+        <p className={styles.eventsText}>
+          Weddings, corporate meetings, parties, and more. We tailor every menu to your event.
+        </p>
+      </section>
+
+      <section className={styles.testimonialsSection} aria-label="Customer testimonials">
+        <h2 className={styles.sectionTitle}>Hear from Our Customers</h2>
+        <div className={styles.testimonials}>
+          <blockquote className={styles.testimonialCard}>
+            <p className={styles.quoteMark}>&ldquo;The food was delicious and the service was prompt. Highly recommended!&rdquo;</p>
+            <footer className={styles.testimonialAuthor}>- Happy Customer</footer>
+          </blockquote>
+          <blockquote className={styles.testimonialCard}>
+            <p className={styles.quoteMark}>&ldquo;Our corporate event was a hit thanks to FUDORO's catering!&rdquo;</p>
+            <footer className={styles.testimonialAuthor}>- Corporate Client</footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <section className={styles.contactSection} aria-label="Contact details">
+        <h2 className={styles.sectionTitle}>Contact Us</h2>
+        <p className={styles.contactDetails}>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:info@fudoro.com" className={styles.contactLink}>
+            info@fudoro.com
+          </a>
+          <br />
+          <strong>Phone:</strong>{" "}
+          <a href="tel:+919999999999" className={styles.contactLink}>
+            +91 99999 99999
+          </a>
+        </p>
+      </section>
+
       <GlobalFooter />
-    </div>
+    </main>
   );
 }
-
-export default WelcomeScreen;

@@ -1,983 +1,646 @@
-/* WelcomeScreen.module.css */
+/* WelcomeScreen.module.css - Production Ready */
 
-/* Ensure these variables are defined, ideally in :root in your global.css or here if not global */
-/* :root {
+:root {
   --primary-bg: #0F4B2E;
   --heading-color: #EDD49B;
   --text-color: #D4AF37;
   --accent: #0A5247;
-  --white: #ffffff;
-  --dark-text: #333333;
+  --white: #fff;
+  --dark-text: #333;
   --light-gray: #f9f9f9;
   --border-color: #cfd8dc;
-} */
-
-.wrapper {
-  /* font-family is now expected to be on body via global.css */
-  /* background and color are also expected on body */
-  /* min-height: 100vh; /* Expected on body */
-  /* width: 100%; /* Expected on body or html */
-  /* box-sizing: border-box; /* Expected globally */
-  overflow-x: hidden; /* Prevent horizontal scroll from any minor overflows */
-  padding-top: 70px;    /* Adjust to your header height */
-  padding-bottom: 80px; /* Adjust to your footer height */
+  --error-color: #d32f2f;
+  --success-color: #18b46e;
+  --card-shadow: 0 4px 18px rgba(212, 175, 55, 0.11);
+  --border-radius: 1.2rem;
+  --font-main: 'Poppins', Arial, sans-serif;
 }
 
-/* --- Header --- */
-.header {
+/* Global Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Loading Container */
+.loadingContainer {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem; /* Mobile first padding */
-  background: var(--primary-bg);
-  position: fixed;      /* Changed from sticky to fixed */
+  min-height: 100vh;
+  background-color: var(--primary-bg);
+  font-family: var(--font-main);
+}
+
+.loadingSpinner {
+  color: var(--heading-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Wrapper and Layout */
+.wrapper {
+  font-family: var(--font-main);
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: 70px;   /* header height */
+  padding-bottom: 80px; /* footer height */
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Header with Logo and Tagline */
+.header {
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;         /* Ensure it spans the viewport */
-  z-index: 1000; /* Ensure header is above other content */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-  border-radius: 0 0 1rem 1rem;
-}
-.headerCenter {
-  left: 0;
-  right: 0;
-  margin: auto;
+  width: 100vw;
+  height: 70px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  pointer-events: none; /* Allows clicks to pass through, so buttons are clickable */
-  width: fit-content;
-  flex:1;
-  position: absolute;
-  margin-top: 0.6rem; /* Space between header and logo */
-}
-.logo {
-  font-size: 1rem; /* Mobile first */
-  font-weight:400;
-  color: white; /* Ensure logo is visible on dark background */
-  letter-spacing: 0.05em; /* Slightly reduced for better fit */
-  flex: 1;
-  text-align: center;
-  margin-top: 1rem; /* Space between header and logo */ 
-}
-.tagline {
-  text-align: center;
-  margin-top: 0.1rem;
-  font-weight: 100;
-  word-break: break-word; /* Prevent overflow */
-   /* Mobile first */
-  
-}
-.logo, .tagline {
-  pointer-events: auto; /* Allow interaction if needed */
-}
-
-
-.floatingLoginBtn {
-  background: var(--accent);
-  color: var(--white, #fff);
-  border: none;
-  padding: 0.6rem 1.2rem; /* Mobile first padding */
-  border-radius: 20px; /* Standardized radius */
-  font-size: 0.9rem;   /* Mobile first font size */
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  transition: background 0.2s, transform 0.2s;
-  z-index: 1002; /* Ensure it's above other header items if needed */
-  position: relative;
-}
-
-.floatingLoginBtn:hover {
-  background: #176943; /* Darken accent color */
-  transform: scale(1.05);
-}
-
-/* Mobile Navigation Menu (Basic Example) */
-.mobileNavMenu {
-  position: fixed; /* Or absolute if header is sticky and you want it below */
-  top: 0; /* Or height of header if absolute */
-  left: 0;
-  width: 100%;
-  height: 100vh; /* Full screen */
-  background-color: var(--primary-bg);
-  z-index: 999; /* Below header items like hamburger */
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: left;
-  padding-top: 4rem; /* Space for header */
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-}
-
-.mobileNavMenu.open { /* Add .open class when menu is active */
-  transform: translateX(0%);
-}
-
-.mobileNavMenu a {
-  color: var(--heading-color);
-  font-size: 1.5rem;
-  padding: 1rem;
-  text-decoration: none;
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.mobileNavMenu a:hover {
-  background-color: var(--accent);
-}
-
-
-/* --- Hero Section --- */
-.hero {
-  min-height: 60vh; /* Use vh for responsive height, adjust as needed */
-  max-height: 400px; /* Prevent it from becoming too tall on large viewports */
-  background: linear-gradient(135deg, var(--primary-bg) 70%, var(--accent) 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 2rem 1rem; /* Vertical and horizontal padding */
-  margin-top: 1rem;
+  align-items: center;
+  background: var(--primary-bg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  z-index: 1000;
+  border-radius: 0 0 1rem 1rem;
+  padding: 0 0.5rem;
   text-align: center;
 }
 
-.heroContent {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 3rem; /* Ensures content is pushed below the fixed header */
-  margin-bottom: 2rem;
+.logo {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--text-color);
+  user-select: none;
+  margin-bottom: 0.1rem;
+}
+
+.tagline {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--heading-color);
+  letter-spacing: 0.02em;
+}
+
+/* Hero Section */
+.hero {
+  margin: 1.8rem auto 2rem;
+  max-width: 480px;
+  background: linear-gradient(135deg, var(--primary-bg) 70%, var(--accent) 100%);
+  color: var(--heading-color);
+  padding: 2rem 1.3rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: var(--card-shadow);
 }
 
 .heroLogo {
-  font-size: clamp(2.2rem, 8vw, 3.8rem); /* Fluid typography: min, preferred (viewport-based), max */
-  font-weight: bold;
-  color: var(--heading-color);
+  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
   letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
-  word-break: break-word;
 }
 
-.tagline {
-  font-size: clamp(1rem, 4vw, 1.3rem);
-  color: var(--heading-color);
-  color: var(--heading-color);
-  margin-bottom: 1.75rem; /* Increased margin */
+.heroTagline {
+  font-size: clamp(1rem, 4vw, 1.35rem);
   font-weight: 500;
-  word-break: break-word;
-  line-height: 1.6;
-  font-size: small !important;
+  margin-bottom: 1.3rem;
+  line-height: 1.4;
 }
 
 .ctaBtn {
-  background: var(--heading-color);
-  color: var(--primary-bg);
-  border: none;
-  padding: 0.8rem 2.2rem; /* Slightly larger padding */
-  border-radius: 25px; /* Standardized radius */
-  font-size: 1rem; /* Mobile first */
+  font-size: 1.1rem;
   font-weight: 600;
+  padding: 0.85rem 2.8rem;
+  color: var(--primary-bg);
+  background-color: var(--heading-color);
+  border: none;
+  border-radius: 28px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
-  width: auto; /* Allow button to size to content + padding */
+  box-shadow: 0 4px 12px rgba(234, 202, 67, 0.38);
+  transition: all 0.3s ease;
+  user-select: none;
   min-width: 220px;
-  max-width: 90%; /* Ensure it doesn't overflow container on very small screens */
-  display: inline-block; /* Changed from block to allow auto width */
+  min-height: 48px; /* Touch target */
 }
 
-.ctaBtn:hover {
-  background: var(--white, #fff);
+.ctaBtn:hover,
+.ctaBtn:focus {
+  background-color: var(--white);
   color: var(--accent);
+  outline: none;
   transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(15, 75, 46, 0.22);
 }
 
-/* --- General Section Styling --- */
-.sectionTitle {
-  color: var(--accent);
-  color: var(--accent);
-  font-size: clamp(1.4rem, 5vw, 2rem); /* Fluid typography */
-  font-weight: bold;
-  margin-bottom: 1.5rem; /* Consistent bottom margin */
-  text-align: center;
-  letter-spacing: 0.05em;
-  word-break: break-word;
+.ctaBtn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* --- Services Section --- */
+.ctaBtn:active {
+  transform: scale(0.98);
+}
+
+/* Services Section */
 .servicesSection {
-  padding: 2.5rem 1rem; /* Consistent padding */
-  width: 100%;
-  background-color: var(--white, #fff); /* Give services a distinct background if desired */
+  background-color: var(--white);
+  padding: 2rem 1rem;
+  border-radius: var(--border-radius);
+  max-width: 980px;
+  margin: 0 auto 2.5rem;
+  box-shadow: var(--card-shadow);
+  color: var(--accent);
+  text-align: center;
 }
 
-/* Make section title within services section use accent color for contrast if on white bg */
-.servicesSection .sectionTitle {
-    color: var(--accent);
+.sectionTitle {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 1.7rem;
+  letter-spacing: 0.05em;
+  user-select: none;
+  color: var(--heading-color);
 }
 
 .cardsStack {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile: single column */
-  gap: 1.5rem; /* Gap between cards */
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+@media (min-width: 620px) {
+  .cardsStack {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .cardsStack {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .card {
-  background: var(--white, #fff); /* Card background */
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
-  overflow: hidden; /* Ensures image corners are rounded if image is direct child */
+  background-color: var(--white);
+  color: var(--accent);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 10px rgba(15, 75, 46, 0.12);
+  padding: 1.25rem 1.5rem;
+  cursor: default;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  outline-offset: 3px;
+  min-height: 48px; /* Touch target */
+}
+
+.card:hover,
+.card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(15, 75, 46, 0.28);
+  outline: none;
+}
+
+.card:focus-visible {
+  outline: 3px solid var(--accent);
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+  user-select: text;
+}
+
+.cardDesc {
+  font-weight: 400;
+  font-size: 0.93rem;
+  color: var(--dark-text);
+  line-height: 1.45;
+  user-select: text;
+  word-break: break-word;
+}
+
+/* Login Section */
+.loginSection {
+  background-color: var(--light-gray);
+  padding: 2rem 1rem 2.8rem;
+  max-width: 420px;
+  border-radius: var(--border-radius);
+  margin: 0 auto 3rem;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  color: var(--accent);
+  text-align: center;
+}
+
+.signedInContainer {
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-}
-
-.card:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 0 8px 20px rgba(15,75,46,0.15); /* More pronounced shadow on hover */
-}
-
-.card img {
-  width: 100%;
-  height: 180px; /* Consistent height for mobile */
-  object-fit: cover; /* Ensures image covers the area, might crop */
-  display: block;
-  border-bottom: 1px solid #eee; /* Optional separator */
-}
-
-.cardContent {
-  padding: 1rem 1.25rem; /* Consistent padding */
-  flex-grow: 1; /* Allows card content to fill space if cards have different text lengths */
-}
-
-.cardContent h3 {
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-  font-size: 1.15rem; /* Slightly larger */
-  font-weight: 600;
-  word-break: break-word;
-}
-
-.cardContent p {
-  color: var(--dark-text, #444);
-  font-size: 0.9rem;
-  line-height: 1.6; /* Improved readability */
-  word-break: break-word;
-}
-
-/* --- Login Section --- */
-.loginSection {
-  background: var(--light-gray, #f9f9f9); /* Light background for login form area */
-  margin: 0; /* Remove margin if it's a full-width section */
-  padding: 2.5rem 1rem; /* Consistent padding */
-  width: 100%;
-}
-
-.loginSection .sectionTitle { /* Overriding general sectionTitle color for this section */
-  color: var(--accent);
-  margin-bottom: 1.5rem; /* Consistent bottom margin */
+  align-items: center;
+  gap: 1.2rem;
   text-align: center;
-  letter-spacing: 0.05em;
-  word-break: break-word;
 }
 
-.formFeedback {
-  min-height: 1.5em; /* Reserve space for messages */
-  margin-bottom: 0.5rem;
+.userWelcome {
+  font-size: 1.1rem;
   color: var(--accent);
-  font-size: 0.9rem;
+  margin: 0;
+}
+
+.signedInActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 280px;
+}
+
+.signOutButton {
+  background-color: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  min-height: 48px;
+}
+
+.signOutButton:hover,
+.signOutButton:focus {
+  background-color: var(--accent);
+  color: var(--white);
+  outline: none;
+  transform: scale(1.02);
 }
 
 .loginForm {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Space between form elements */
-  width: 100%;
-  max-width: 380px; /* Max width for the form itself */
-  margin: 0 auto; /* Center the form */
-  margin-top: 2rem; /* Space below header */
-  padding: 1rem; /* Padding inside the form */
-}
-
-.loginForm input {
-  padding: 0.8rem 1rem; /* Comfortable padding */
-  border: 1px solid var(--border-color, #cfd8dc);
-  border-radius: 8px; /* Softer radius */
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: var(--white, #fff);
-  width: 100%; /* Full width within its container */
-}
-
-.loginForm input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(10, 82, 71, 0.15); /* Accent color shadow */
-}
-
-.otpBtn, .verifyBtn {
-  background: var(--accent);
-  color: var(--white, #fff);
-  border: none;
-  padding: 0.8rem 1rem; /* Consistent padding */
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  gap: 1.2rem;
   width: 100%;
 }
 
-.otpBtn:disabled {
-  background: #bdbdbd; /* Standard disabled color */
-  cursor: not-allowed;
-}
-
-.otpBtn:hover:not(:disabled), .verifyBtn:hover {
-  background: #176943; /* Darken accent */
-  transform: scale(1.02); /* Subtle scale effect */
-}
-
-
-
-
-/* === TABLET & UP Media Queries (Mobile First Approach) === */
-@media (min-width: 700px) { /* Approx tablet breakpoint */
-  .header {
-    padding: 1rem 2rem;
-  }
-
-  .logo {
-    font-size: 1.8rem;
-  }
-
-  /* Hide hamburger on larger screens if you have a different nav system */
-  /* .hamburger { display: none; } */
-  /* Or style it differently if it's still used */
-
-  .floatingLoginBtn {
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
-  }
-
-  .hero {
-    min-height: 50vh; /* Adjust as needed */
-    max-height: 500px;
-    padding: 1.5rem 1rem;
-  }
-  .heroContent {
-    margin-top: 1rem; /* More space on larger screens */
-  }
-  
-
-  .ctaBtn {
-    font-size: 1.1rem;
-    padding: 0.9rem 2.5rem;
-  }
-
-  .servicesSection, .loginSection {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  /* Central content constraint for wider screens */
-  .servicesSection .cardsStack,
-  .loginSection .loginForm {
-    max-width: 960px; /* Max width for the content inside these sections */
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-  .cardsStack {
-    /* Responsive grid: 2 columns on tablet, adapting */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-    gap: 2rem;
-  }
-
-  .card img {
-    height: 200px; /* Slightly taller images for cards on tablet */
-  }
-
-  .loginForm {
-    max-width: 420px; /* Slightly wider form on tablets */
-    margin-top: 0.2rem; /* More space above */
-  }
-}
-
-/* === DESKTOP & UP Media Queries === */
-@media (min-width: 992px) { /* Approx desktop breakpoint */
-  .header {
-    padding: 1.2rem 3rem; /* More padding for desktop */
-  }
-
-  .logo {
-    font-size: 2rem;
-  }
-
-  .hero {
-    min-height: 45vh;
-    max-height: 650px;
-  }
-
-  .cardsStack {
-    /* Potentially 3 columns on desktop if auto-fit results in it */
-    /* Or explicitly: grid-template-columns: repeat(3, 1fr); */
-    /* minmax(min(100%, 320px), 1fr) allows cards to be a bit wider */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  }
-
-  .card img {
-    height: 220px;
-  }
-}
-
-/* Accordion Styles */
-.accordionMain {
-  width: 100%;
-  max-width: 540px;
-  margin: 2rem auto 6rem auto;
-  padding: 0 1rem;
+.label {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-}
-
-.accordionSection {
-  background: var(--white, #fff);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(15,75,46,0.07);
-  overflow: hidden;
-  border: 1px solid #e0e0e0;
-  margin-bottom: 0.5rem;
-}
-
-.accordionHeader {
-  width: 100%;
-  background: none;
-  border: none;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 1.1rem;
   font-weight: 600;
+  font-size: 0.95rem;
   color: var(--accent);
-  padding: 1.1rem 1.2rem;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.input {
+  padding: 0.7rem 1rem;
+  border: 1.8px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1.03rem;
+  outline-offset: 2px;
+  font-family: var(--font-main);
+  transition: border-color 0.2s ease, box-shadow 0.15s ease;
+  color: var(--dark-text);
+  min-height: 48px;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 6px 2px rgba(10, 82, 71, 0.25);
+  outline: none;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.authButton {
+  background-color: var(--accent);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.88rem;
+  border: none;
+  border-radius: 28px;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 6px 14px rgba(10, 82, 71, 0.45);
+  user-select: none;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+  width: 100%;
+  min-height: 48px;
+}
+
+.authButton:hover,
+.authButton:focus {
+  background-color: #0a3c2e;
+  transform: scale(1.04);
+  outline: none;
+}
+
+.authButton:active {
+  transform: scale(0.98);
+}
+
+.authButton:disabled {
+  background-color: #6c9b8a;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.toggleContainer {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--accent);
   user-select: none;
 }
 
-.accordionHeader:focus {
-  background: #f5f5f5;
+.toggleButton {
+  background: none;
+  border: none;
+  color: var(--heading-color);
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 0.3rem;
 }
 
-.chevron {
-  display: inline-block;
-  font-size: 1.3em;
+.toggleButton:hover,
+.toggleButton:focus {
+  color: var(--primary-bg);
+  outline: none;
+}
+
+/* Error Text */
+.formError {
+  color: var(--error-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-height: 1.3em;
+  margin-top: -0.5rem;
+  margin-bottom: 0.3rem;
+  user-select: text;
+  text-align: left;
+}
+
+/* How It Works Section */
+.howItWorksSection {
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  background: var(--white);
+  padding: 2.3rem 2rem;
+  border-radius: var(--border-radius);
   color: var(--accent);
-  transition: transform 0.3s cubic-bezier(.4,2,.6,1);
-  margin-left: 0.5rem;
-  transform: rotate(0deg);
+  box-shadow: var(--card-shadow);
 }
 
-.chevronOpen {
-  transform: rotate(90deg);
-}
-
-.accordionPanel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.2s;
-  padding: 0 1.2rem;
-  background: var(--white, #fff);
-}
-
-.panelOpen {
-  max-height: 1000px; /* Large enough for content */
-  padding: 1rem 1.2rem 1.2rem 1.2rem;
-  transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.2s;
-}
-
-/* Steps List */
 .stepsList {
-  list-style: decimal inside;
-  color: var(--dark-text, #333);
-  padding-left: 1rem;
-  margin: 0;
+  margin-left: 1.4rem;
+  color: var(--dark-text);
   font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+  user-select: text;
 }
+
 .stepsList li {
-  margin-bottom: 0.7rem;
-  line-height: 1.6;
+  margin-bottom: 0.9rem;
 }
 
-/* Events Grid */
-.eventsGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  justify-content: flex-start;
-  margin-top: 0.5rem;
+.stepsList li:last-child {
+  margin-bottom: 0;
 }
-.eventType {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: #f7f7f7;
-  border-radius: 8px;
-  padding: 0.7rem 1.1rem;
-  font-size: 1rem;
+
+/* Events Section */
+.eventsSection {
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  background: var(--white);
+  padding: 2.3rem 2rem;
+  border-radius: var(--border-radius);
   color: var(--accent);
-  box-shadow: 0 1px 4px rgba(15,75,46,0.04);
-}
-.eventIcon {
-  font-size: 1.5rem;
+  box-shadow: var(--card-shadow);
+  text-align: center;
 }
 
-/* Testimonials */
+.eventsText {
+  color: var(--dark-text);
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 500;
+  user-select: text;
+}
+
+/* Testimonials Section */
+.testimonialsSection {
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  padding: 1rem 1.5rem 2rem;
+  color: var(--accent);
+  user-select: none;
+  text-align: center;
+}
+
 .testimonials {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.45rem;
+  margin-top: 0.6rem;
 }
+
 .testimonialCard {
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 1rem 1.2rem;
-  box-shadow: 0 1px 4px rgba(15,75,46,0.04);
-  color: var(--dark-text, #333);
+  background: var(--light-gray);
+  border-radius: 12px;
+  padding: 1rem 1.4rem 1.1rem;
+  box-shadow: 0 2px 8px rgba(15, 75, 46, 0.06);
+  color: var(--dark-text);
+  font-style: italic;
   font-size: 1rem;
+  text-align: left;
   position: relative;
+  user-select: text;
 }
+
 .quoteMark {
+  font-size: 1.4rem;
   color: var(--accent);
-  font-size: 1.3em;
-  vertical-align: middle;
+  vertical-align: top;
+  margin-right: 0.5rem;
+  user-select: none;
 }
+
 .testimonialAuthor {
   margin-top: 0.7rem;
   color: var(--accent);
   font-weight: 600;
-  font-size: 0.98em;
+  font-size: 0.96rem;
   text-align: right;
+  user-select: text;
 }
 
-/* Contact Form */
-.contactForm {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-}
-.contactForm input,
-.contactForm textarea {
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--border-color, #cfd8dc);
-  border-radius: 8px;
-  font-size: 1rem;
-  background: var(--white, #fff);
-  width: 100%;
-  resize: none;
-}
-.contactForm textarea {
-  min-height: 70px;
-  max-height: 180px;
-}
-.contactForm button {
-  margin-top: 0.5rem;
+/* Contact Section */
+.contactSection {
+  max-width: 720px;
+  margin: 0 auto 5rem;
+  padding: 1.6rem 1.8rem;
+  color: var(--accent);
+  text-align: center;
+  user-select: none;
+  border-radius: var(--border-radius);
+  background: var(--white);
+  box-shadow: var(--card-shadow);
 }
 
 .contactDetails {
-  font-size: 0.98rem;
-  color: var(--dark-text, #333);
-  margin-top: 0.5rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  user-select: text;
 }
-.contactDetails a {
+
+.contactLink {
   color: var(--accent);
   text-decoration: underline;
-  word-break: break-all;
+  user-select: text;
+  transition: color 0.2s ease;
 }
 
-/* Accessibility: Focus for accordion */
-.accordionHeader:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+.contactLink:hover,
+.contactLink:focus {
+  color: var(--primary-bg);
+  outline: none;
+  text-decoration: none;
 }
 
-/* Subtle shadow/border for separation */
-.accordionSection:not(:last-child) {
-  margin-bottom: 1.2rem;
-}
-
-/* Responsive tweaks */
-@media (max-width: 700px) {
-  .accordionMain {
-    max-width: 100vw;
-    padding: 0 0.5rem;
+/* Mobile Responsive Styles */
+@media (max-width: 520px) {
+  .wrapper {
+    padding: 60px 0.5rem 70px;
   }
-  .panelOpen {
-    padding: 0.8rem 0.5rem 1rem 0.5rem;
+
+  .header {
+    height: 60px;
   }
-  .eventsGrid {
-    gap: 0.7rem;
+
+  .hero {
+    padding: 1.6rem 1rem;
+    margin: 1rem auto 1.5rem;
   }
-  .eventType {
-    font-size: 0.95rem;
-    padding: 0.5rem 0.7rem;
+
+  .heroLogo {
+    font-size: 2.8rem;
   }
-  .testimonialCard {
-    font-size: 0.97rem;
-    padding: 0.7rem 0.7rem;
+
+  .heroTagline {
+    font-size: 1.1rem;
   }
-}
 
-/* ...existing code... */
-
-/* --- Add for Desktop Grid Layout for Accordions --- */
-.gridMain {
-  width: 100%;
-  max-width: 1400px;
-  margin: 2rem auto 6rem auto;
-  padding: 0 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ...existing code... */
-
-/* Update gridRow to use 2 columns for dropdown/accordion sections on desktop */
-/* ...existing code... */
-
-/* Update gridRow to use 2 columns for dropdown/accordion sections on desktop */
-@media (min-width: 992px) {
-  .gridRow {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 1rem;
+  .ctaBtn {
     width: 100%;
-    padding: 2rem;
-    margin: 2rem auto;
-    box-sizing: border-box;
+    min-width: unset;
+    padding: 1rem 2rem;
   }
 
-  .dropdownul {
-    list-style: none;
-    padding: 1rem;
-    margin: 1rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    max-height: none;
-    overflow: visible;
+  .cardsStack {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 
-  /* Remove fixed height and scrolling for dropdown/accordion sections */
-  .gridSection,
-  .accordionSection {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    display: flex;
-    flex-direction: column;
+  .loginSection {
+    max-width: calc(100vw - 1rem);
+    border-radius: 0.8rem;
+    padding: 1.6rem 1rem;
+    margin: 0 0.5rem 2rem;
   }
-  .gridSection .accordionPanel,
-  .accordionSection .accordionPanel {
-    flex: unset;
-    overflow-y: visible;
-    min-height: 0;
-    max-height: none;
-    /* Remove custom scrollbars */
-    scrollbar-width: auto;
-    scrollbar-color: auto;
+
+  .signedInActions {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .howItWorksSection,
+  .eventsSection,
+  .contactSection,
+  .testimonialsSection {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (min-width: 520px) and (max-width: 768px) {
+  .signedInActions {
+    flex-direction: row;
+    justify-content: center;
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wrapper {
+    padding-top: 80px;
+  }
+
+  .header {
+    height: 80px;
+  }
+
+  .hero {
+    max-width: 700px;
+    margin: 2.5rem auto 3.5rem;
+  }
+
+  .cardsStack {
+    gap: 2.5rem;
+  }
+
+  .loginSection {
+    max-width: 440px;
+    padding: 3rem 2.2rem;
+    margin: 0 auto 4rem;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .ctaBtn,
+  .authButton,
+  .signOutButton,
+  .card {
+    transition: none;
   }
   
-}
-
-/* Remove fixed height and scrolling for all dropdown/accordion sections on desktop/tablet */
-@media (min-width: 992px) {
-  /* Remove previous height/scrollbar rules if present */
-  .gridSection,
-  .accordionSection {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-  }
-  .gridSection .accordionPanel,
-  .accordionSection .accordionPanel {
-    overflow-y: visible !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    scrollbar-width: auto !important;
-    scrollbar-color: auto !important;
+  .loadingSpinner {
+    animation: none;
   }
 }
 
-/* ...existing code... */
-
-/* Responsive: fallback to accordion on small screens */
-@media (max-width: 375px) {
-  .gridMain, .gridRow {
-    display: block;
-    grid-template-columns: none;
-    gap: 0;
-    max-width: 540px;
-    margin-top: 2rem;
-    margin: 2rem auto 6rem auto;
-    padding: 0 1rem;
-  }
-  .gridSection {
-    min-width: unset;
-    border-radius: 12px;
-    
-    margin-bottom: 1.2rem;
-    box-shadow: 0 2px 10px rgba(15,75,46,0.07);
-  }
-  .gridSection .accordionHeader {
-    pointer-events: auto;
-    opacity: 1;
-    cursor: pointer;
-  }
-  .gridSection .accordionPanel {
-    max-height: 0;
-    overflow: hidden;
-    padding: 0 1.2rem;
-    transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.2s;
-  }
-  .gridSection .panelOpen {
-    max-height: 1000px;
-    padding: 1rem 1.2rem 1.2rem 1.2rem;
-    transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.2s;
-  }
-}
-
-/* ...existing code... */
-
-/* ...existing code... */
-
-/* Set a fixed height and enable scroll for all accordion/grid sections ONLY on desktop/tablet */
-@media (min-width: 992px) {
-  .gridSection,
-  .accordionSection {
-    height: 420px;
-    display: flex;
-    flex-direction: column;
-  }
-  .gridSection .accordionPanel,
-  .accordionSection .accordionPanel {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    min-height: 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) #f0f0f0;
-  }
-  .gridSection .accordionPanel::-webkit-scrollbar,
-  .accordionSection .accordionPanel::-webkit-scrollbar {
-    width: 8px;
-  }
-  .gridSection .accordionPanel::-webkit-scrollbar-thumb,
-  .accordionSection .accordionPanel::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 6px;
-  }
-  .gridSection .accordionPanel::-webkit-scrollbar-track,
-  .accordionSection .accordionPanel::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 6px;
-  }
-}
-
-/* On small screens, keep the original flexible height and behavior */
-@media (max-width: 991px) {
-  .gridSection,
-  .accordionSection {
-    height: auto;
-    min-height: unset;
-    max-height: unset;
-    display: block;
-  }
-  .gridSection .accordionPanel,
-  .accordionSection .accordionPanel {
-    overflow-y: visible;
-    min-height: unset;
-    max-height: unset;
-  }
-}
-
-/* ...existing code... */
-/* ...existing code... */
-.loginFormBg {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 2rem 1.5rem;
-}
-
-.paleInput {
-  background: #fffbe6 !important; /* Pale yellow */
-  border: 1px solid var(--border-color, #cfd8dc);
-}
-
-.paleInput:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(234, 202, 67, 0.15);
-}
-/* ...existing code... */
-/* ...existing code... */
-
-/* Extra small devices: improve dropdown/accordion container spacing */
-@media (max-width: 480px) {
-  .accordionMain,
-  .gridMain,.gridRow {
-    padding: 0 0.3rem !important;
-    margin: 1rem 0 3rem 0 !important;
-    max-width: 100vw;
-  }
-  .accordionSection,
-  .gridSection {
-    border-radius: 8px;
-    margin-bottom: 0.7rem;
-    box-shadow: 0 1px 6px rgba(15,75,46,0.06);
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
-  }
-  .accordionHeader,
-  .gridSection .accordionHeader {
-    padding-left: 0.7rem;
-    padding-right: 0.7rem;
-  }
-  .accordionPanel,
-  .gridSection .accordionPanel {
-    padding-left: 0.7rem;
-    padding-right: 0.7rem;
-  }
-}
-
-/* ...existing code... */
-
-/* ...existing code... */
-
-/* Medium devices: improve dropdown/accordion container spacing */
-@media (max-width: 767px) {
-  .accordionMain,
-  .gridMain {
-    padding: 0 0.7rem !important;
-    margin: 1.5rem 0 4rem 0 !important;
-    max-width: 100vw;
-  }
-  .accordionSection,
-  .gridSection {
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 8px rgba(15,75,46,0.08);
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-  }
-  .accordionHeader,
-  .gridSection .accordionHeader {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  .accordionPanel,
-  .gridSection .accordionPanel {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
-/* ...existing code... */
-
-/* Add gap between accordion/grid section and login section on small screens */
-@media (max-width: 480px) {
-  .accordionMain,
-  .gridMain {
-    margin-top: 2.5rem !important; /* Increase space below accordions */
-  }
-  .loginSection {
-    margin-bottom: 2.5rem !important;    /* Increase space above login section */
-  }
-}
-
-@media (max-width: 400px) and (max-height: 750px) {
-  .tagline{
-    margin-top: 10px;
-    font-size: x-small ;
-  }
+@media print {
   .header {
-    margin-bottom: 50px;
-    padding-bottom: 30px;
+    position: static;
   }
-  .hero {
-    margin-top: 100px; /* Reduce space below header */
-    margin-bottom: 24px;
-    padding-bottom: 200px; /* Add space below hero section */
+  
+  .wrapper {
+    padding-top: 0;
   }
-  .gridRow {
-    margin-top: 200px;
-    padding-top: 400px; /* Adjust value as needed */
+  
+  .ctaBtn,
+  .authButton,
+  .signOutButton {
+    background: transparent !important;
+    color: var(--dark-text) !important;
+    border: 2px solid var(--dark-text) !important;
   }
-}
-
-
-
-
-.footer {
-  background-color: var(--primary-bg); /* Darker footer */
-  color: var(--heading-color);
-  text-align: center;
-  padding: 1.5rem 1rem;
-  font-size: 0.9rem;
-  position: fixed;      /* Make it fixed */
-  left: 0;
-  bottom: 0;
-  height: 8vh;
-  width: 100vw;         /* Full viewport width */
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Adds subtle shadow */
-  border-radius: 12px 12px 0 0; /* Rounded top corners */
-  margin-top: 2rem;
- 
-}
-.footerIcons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.footerIcons a {
-  color: #fff;
-  transition: color 0.2s, transform 0.2s;
-  display: inline-flex;
-  align-items: center;
-  font-size: 1.5rem;
-}
-
-.footerIcons a:hover,
-.footerIcons a:focus {
-  color: #ffb347;
-  transform: scale(1.15);
-  outline: none;
-}
-
-.loginForm textarea {
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--border-color, #cfd8dc);
-  border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: var(--white, #fff);
-  width: 100%;
-  resize: vertical;
-  min-height: 40px;
-  max-height: 120px;
-}
-
-.loginForm textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(10, 82, 71, 0.15);
 }

@@ -1,0 +1,129 @@
+/* AdminSidebar.module.css */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #0A5247 0%, #0F4B2E 100%);
+  color: white;
+  transition: width 0.3s ease;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.sidebar.closed {
+  width: 80px;
+}
+
+.sidebarHeader {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logoIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.logoText h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #EDD49B;
+}
+
+.logoText p {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.nav {
+  padding: 2rem 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-left-color: #EDD49B;
+}
+
+.navItem.active {
+  background: rgba(237, 212, 155, 0.15);
+  color: #EDD49B;
+  border-left-color: #EDD49B;
+}
+
+.navIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.navContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.navLabel {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.navDescription {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+}
+
+.sidebarFooter {
+  position: absolute;
+  bottom: 2rem;
+  left: 1.5rem;
+  right: 1.5rem;
+}
+
+.toggleButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar:not(.closed) {
+    transform: translateX(0);
+  }
+}

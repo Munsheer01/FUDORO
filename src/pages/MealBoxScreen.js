@@ -1,603 +1,333 @@
-import React, { useState } from "react";
-import styles from "./MealBoxScreen.module.css"; // Import CSS module
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { db } from "../firebase";
+import styles from "./MealBoxScreen.module.css";
 import { GlobalHeader, GlobalFooter } from "../components/GlobalHeader&Footer";
-import MealBoxImg from "../assets/MealBox.jpg";
 
-// Data for meal boxes and food items
-const mealBoxOptionsData = [
-  {
-    id: "twin_treat",
-    name: "Twin Treat Box",
-    description: "Two Compartments of Flavorful Delight",
-    compartments: 2,
-    compartmentNames: ["Main Course", "Side Dish"],
-  },
-  {
-    id: "triple_delight",
-    name: "Triple Delight Box",
-    description: "Three Compartments of Goodness",
-    compartments: 3,
-    compartmentNames: ["Appetizer", "Main Course", "Dessert"],
-  },
-  {
-    id: "quad_feast",
-    name: "Quad Feast Box",
-    description: "Four Compartments for a Hearty Meal",
-    compartments: 4,
-    compartmentNames: ["Appetizer", "Flavored Rice", "Curry", "Side Dish"],
-  },
-  {
-    id: "mega_meal",
-    name: "Mega Meal Box",
-    description: "Five Compartments of Ultimate Delight",
-    compartments: 5,
-    compartmentNames: [
-      "Appetizer",
-      "Flavored Rice",
-      "Curry",
-      "Crispy Fry",
-      "Dessert",
-    ],
-  },
-  {
-    id: "super_six",
-    name: "Super Six Box",
-    description: "Six Compartments, a True Feast!",
-    compartments: 6,
-    compartmentNames: [
-      "Appetizer",
-      "Soup",
-      "Flavored Rice",
-      "Curry",
-      "Crispy Fry",
-      "Dessert",
-    ],
-  },
-  {
-    id: "septa_special",
-    name: "Septa Special Box",
-    description: "Seven Compartments for the Grandest Meal",
-    compartments: 7,
-    compartmentNames: [
-      "Appetizer",
-      "Soup",
-      "Salad",
-      "Flavored Rice",
-      "Curry",
-      "Crispy Fry",
-      "Dessert",
-    ],
-  },
-];
+const MealBoxScreen = () => {
+  const navigate = useNavigate();
+  const [mealBoxes, setMealBoxes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({
+    compartments: 'all',
+    priceRange: 'all',
+    mealType: 'all'
+  });
 
-const foodItemsData = {
-  Appetizer: [
-    {
-      id: "paneer_tikka",
-      name: "Paneer Tikka",
-      description: "Grilled cottage cheese cubes",
-    },
-    { id: "gobi_65", name: "Gobi 65", description: "Spicy fried cauliflower" },
-    {
-      id: "chicken_65",
-      name: "Chicken 65",
-      description: "Spicy fried chicken",
-    },
-    {
-      id: "veg_spring_roll",
-      name: "Veg Spring Roll",
-      description: "Crispy fried rolls with veggie filling",
-    },
-  ],
-  "Main Course": [
-    {
-      id: "veg_noodles",
-      name: "Veg Noodles",
-      description: "Stir-fried noodles with vegetables",
-    },
-    {
-      id: "chicken_fried_rice",
-      name: "Chicken Fried Rice",
-      description: "Rice stir-fried with chicken and veggies",
-    },
-    {
-      id: "dal_makhani",
-      name: "Dal Makhani",
-      description: "Creamy black lentils and kidney beans",
-    },
-  ],
-  "Side Dish": [
-    {
-      id: "aloo_gobi",
-      name: "Aloo Gobi",
-      description: "Potatoes and cauliflower stir-fry",
-    },
-    {
-      id: "raita",
-      name: "Raita",
-      description: "Yogurt with spices and vegetables",
-    },
-    {
-      id: "green_salad",
-      name: "Green Salad",
-      description: "Fresh mixed greens",
-    },
-  ],
-  "Flavored Rice": [
-    {
-      id: "veg_biryani",
-      name: "Veg Biryani",
-      description: "Aromatic rice with mixed vegetables",
-    },
-    {
-      id: "chicken_fry_biryani",
-      name: "Chicken Fry Biryani",
-      description: "Biryani with fried chicken pieces",
-    },
-    {
-      id: "jeera_rice",
-      name: "Jeera Rice",
-      description: "Cumin flavored rice",
-    },
-    {
-      id: "lemon_rice",
-      name: "Lemon Rice",
-      description: "Tangy lemon flavored rice",
-    },
-  ],
-  Curry: [
-    {
-      id: "paneer_butter_masala",
-      name: "Paneer Butter Masala",
-      description: "Rich and creamy paneer curry",
-    },
-    {
-      id: "fish_curry",
-      name: "Fish Curry",
-      description: "Spicy and tangy fish curry",
-    },
-    {
-      id: "dal_tadka",
-      name: "Dal Tadka",
-      description: "Yellow lentils with tempering",
-    },
-    {
-      id: "chicken_chettinad",
-      name: "Chicken Chettinad",
-      description: "Spicy South Indian chicken curry",
-    },
-  ],
-  "Crispy Fry": [
-    { id: "aloo_fry", name: "Aloo Fry", description: "Crispy fried potatoes" },
-    {
-      id: "mushroom_fry",
-      name: "Mushroom Fry",
-      description: "Spicy fried mushrooms",
-    },
-    { id: "bhindi_fry", name: "Bhindi Fry", description: "Crispy fried okra" },
-    {
-      id: "chicken_pakora",
-      name: "Chicken Pakora",
-      description: "Crispy chicken fritters",
-    },
-  ],
-  Dessert: [
-    {
-      id: "gulab_jamun",
-      name: "Gulab Jamun",
-      description: "Sweet milk-solid balls in syrup",
-    },
-    {
-      id: "rasmalai",
-      name: "Rasmalai",
-      description: "Cheese dumplings in sweetened milk",
-    },
-    {
-      id: "gajar_halwa",
-      name: "Gajar Halwa",
-      description: "Sweet carrot pudding",
-    },
-    {
-      id: "fruit_custard",
-      name: "Fruit Custard",
-      description: "Creamy custard with fresh fruits",
-    },
-  ],
-  Soup: [
-    {
-      id: "tomato_soup",
-      name: "Tomato Soup",
-      description: "Classic creamy tomato soup",
-    },
-    {
-      id: "veg_manchow_soup",
-      name: "Veg Manchow Soup",
-      description: "Spicy and tangy vegetable soup",
-    },
-    {
-      id: "chicken_clear_soup",
-      name: "Chicken Clear Soup",
-      description: "Light and healthy chicken broth",
-    },
-  ],
-  Salad: [
-    {
-      id: "kachumber_salad",
-      name: "Kachumber Salad",
-      description: "Indian cucumber, tomato, onion salad",
-    },
-    {
-      id: "caesar_salad",
-      name: "Caesar Salad",
-      description: "Classic Caesar salad with croutons",
-    },
-    {
-      id: "fruit_salad",
-      name: "Fruit Salad",
-      description: "Mix of fresh seasonal fruits",
-    },
-  ],
-};
+  // Fetch meal boxes aligned with real data structure
+  useEffect(() => {
+    const fetchMealBoxes = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        console.log('🍱 Fetching Real FUDORO MealBoxes from Firestore...');
+        
+        const mealBoxQuery = query(
+          collection(db, 'MealBoxes'),
+          orderBy('configuration.totalCompartments', 'asc')
+        );
 
-function MealBoxScreen() {
-  const [currentStep, setCurrentStep] = useState(1); // 1: Select Box, 2: Customize, 3: Summary
-  const [selectedBox, setSelectedBox] = useState(null);
-  const [itemSelections, setItemSelections] = useState({});
-  const [quantity, setQuantity] = useState(1);
-  const [activeAccordion, setActiveAccordion] = useState(null);
-  const [compartmentErrors, setCompartmentErrors] = useState({});
-  const [globalValidationMessage, setGlobalValidationMessage] = useState("");
-  const [cartMessage, setCartMessage] = useState({ text: "", type: "" });
+        const querySnapshot = await getDocs(mealBoxQuery);
+        
+        if (querySnapshot.empty) {
+          setError('No meal boxes found. Please check back later.');
+          return;
+        }
 
-  const getProgressText = () => {
-    if (currentStep === 1) return "Step 1 of 3: Select Box Size";
-    if (currentStep === 2 && selectedBox)
-      return `Step 2 of 3: Customize ${selectedBox.name}`;
-    if (currentStep === 3) return "Step 3 of 3: Review & Add to Cart";
-    return "";
-  };
+        const mealBoxesData = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          
+          // Filter active meal boxes based on real data structure
+          if (data.availability?.isActive !== false) {
+            mealBoxesData.push({
+              id: doc.id,
+              ...data
+            });
+          }
+        });
 
-  const handleSelectBox = (boxId) => {
-    const box = mealBoxOptionsData.find((b) => b.id === boxId);
-    setSelectedBox(box);
-    setItemSelections({});
-    setCompartmentErrors({});
-    setGlobalValidationMessage("");
-    setActiveAccordion(box && box.compartments > 0 ? `compartment_0` : null);
-    setCurrentStep(2);
-  };
-
-  const handleAccordionToggle = (compartmentKey) => {
-    setActiveAccordion(
-      activeAccordion === compartmentKey ? null : compartmentKey
-    );
-  };
-
-  const handleSelectItem = (
-    compartmentKey,
-    itemId,
-    itemName,
-    compartmentName
-  ) => {
-    setItemSelections((prev) => ({
-      ...prev,
-      [compartmentKey]: { itemId, itemName, compartmentName },
-    }));
-    setCompartmentErrors((prev) => ({ ...prev, [compartmentKey]: "" }));
-    setGlobalValidationMessage("");
-
-    const currentCompartmentIndex = parseInt(compartmentKey.split("_")[1]);
-    if (selectedBox && currentCompartmentIndex < selectedBox.compartments - 1) {
-      const nextCompartmentKey = `compartment_${currentCompartmentIndex + 1}`;
-      if (!itemSelections[nextCompartmentKey]) {
-        setActiveAccordion(nextCompartmentKey);
-      } else {
-        setActiveAccordion(null);
+        console.log(`✅ Loaded ${mealBoxesData.length} real meal boxes`);
+        setMealBoxes(mealBoxesData);
+        
+      } catch (err) {
+        console.error('❌ Error fetching meal boxes:', err);
+        setError('Failed to load meal boxes. Please try again later.');
+      } finally {
+        setLoading(false);
       }
-    } else {
-      setActiveAccordion(null);
-    }
-  };
-
-  const validateSelections = () => {
-    let isValid = true;
-    const errors = {};
-    if (!selectedBox) return false;
-
-    for (let i = 0; i < selectedBox.compartments; i++) {
-      const compartmentKey = `compartment_${i}`;
-      if (!itemSelections[compartmentKey]) {
-        isValid = false;
-        errors[compartmentKey] = `Please select 1 item for ${
-          selectedBox.compartmentNames[i] || `Compartment ${i + 1}`
-        }.`;
-      }
-    }
-    setCompartmentErrors(errors);
-    if (!isValid) {
-      setGlobalValidationMessage(
-        "Please make a selection for all compartments."
-      );
-      const firstErrorKey = Object.keys(errors)[0];
-      if (firstErrorKey) {
-        setActiveAccordion(firstErrorKey);
-      }
-    } else {
-      setGlobalValidationMessage("");
-    }
-    return isValid;
-  };
-
-  const handleReviewOrder = () => {
-    if (validateSelections()) {
-      setCurrentStep(3);
-    }
-  };
-
-  const handleAddToCart = () => {
-    if (Object.keys(itemSelections).length < (selectedBox?.compartments || 0)) {
-      setCartMessage({
-        text: "Please complete all selections before adding to cart.",
-        type: "error",
-      });
-      setTimeout(() => setCartMessage({ text: "", type: "" }), 3000);
-      return;
-    }
-
-    const order = {
-      box: selectedBox,
-      selections: itemSelections,
-      quantity: quantity,
     };
-    console.log("Order Added to Cart:", order);
 
-    setCartMessage({
-      text: `${quantity} x ${selectedBox.name} added to cart!`,
-      type: "success",
+    fetchMealBoxes();
+  }, []);
+
+  // Filter meal boxes based on real compartment counts (2, 3, 5, 7)
+  const filteredMealBoxes = useMemo(() => {
+    let filtered = [...mealBoxes];
+
+    // Filter by compartments - aligned with real data
+    if (filters.compartments !== 'all') {
+      const compartmentCount = parseInt(filters.compartments);
+      filtered = filtered.filter(mb => mb.configuration?.totalCompartments === compartmentCount);
+    }
+
+    // Filter by price range - based on real pricing
+    if (filters.priceRange !== 'all') {
+      filtered = filtered.filter(mb => {
+        const vegPrice = mb.pricing?.veg?.basePrice || 0;
+        switch (filters.priceRange) {
+          case 'budget': return vegPrice <= 150; // Twin & Triple Treat
+          case 'premium': return vegPrice > 150 && vegPrice <= 250; // Mega Meal Box  
+          case 'luxury': return vegPrice > 250; // Grand Meal Box
+          default: return true;
+        }
+      });
+    }
+
+    return filtered;
+  }, [mealBoxes, filters]);
+
+  const handleMealBoxSelect = useCallback((mealBox) => {
+    navigate('/customize-meal-box', {
+      state: {
+        selectedMealBox: mealBox,
+        orderType: 'meal-box'
+      }
     });
+  }, [navigate]);
 
-    setTimeout(() => {
-      setCurrentStep(1);
-      setSelectedBox(null);
-      setItemSelections({});
-      setQuantity(1);
-      setActiveAccordion(null);
-      setCompartmentErrors({});
-      setGlobalValidationMessage("");
-      setCartMessage({ text: "", type: "" });
-    }, 2000);
-  };
+  const handleFilterChange = useCallback((filterType, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
+  }, []);
 
-  // Render functions for each step
-  const renderStep1 = () => (
-    <section id="step1BoxSelection" className={styles.spaceY4}>
-      {mealBoxOptionsData.map((box) => (
-        <div key={box.id} className={styles.mealBoxCard}>
-          <div className={styles.mealBoxImgWrapper}>
-            <img
-              src={MealBoxImg}
-              alt="Meal Box"
-              className={styles.mealBoxImg}
-            />
+  if (loading) {
+    return (
+      <div className={styles.wrapper}>
+        <GlobalHeader />
+        <div className={styles.main}>
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Loading authentic FUDORO meal boxes...</p>
           </div>
-          <div className={styles.mealBoxCardContent}>
-            <h3 className={styles.fudoroHeading}>{box.name}</h3>
-            <p className={styles.fudoroText}>{box.description}</p>
-            <button
-              onClick={() => handleSelectBox(box.id)}
-              className={styles.customizeBtn}
-            >
-              Customize
+        </div>
+        <GlobalFooter />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.wrapper}>
+        <GlobalHeader />
+        <div className={styles.main}>
+          <div className={styles.errorContainer}>
+            <h2>Oops! Something went wrong</h2>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>
+              Try Again
             </button>
           </div>
         </div>
-      ))}
-    </section>
-  );
-
-  const renderStep2 = () => {
-    if (!selectedBox) return null;
-    return (
-      <section id="step2CustomizeCompartments">
-        <div className={styles.flexRow}>
-          <button
-            onClick={() => {
-              setCurrentStep(1);
-              setGlobalValidationMessage("");
-              setCompartmentErrors({});
-            }}
-            className={styles.backBtn}
-          >
-            ← Back
-          </button>
-          <h2 id="customizationHeader" className={styles.fudoroHeading}>
-            Customize Your {selectedBox.name}
-          </h2>
-        </div>
-        <div id="compartmentsContainer" className={styles.spaceY3}>
-          {Array.from({ length: selectedBox.compartments }).map((_, i) => {
-            const compartmentKey = `compartment_${i}`;
-            const compartmentName =
-              selectedBox.compartmentNames[i] || `Compartment ${i + 1}`;
-            const itemsForCompartment =
-              foodItemsData[compartmentName] || foodItemsData["Main Course"];
-            const isOpen = activeAccordion === compartmentKey;
-
-            return (
-              <div key={compartmentKey} className={styles.accordionItem}>
-                <div
-                  className={`${styles.accordionHeader} ${
-                    isOpen ? styles.active : ""
-                  }`}
-                  onClick={() => handleAccordionToggle(compartmentKey)}
-                >
-                  <span className={styles.fudoroHeading}>
-                    {compartmentName}{" "}
-                    <small className={styles.fudoroText}>(Choose 1 item)</small>
-                  </span>
-                  <span
-                    className={`${styles.chevronIcon} ${
-                      isOpen ? styles.rotate180 : ""
-                    }`}
-                  >
-                    ▼
-                  </span>
-                </div>
-                <div
-                  className={styles.accordionContent}
-                  style={{
-                    maxHeight: isOpen ? "500px" : "0px",
-                    padding: isOpen ? "1rem" : "0 1rem",
-                  }}
-                >
-                  <div
-                    className={styles.scrollableList}
-                    style={{ maxHeight: isOpen ? "180px" : "0px" }}
-                  >
-                    {itemsForCompartment.map((item) => (
-                      <div
-                        key={item.id}
-                        className={`${styles.foodItemCard} ${
-                          itemSelections[compartmentKey]?.itemId === item.id
-                            ? styles.selected
-                            : ""
-                        }`}
-                        onClick={() =>
-                          handleSelectItem(
-                            compartmentKey,
-                            item.id,
-                            item.name,
-                            compartmentName
-                          )
-                        }
-                      >
-                        <h4 className={styles.itemName}>{item.name}</h4>
-                        <p className={styles.itemDescription}>
-                          {item.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  {compartmentErrors[compartmentKey] && (
-                    <div className={styles.validationMessage}>
-                      {compartmentErrors[compartmentKey]}
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {globalValidationMessage && (
-          <div
-            id="globalValidationMessage"
-            className={styles.validationMessage}
-          >
-            {globalValidationMessage}
-          </div>
-        )}
-        <button
-          id="reviewOrderButton"
-          onClick={handleReviewOrder}
-          className={styles.customizeBtn}
-        >
-          Review Order
-        </button>
-      </section>
+        <GlobalFooter />
+      </div>
     );
-  };
-
-  const renderStep3 = () => {
-    if (!selectedBox) return null;
-    return (
-      <section id="step3CartSummary">
-        <div className={styles.flexRow}>
-          <button onClick={() => setCurrentStep(2)} className={styles.backBtn}>
-            ← Back
-          </button>
-          <h2 className={styles.fudoroHeading}>Order Summary</h2>
-        </div>
-        <div id="summaryContainer" className={styles.summaryContainer}>
-          <h3 className={styles.fudoroHeading}>Your {selectedBox.name}:</h3>
-          <ul className={styles.summaryList}>
-            {Array.from({ length: selectedBox.compartments }).map((_, i) => {
-              const compartmentKey = `compartment_${i}`;
-              const selection = itemSelections[compartmentKey];
-              return (
-                <li key={i} className={styles.fudoroText}>
-                  <strong className={styles.fudoroHeading}>
-                    {selection?.compartmentName ||
-                      selectedBox.compartmentNames[i] ||
-                      `Compartment ${i + 1}`}
-                    :
-                  </strong>
-                  &nbsp;
-                  {selection ? (
-                    selection.itemName
-                  ) : (
-                    <span className={styles.errorText}>Not selected</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className={styles.quantitySection}>
-          <label htmlFor="quantity" className={styles.fudoroText}>
-            Quantity:
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            value={quantity}
-            min="1"
-            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))}
-            className={styles.quantityInput}
-          />
-        </div>
-        {cartMessage.text && (
-          <div
-            className={
-              cartMessage.type === "success"
-                ? styles.fudoroGreenText
-                : styles.errorText
-            }
-          >
-            {cartMessage.text}
-          </div>
-        )}
-        <button
-          id="addToCartButton"
-          onClick={handleAddToCart}
-          className={styles.customizeBtn}
-        >
-          Add to Cart
-        </button>
-      </section>
-    );
-  };
+  }
 
   return (
-    <div className={styles.fudoroPageContainer}>
+    <div className={styles.wrapper}>
       <GlobalHeader />
-      <div className={styles.fudoroAppWrapper}>
-        <header className={styles.header}>
-          <h1 className={styles.fudoroHeading}>FUDORO</h1>
-          <p className={styles.fudoroText}>Customize Your Meal Box</p>
-        </header>
+      
+      <div className={styles.main}>
+        {/* Hero Section - Updated with real business info */}
+        <section className={styles.heroSection}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>🍱 FUDORO Meal Boxes</h1>
+            <p className={styles.heroDescription}>
+              Elevate your event with custom meal boxes. Catering food meal boxes offer a convenient 
+              and efficient way to provide delicious, high-quality meals for various occasions.
+            </p>
+            <div className={styles.heroStats}>
+              <div className={styles.stat}>
+                <span className={styles.statNumber}>4</span>
+                <span className={styles.statLabel}>Meal Box Types</span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statNumber}>2-7</span>
+                <span className={styles.statLabel}>Compartments</span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statNumber}>50+</span>
+                <span className={styles.statLabel}>Food Options</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <div id="progressIndicator" className={styles.progressIndicator}>
-          {getProgressText()}
-        </div>
+        {/* Filters Section - Updated with real compartment options */}
+        <section className={styles.filtersSection}>
+          <div className={styles.filtersContainer}>
+            <h3 className={styles.filtersTitle}>Filter Meal Boxes</h3>
+            <div className={styles.filterGroups}>
+              
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Compartments:</label>
+                <select
+                  value={filters.compartments}
+                  onChange={(e) => handleFilterChange('compartments', e.target.value)}
+                  className={styles.filterSelect}
+                >
+                  <option value="all">All</option>
+                  <option value="2">2 Compartments (Twin Treat)</option>
+                  <option value="3">3 Compartments (Triple Treat)</option>
+                  <option value="5">5 Compartments (Mega Meal)</option>
+                  <option value="7">7 Compartments (Grand Meal)</option>
+                </select>
+              </div>
 
-        {currentStep === 1 && renderStep1()}
-        {currentStep === 2 && renderStep2()}
-        {currentStep === 3 && renderStep3()}
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Price Range:</label>
+                <select
+                  value={filters.priceRange}
+                  onChange={(e) => handleFilterChange('priceRange', e.target.value)}
+                  className={styles.filterSelect}
+                >
+                  <option value="all">All Prices</option>
+                  <option value="budget">Budget (₹120-180)</option>
+                  <option value="premium">Premium (₹200-250)</option>
+                  <option value="luxury">Luxury (₹280+)</option>
+                </select>
+              </div>
+
+              <div className={styles.resultsCount}>
+                <span>{filteredMealBoxes.length} meal box{filteredMealBoxes.length !== 1 ? 'es' : ''} found</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Meal Boxes Grid - Updated with real data display */}
+        <section className={styles.mealBoxesSection}>
+          <div className={styles.mealBoxesContainer}>
+            {filteredMealBoxes.length === 0 ? (
+              <div className={styles.noResults}>
+                <div className={styles.noResultsIcon}>🍱</div>
+                <h3>No meal boxes found</h3>
+                <p>Try adjusting your filters to see more options.</p>
+                <button 
+                  onClick={() => setFilters({ compartments: 'all', priceRange: 'all', mealType: 'all' })}
+                  className={styles.clearFiltersBtn}
+                >
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className={styles.mealBoxesGrid}>
+                {filteredMealBoxes.map((mealBox) => (
+                  <div key={mealBox.id} className={styles.mealBoxCard}>
+                    <div className={styles.mealBoxImage}>
+                      <img
+                        src={mealBox.media?.imageUrl || '/assets/meal-box-placeholder.jpg'}
+                        alt={mealBox.name}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = '/assets/meal-box-placeholder.jpg';
+                        }}
+                      />
+                      <div className={styles.compartmentsBadge}>
+                        {mealBox.configuration?.totalCompartments} Compartments
+                      </div>
+                      {mealBox.availability?.isPopular && (
+                        <div className={styles.popularBadge}>Popular</div>
+                      )}
+                    </div>
+
+                    <div className={styles.mealBoxContent}>
+                      <h3 className={styles.mealBoxTitle}>{mealBox.name}</h3>
+                      <p className={styles.mealBoxDescription}>{mealBox.description}</p>
+
+                      {/* Real compartment layout display */}
+                      <div className={styles.compartmentLayout}>
+                        <h4 className={styles.layoutTitle}>Compartments:</h4>
+                        <div className={styles.compartmentList}>
+                          {mealBox.configuration?.layout?.map((comp, index) => (
+                            <span key={index} className={styles.compartmentTag}>
+                              {comp.displayName}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className={styles.mealBoxFeatures}>
+                        <div className={styles.feature}>
+                          <span className={styles.featureIcon}>🍽️</span>
+                          <span>{mealBox.configuration?.totalCompartments} compartments</span>
+                        </div>
+                        <div className={styles.feature}>
+                          <span className={styles.featureIcon}>⏱️</span>
+                          <span>{mealBox.businessRules?.preparationTime?.min}-{mealBox.businessRules?.preparationTime?.max} min</span>
+                        </div>
+                        <div className={styles.feature}>
+                          <span className={styles.featureIcon}>📦</span>
+                          <span>Min {mealBox.businessRules?.minimumOrder} boxes</span>
+                        </div>
+                      </div>
+
+                      <div className={styles.pricingSection}>
+                        <div className={styles.priceRow}>
+                          <span className={styles.priceLabel}>🥬 Vegetarian:</span>
+                          <span className={styles.priceValue}>₹{mealBox.pricing?.veg?.basePrice}</span>
+                        </div>
+                        <div className={styles.priceRow}>
+                          <span className={styles.priceLabel}>🍗 Non-Vegetarian:</span>
+                          <span className={styles.priceValue}>₹{mealBox.pricing?.nonVeg?.basePrice}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        className={styles.selectMealBoxBtn}
+                        onClick={() => handleMealBoxSelect(mealBox)}
+                      >
+                        Customize & Order
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Contact Information - Based on real business data */}
+        <section className={styles.contactSection}>
+          <div className={styles.contactContainer}>
+            <h2 className={styles.contactTitle}>Create Your Meal Box Today!</h2>
+            <p className={styles.contactDescription}>
+              Personalize your meal box with an array of delicious and high-quality dishes.
+            </p>
+            
+            <div className={styles.contactInfo}>
+              <div className={styles.contactLocation}>
+                <h3>📍 Hyderabad</h3>
+                <p>+91 8919354409 / +91 9703344431</p>
+              </div>
+              <div className={styles.contactLocation}>
+                <h3>📍 Khammam</h3>
+                <p>+91 7396081234 / +91 9246946473</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
+
       <GlobalFooter />
     </div>
   );
-}
+};
 
 export default MealBoxScreen;

@@ -1,349 +1,451 @@
-/* FUDORO MealBoxScreen.module.css - Enhanced for MealBoxScreen.js */
-
-/* Brand Colors as CSS Variables */
-:root {
-  --fudoro-text-color: #D4AF37;
-  --fudoro-background-color: #0F4B2E;
-  --fudoro-heading-color: #EDD49B;
-  --fudoro-green-text-color: #0A5247;
-  --fudoro-accent-color: #D4AF37;
-  --fudoro-card-bg-color: #1a593a;
-  --fudoro-inner-card-bg-color: #10442a;
-  --fudoro-border-color: #D4AF37;
-  --fudoro-error-text-color: #f87171;
-}
-
-/* Page Container */
-.fudoroPageContainer {
+.wrapper {
   min-height: 100vh;
-  width: 100vw;
-  background: var(--fudoro-background-color);
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  background: #fefefa;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.main {
+  padding-bottom: 4rem;
+}
+
+/* Loading & Error States */
+.loadingContainer, .errorContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* Main App Wrapper */
-.fudoroAppWrapper {
-  background: var(--fudoro-card-bg-color);
-  border-radius: 1.2rem;
-  box-shadow: 0 4px 32px 0 rgba(212, 175, 55, 0.08);
-  width: 100%;
-  max-width: 480px;
-  padding: 2rem 1.5rem 2.5rem 1.5rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Header */
-.header {
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-.fudoroHeading {
-  color: var(--fudoro-heading-color);
-  font-size: 1.7rem;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
-  letter-spacing: 1px;
-}
-.fudoroText {
-  color: var(--heading-color);
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 0.2rem;
-}
-.fudoroGreenText {
-  color: var(--fudoro-green-text-color);
-  font-weight: 600;
-}
-.fudoroAccent {
-  color: var(--fudoro-accent-color);
-}
-.errorText {
-  color: var(--fudoro-error-text-color);
-  font-weight: 600;
-}
-
-/* Progress Indicator */
-.progressIndicator {
-  color: var(--heading-color);
-  background: var(--fudoro-inner-card-bg-color);
-  border-radius: 0.7rem;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-  text-align: center;
-  letter-spacing: 0.5px;
-}
-
-/* Step 1: Meal Box Selection */
-.spaceY4 {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.mealBoxCard {
-  background: var(--fudoro-inner-card-bg-color);
-  border: 2px solid var(--heading-color);
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.07);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.mealBoxCard:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 24px 0 rgba(237, 212, 155, 0.13);
-  border-color: var(--fudoro-accent-color);
-}
-.mealBoxImgWrapper {
-  width: 100%;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  min-height: 400px;
+  text-align: center;
+  color: #0A5247;
 }
 
-.mealBoxImg {
-  width: 100%;
-  max-width: 120px;
-  aspect-ratio: 1/1;
-  border-radius: 0.7rem;
-  object-fit: cover;
-  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.10);
-  background: #222;
-}
-.customizeBtn {
-  margin-top: 1rem;
-  background: var(--heading-color);
-  color: var(--fudoro-background-color);
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.6rem;
-  padding: 0.6rem 1.3rem;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.08);
-}
-.customizeBtn:hover,
-.customizeBtn:focus {
-  background: #c8a030;
-  color: #fff;
-}
-
-/* Step 2: Accordion for Compartments */
-.flexRow {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
+.loadingSpinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #0A5247;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
-.backBtn {
-  background: none;
-  color: var(--heading-color);
-  border: none;
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hero Section */
+.heroSection {
+  background: linear-gradient(135deg, #0A5247 0%, #0F4B2E 100%);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #EDD49B;
+  margin-bottom: 1rem;
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statNumber {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #EDD49B;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  display: block;
   font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.2rem 0.7rem;
-  border-radius: 0.5rem;
-  transition: background 0.15s;
+  opacity: 0.9;
 }
-.backBtn:hover,
-.backBtn:focus {
-  background: var(--fudoro-inner-card-bg-color);
+
+/* Filters Section */
+.filtersSection {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 2rem;
 }
-.spaceY3 {
+
+.filtersContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filtersTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0A5247;
+  margin-bottom: 1.5rem;
+}
+
+.filterGroups {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.5rem;
 }
-.accordionItem {
-  border: 1.5px solid var(--fudoro-border-color);
-  border-radius: 0.8rem;
+
+.filterLabel {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.filterSelect {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  min-width: 150px;
+  transition: border-color 0.2s;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #0A5247;
+}
+
+.resultsCount {
+  margin-left: auto;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Meal Boxes Section */
+.mealBoxesSection {
+  padding: 3rem 2rem;
+}
+
+.mealBoxesContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mealBoxesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.mealBoxCard {
+  background: white;
+  border-radius: 1rem;
   overflow: hidden;
-  background: var(--fudoro-inner-card-bg-color);
-  margin-bottom: 0.2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
 }
-.accordionHeader {
+
+.mealBoxCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.mealBoxImage {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.mealBoxImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.compartmentsBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #0A5247;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.mealBoxContent {
+  padding: 2rem;
+}
+
+.mealBoxTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0A5247;
+  margin-bottom: 0.75rem;
+}
+
+.mealBoxDescription {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.mealBoxFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.featureIcon {
+  font-size: 1rem;
+}
+
+.pricingSection {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.priceRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  padding: 1rem 1.2rem;
-  background: var(--fudoro-card-bg-color);
-  transition: background 0.2s;
-  user-select: none;
-}
-.accordionHeader.active,
-.accordionHeader:hover {
-  background: var(--fudoro-green-text-color);
-}
-.chevronIcon {
-  font-size: 1.3rem;
-  color: var(--fudoro-accent-color);
-  transition: transform 0.3s;
-}
-.rotate180 {
-  transform: rotate(180deg);
-}
-.accordionContent {
-  background: var(--fudoro-inner-card-bg-color);
-  overflow: hidden;
-  transition: max-height 0.35s cubic-bezier(.4,2,.6,1), padding 0.3s;
-  padding: 0 1.2rem;
-}
-
-/* Food Item Cards */
-.scrollableList {
-  overflow-y: auto;
-  max-height: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
   margin-bottom: 0.5rem;
 }
-.scrollableList::-webkit-scrollbar {
-  width: 8px;
-}
-.scrollableList::-webkit-scrollbar-track {
-  background: var(--fudoro-card-bg-color);
-  border-radius: 10px;
-}
-.scrollableList::-webkit-scrollbar-thumb {
-  background-color: var(--heading-color);
-  border-radius: 10px;
-  border: 2px solid var(--fudoro-card-bg-color);
-}
-.scrollableList {
-  scrollbar-width: thin;
-  scrollbar-color: var(--fudoro-accent-color) var(--fudoro-card-bg-color);
-}
-.foodItemCard {
-  background: var(--fudoro-background-color);
-  border: 1.5px solid var(--fudoro-border-color);
-  border-radius: 0.6rem;
-  padding: 0.8rem 1rem;
-  cursor: pointer;
-  transition: background 0.18s, border-color 0.18s;
-  margin-bottom: 0.2rem;
-}
-.foodItemCard:hover {
-  background: #206843;
-  border-color: var(--heading-color);
-}
-.selected {
-  background: var(--fudoro-green-text-color);
-  border-color: var(--heading-color);
-}
-.foodItemCard.selected .itemName,
-.foodItemCard.selected .itemDescription {
-  color: var(--fudoro-heading-color);
-}
-.itemName {
-  font-size: 1.08rem;
-  font-weight: 600;
-  color: var(--fudoro-heading-color);
-  margin-bottom: 0.1rem;
-}
-.itemDescription {
-  font-size: 0.98rem; 
-  color: var(--heading-color);
+
+.priceRow:last-child {
+  margin-bottom: 0;
 }
 
-/* Validation Message */
-.validationMessage {
-  color: var(--fudoro-error-text-color);
-  font-size: 0.98rem;
-  padding: 0.3rem 0.2rem 0.2rem 0.2rem;
-  font-weight: 600;
+.priceLabel {
+  font-size: 0.875rem;
+  color: #374151;
 }
 
-/* Step 3: Summary & Quantity */
-.summaryContainer {
-  background: var(--fudoro-inner-card-bg-color);
-  border-radius: 0.7rem;
-  padding: 1.2rem 1rem;
-  margin-bottom: 1.2rem;
-  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.06);
-}
-.summaryList {
-  list-style: none;
-  padding: 0;
-  margin: 0.7rem 0 0 0;
-}
-.summaryList li {
-  margin-bottom: 0.6rem;
-  font-size: 1.05rem;
-}
-.quantitySection {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-}
-.quantityInput {
-  width: 60px;
-  padding: 0.4rem 0.7rem;
-  border-radius: 0.5rem;
-  border: 1.5px solid var(--fudoro-border-color);
+.priceValue {
   font-size: 1.1rem;
-  background: var(--fudoro-background-color);
-  color: var(--fudoro-heading-color);
-  outline: none;
-  transition: border 0.2s;
+  font-weight: 700;
+  color: #D4AF37;
 }
-.quantityInput:focus {
-  border-color: var(--fudoro-heading-color);
-  box-shadow: 0 0 0 2px #EDD49B33;
+
+.selectMealBoxBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #0A5247, #0F4B2E);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.selectMealBoxBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(10, 82, 71, 0.3);
+}
+
+/* No Results */
+.noResults {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+}
+
+.noResultsIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.noResults h3 {
+  font-size: 1.5rem;
+  color: #0A5247;
+  margin-bottom: 0.5rem;
+}
+
+.clearFiltersBtn {
+  background: #0A5247;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+/* Info Section */
+.infoSection {
+  background: #f8fafc;
+  padding: 4rem 2rem;
+}
+
+.infoContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.infoTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0A5247;
+  margin-bottom: 3rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.infoCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.infoIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.infoCard h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0A5247;
+  margin-bottom: 1rem;
+}
+
+.infoCard p {
+  color: #6b7280;
+  line-height: 1.6;
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-  .fudoroAppWrapper {
-    padding: 1.2rem 0.3rem 1.5rem 0.3rem;
-    max-width: 99vw;
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
   }
-  .header {
-    font-size: 1.2rem;
+  
+  .heroStats {
+    gap: 2rem;
   }
-  .summaryContainer {
-    padding: 0.7rem 0.5rem;
+  
+  .filterGroups {
+    flex-direction: column;
+    align-items: stretch;
   }
-  .accordionHeader {
-    padding: 0.7rem 0.7rem;
+  
+  .resultsCount {
+    margin-left: 0;
+    text-align: center;
+  }
+  
+  .mealBoxesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .infoTitle {
+    font-size: 2rem;
   }
 }
 
-@media (min-width: 600px) {
-  .mealBoxCard {
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem 1.5rem;
-  }
-  .mealBoxImgWrapper {
-    width: 120px;
-    min-width: 120px;
-    margin-bottom: 0;
-  }
-  .mealBoxImg {
-    width: 120px;
-    height: 120px;
-  }
-  .mealBoxCardContent {
-    flex: 1;
-    align-items: flex-start;
-    gap: 0.7rem;
-  }
+/* Add to your existing MealBoxScreen.module.css */
+
+.retryButton {
+  background: #0A5247;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background: #0F4B2E;
+}
+
+.debugInfo {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.debugInfo summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #0A5247;
+}
+
+.debugInfo p {
+  margin: 0.5rem 0;
+  color: #6b7280;
 }

@@ -1,0 +1,1637 @@
+{
+  "mixed-breakfast": {
+    "id": "mixed-breakfast",
+    "name": "Mixed Breakfast Platter",
+    "description": "A delightful combination of North and South Indian breakfast items, perfect for corporate meetings and morning events in Hyderabad.",
+    "price": {
+      "base": 180,
+      "min": 160,
+      "max": 200
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Mixed+Breakfast+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": true,
+    "isPopular": false,
+    "cuisine": "Mixed Indian",
+    "mealType": "breakfast",
+    "serves": {
+      "min": 15,
+      "max": 50,
+      "display": "15-50 people",
+      "recommended": 25
+    },
+    "timing": {
+      "preparationTime": "4-6 hours",
+      "preparationMinutes": 300,
+      "orderDeadline": "8 hours before event",
+      "servingTime": ["7:00 AM", "11:00 AM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad"],
+      "deliveryRadius": 25
+    },
+    "tags": ["mixed", "breakfast", "corporate", "vegetarian", "hyderabad"],
+    "categories": {
+      "beverages": {
+        "displayName": "Choose Two Beverages",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "coffee",
+            "name": "Filter Coffee",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Authentic South Indian filter coffee"
+          },
+          {
+            "id": "tea",
+            "name": "Masala Tea",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Aromatic spiced tea"
+          },
+          {
+            "id": "fresh-juice",
+            "name": "Fresh Fruit Juice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Seasonal fresh fruit juice"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Choose Two Main Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "idli",
+            "name": "Steamed Idli",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft steamed rice cakes"
+          },
+          {
+            "id": "vada",
+            "name": "Medu Vada",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy lentil donuts"
+          },
+          {
+            "id": "poha",
+            "name": "Vegetable Poha",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Flattened rice with vegetables"
+          },
+          {
+            "id": "upma",
+            "name": "Rava Upma",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Semolina with vegetables"
+          }
+        ]
+      },
+      "sides": {
+        "displayName": "Choose Two Side Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "coconut-chutney",
+            "name": "Coconut Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh coconut chutney"
+          },
+          {
+            "id": "sambar",
+            "name": "Sambar",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Lentil vegetable curry"
+          },
+          {
+            "id": "peanut-chutney",
+            "name": "Peanut Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spicy peanut chutney"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Complimentary Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Disposable plates & spoons",
+          "Paper napkins",
+          "Water bottles",
+          "Delivery & setup"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 15,
+      "maximumOrder": 200,
+      "advanceBooking": "8 hours",
+      "cancellationPolicy": "4 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 0,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  },
+  "north-indian-breakfast": {
+    "id": "north-indian-breakfast",
+    "name": "North Indian Breakfast Platter",
+    "description": "Hearty North Indian breakfast featuring parathas, chole, and traditional sweets. Perfect for corporate events and celebrations in Hyderabad.",
+    "price": {
+      "base": 220,
+      "min": 200,
+      "max": 250
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=North+Indian+Breakfast&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "North Indian",
+    "mealType": "breakfast",
+    "serves": {
+      "min": 15,
+      "max": 100,
+      "display": "15-100 people",
+      "recommended": 30
+    },
+    "timing": {
+      "preparationTime": "5-7 hours",
+      "preparationMinutes": 360,
+      "orderDeadline": "8 hours before event",
+      "servingTime": ["7:00 AM", "11:00 AM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad", "Kukatpally", "Miyapur"],
+      "deliveryRadius": 30
+    },
+    "tags": ["north-indian", "breakfast", "corporate", "mixed", "hyderabad", "popular"],
+    "categories": {
+      "beverages": {
+        "displayName": "Choose Two Beverages",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "coffee",
+            "name": "Coffee",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh brewed coffee"
+          },
+          {
+            "id": "tea",
+            "name": "Masala Tea",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Spiced Indian tea"
+          },
+          {
+            "id": "lassi",
+            "name": "Sweet Lassi",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional yogurt drink"
+          },
+          {
+            "id": "fresh-juice",
+            "name": "Fresh Fruit Juice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Seasonal fruit juice"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Choose Three Main Items",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "aloo-paratha",
+            "name": "Aloo Paratha",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Potato stuffed flatbread"
+          },
+          {
+            "id": "bhatura",
+            "name": "Bhatura",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Deep fried bread"
+          },
+          {
+            "id": "bread-pakoda",
+            "name": "Bread Pakoda",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Fried bread fritters"
+          },
+          {
+            "id": "poha",
+            "name": "Vegetable Poha",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Flattened rice with vegetables"
+          },
+          {
+            "id": "kachori",
+            "name": "Dal Kachori",
+            "extraPrice": 8,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Stuffed fried pastry"
+          },
+          {
+            "id": "masala-omelet",
+            "name": "Masala Omelet",
+            "extraPrice": 20,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Spiced egg omelet"
+          }
+        ]
+      },
+      "sides": {
+        "displayName": "Choose Three Side Items",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "chole",
+            "name": "Chole Curry",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Spiced chickpea curry"
+          },
+          {
+            "id": "aloo-curry",
+            "name": "Aloo Curry",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Potato curry"
+          },
+          {
+            "id": "raita",
+            "name": "Mixed Raita",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Yogurt with vegetables"
+          },
+          {
+            "id": "pickle",
+            "name": "Mixed Pickle",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional Indian pickle"
+          },
+          {
+            "id": "coriander-chutney",
+            "name": "Coriander Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Fresh mint coriander chutney"
+          }
+        ]
+      },
+      "sweets": {
+        "displayName": "Choose One Sweet Item",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "gajar-halwa",
+            "name": "Gajar Ka Halwa",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Carrot pudding with nuts"
+          },
+          {
+            "id": "moong-halwa",
+            "name": "Moong Dal Halwa",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Lentil sweet pudding"
+          },
+          {
+            "id": "fresh-fruits",
+            "name": "Cut Fresh Fruits",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Seasonal fresh fruit cuts"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Complimentary Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Eco-friendly disposable plates",
+          "Spoons & forks", 
+          "Paper napkins",
+          "Packaged drinking water",
+          "Food warmers (for orders 50+)",
+          "Professional delivery & setup"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 15,
+      "maximumOrder": 300,
+      "advanceBooking": "8 hours",
+      "cancellationPolicy": "6 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 85,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  },
+  "south-indian-breakfast": {
+    "id": "south-indian-breakfast", 
+    "name": "South Indian Breakfast Platter",
+    "description": "Traditional South Indian breakfast with idli, dosa, vada and authentic chutneys. A healthy start to your corporate events in Hyderabad.",
+    "price": {
+      "base": 190,
+      "min": 170,
+      "max": 220
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=South+Indian+Breakfast&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "South Indian",
+    "mealType": "breakfast",
+    "serves": {
+      "min": 15,
+      "max": 150,
+      "display": "15-150 people",
+      "recommended": 40
+    },
+    "timing": {
+      "preparationTime": "4-6 hours",
+      "preparationMinutes": 300,
+      "orderDeadline": "8 hours before event",
+      "servingTime": ["7:00 AM", "11:00 AM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana", 
+      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad", "Kukatpally", "LB Nagar", "Dilsukhnagar"],
+      "deliveryRadius": 35
+    },
+    "tags": ["south-indian", "breakfast", "healthy", "traditional", "hyderabad", "popular"],
+    "categories": {
+      "beverages": {
+        "displayName": "Choose Two Beverages",
+        "selectionType": "choose_two", 
+        "required": true,
+        "items": [
+          {
+            "id": "filter-coffee",
+            "name": "Filter Coffee",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Authentic South Indian filter coffee"
+          },
+          {
+            "id": "tea",
+            "name": "Tea",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional Indian tea"
+          },
+          {
+            "id": "buttermilk",
+            "name": "Spiced Buttermilk",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Refreshing spiced yogurt drink"
+          },
+          {
+            "id": "fresh-juice",
+            "name": "Fresh Fruit Juice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Seasonal fresh fruit juice"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Choose Two Main Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "idli",
+            "name": "Steamed Idli (2 pcs)",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft steamed rice cakes"
+          },
+          {
+            "id": "vada",
+            "name": "Medu Vada (2 pcs)",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy lentil donuts"
+          },
+          {
+            "id": "dosa",
+            "name": "Plain Dosa",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy rice crepe"
+          },
+          {
+            "id": "upma",
+            "name": "Vegetable Upma",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Semolina with vegetables"
+          },
+          {
+            "id": "pongal",
+            "name": "Ven Pongal",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Rice and lentil dish"
+          },
+          {
+            "id": "poori",
+            "name": "Poori (2 pcs)",
+            "extraPrice": 8,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Deep fried puffed bread"
+          }
+        ]
+      },
+      "sides": {
+        "displayName": "Choose Three Side Items",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "coconut-chutney",
+            "name": "Coconut Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh coconut chutney"
+          },
+          {
+            "id": "sambar",
+            "name": "Sambar",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Lentil vegetable curry"
+          },
+          {
+            "id": "tomato-chutney",
+            "name": "Tomato Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spicy tomato chutney"
+          },
+          {
+            "id": "peanut-chutney",
+            "name": "Peanut Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Roasted peanut chutney"
+          },
+          {
+            "id": "ginger-chutney",
+            "name": "Ginger Chutney",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spicy ginger chutney"
+          },
+          {
+            "id": "chicken-curry",
+            "name": "Chicken Curry",
+            "extraPrice": 40,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "South Indian style chicken curry"
+          }
+        ]
+      },
+      "sweets": {
+        "displayName": "Choose One Sweet Item",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "kesari",
+            "name": "Pineapple Kesari",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Sweet semolina with pineapple"
+          },
+          {
+            "id": "halwa",
+            "name": "Carrot Halwa",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional carrot pudding"
+          },
+          {
+            "id": "payasam",
+            "name": "Rice Payasam",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Rice pudding with nuts"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Complimentary Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Banana leaf plates (traditional)",
+          "Disposable cutlery",
+          "Paper napkins",
+          "Packaged drinking water",
+          "Professional delivery & setup",
+          "Food warmers (for orders 50+)"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 15,
+      "maximumOrder": 250,
+      "advanceBooking": "8 hours",
+      "cancellationPolicy": "6 hours before delivery", 
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 90,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  },
+  "traditional-temple-platter": {
+    "id": "traditional-temple-platter",
+    "name": "Traditional Temple Platter",
+    "description": "An authentic temple-style vegetarian thali featuring traditional South Indian dishes, perfect for religious gatherings and cultural events in Hyderabad.",
+    "price": {
+      "base": 280,
+      "min": 250,
+      "max": 320
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Temple+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": true,
+    "isPopular": true,
+    "cuisine": "Traditional South Indian",
+    "mealType": "lunch",
+    "serves": {
+      "min": 15,
+      "max": 200,
+      "display": "15-200 people",
+      "recommended": 50
+    },
+    "timing": {
+      "preparationTime": "6-8 hours",
+      "preparationMinutes": 420,
+      "orderDeadline": "8 hours before event",
+      "servingTime": ["11:00 AM", "3:00 PM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["All areas within Hyderabad city limits"],
+      "deliveryRadius": 40
+    },
+    "tags": ["traditional", "temple-food", "vegetarian", "south-indian", "religious", "cultural", "hyderabad", "premium"],
+    "categories": {
+      "rice": {
+        "displayName": "Choose Two Rice Varieties",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "plain-rice",
+            "name": "Steamed Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional steamed basmati rice"
+          },
+          {
+            "id": "sambar-rice",
+            "name": "Sambar Rice",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rice mixed with sambar"
+          },
+          {
+            "id": "curd-rice",
+            "name": "Curd Rice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rice with yogurt and tempering"
+          },
+          {
+            "id": "tamarind-rice",
+            "name": "Tamarind Rice (Pulihora)",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Tangy tamarind flavored rice"
+          },
+          {
+            "id": "tomato-rice",
+            "name": "Tomato Rice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Rice with tomato and spices"
+          }
+        ]
+      },
+      "dal": {
+        "displayName": "Choose Two Dal Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "sambar",
+            "name": "Sambar",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional South Indian lentil curry"
+          },
+          {
+            "id": "rasam",
+            "name": "Tomato Rasam",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Spicy tomato lentil soup"
+          },
+          {
+            "id": "pappu",
+            "name": "Palak Pappu",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spinach lentil curry"
+          },
+          {
+            "id": "mango-dal",
+            "name": "Mango Dal",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Lentils with raw mango"
+          }
+        ]
+      },
+      "vegetables": {
+        "displayName": "Choose Two Vegetable Dishes",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "gutti-vankaya",
+            "name": "Gutti Vankaya",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Stuffed baby eggplant curry"
+          },
+          {
+            "id": "aloo-curry",
+            "name": "Aloo Fry",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Spiced potato stir fry"
+          },
+          {
+            "id": "beans-fry",
+            "name": "Green Beans Fry",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Stir fried green beans"
+          },
+          {
+            "id": "okra-fry",
+            "name": "Okra Fry (Bendakaya)",
+            "extraPrice": 12,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Crispy fried okra"
+          }
+        ]
+      },
+      "bread": {
+        "displayName": "Choose One Bread Item",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "poori",
+            "name": "Poori (2 pcs)",
+            "extraPrice": 0,
+            "isVeg": true,  
+            "isPopular": true,
+            "description": "Deep fried puffed bread"
+          },
+          {
+            "id": "chapati",
+            "name": "Chapati (2 pcs)",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Soft wheat flatbread"
+          }
+        ]
+      },
+      "sweets": {
+        "displayName": "Choose Two Sweet Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "payasam",
+            "name": "Rice Payasam",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional rice pudding"
+          },
+          {
+            "id": "kesari",
+            "name": "Rava Kesari",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Semolina sweet"
+          },
+          {
+            "id": "halwa",
+            "name": "Carrot Halwa",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional carrot pudding"
+          },
+          {
+            "id": "semiya-payasam",
+            "name": "Semiya Payasam",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Vermicelli pudding"
+          }
+        ]  
+      },
+      "accompaniments": {
+        "displayName": "Choose Three Accompaniments",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "pickle",
+            "name": "Mixed Pickle",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional mixed vegetable pickle"
+          },
+          {
+            "id": "papad",
+            "name": "Roasted Papad",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy lentil wafer"
+          },
+          {
+            "id": "raita",
+            "name": "Cucumber Raita",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Yogurt with cucumber"
+          },
+          {
+            "id": "podi",
+            "name": "Gunpowder (Podi)",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spicy lentil powder"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Complimentary Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Traditional banana leaf serving",
+          "Ghee (clarified butter)",
+          "Curd",
+          "Packaged drinking water",
+          "Professional delivery & setup",
+          "Food warmers",
+          "Disposable cutlery (backup)"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 25,
+      "maximumOrder": 500,
+      "advanceBooking": "8 hours",
+      "cancellationPolicy": "6 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 95,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  },
+  "veg-delight-platter": {
+    "id": "veg-delight-platter",
+    "name": "Vegetarian Delight Platter",
+    "description": "Premium vegetarian feast with paneer specialties, exotic vegetables, and rich gravies. Perfect for upscale corporate events and celebrations in Hyderabad.",
+    "price": {
+      "base": 350,
+      "min": 320,
+      "max": 400
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Veg+Delight+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": true,
+    "isPopular": true,
+    "cuisine": "North Indian",
+    "mealType": "lunch",
+    "serves": {
+      "min": 20,
+      "max": 300,
+      "display": "20-300 people",
+      "recommended": 75
+    },
+    "timing": {
+      "preparationTime": "6-8 hours",
+      "preparationMinutes": 420,
+      "orderDeadline": "8 hours before event",
+      "servingTime": ["12:00 PM", "3:00 PM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Premium locations in Hyderabad - Banjara Hills, Jubilee Hills, Madhapur, Gachibowli, Hitech City"],
+      "deliveryRadius": 25
+    },
+    "tags": ["premium", "vegetarian", "north-indian", "corporate", "paneer", "luxury", "hyderabad"],
+    "categories": {
+      "starters": {
+        "displayName": "Choose One Starter",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "paneer-tikka",
+            "name": "Paneer Tikka",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Grilled cottage cheese with spices"
+          },
+          {
+            "id": "veg-manchurian",
+            "name": "Vegetable Manchurian",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Indo-Chinese vegetable balls"
+          },
+          {
+            "id": "mushroom-65",
+            "name": "Mushroom 65",
+            "extraPrice": 45,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spicy fried mushroom"
+          },
+          {
+            "id": "veg-cutlet",
+            "name": "Vegetable Cutlet",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Crispy mixed vegetable patties"
+          }
+        ]
+      },
+      "maincourse": {
+        "displayName": "Choose One Main Course",
+        "selectionType": "choose_one", 
+        "required": true,
+        "items": [
+          {
+            "id": "veg-biryani",
+            "name": "Vegetable Biryani",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fragrant basmati rice with mixed vegetables"
+          },
+          {
+            "id": "paneer-biryani",
+            "name": "Paneer Biryani",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Biryani with marinated paneer"
+          },
+          {
+            "id": "mushroom-biryani",
+            "name": "Mushroom Biryani",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Aromatic biryani with mushrooms"
+          },
+          {
+            "id": "veg-pulao",
+            "name": "Vegetable Pulao",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Mildly spiced rice with vegetables"
+          }
+        ]
+      },
+      "curries": {
+        "displayName": "Choose Two Curry Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "paneer-butter-masala",
+            "name": "Paneer Butter Masala",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rich tomato and cream based paneer curry"
+          },
+          {
+            "id": "dal-makhani",
+            "name": "Dal Makhani",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Creamy black lentil curry"
+          },
+          {
+            "id": "kadai-paneer",
+            "name": "Kadai Paneer",
+            "extraPrice": 45,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Paneer cooked with bell peppers"
+          },
+          {
+            "id": "mushroom-curry",
+            "name": "Mushroom Curry",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Spiced mushroom gravy"
+          },
+          {
+            "id": "mixed-veg",
+            "name": "Mixed Vegetable Curry",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Seasonal mixed vegetables in gravy"
+          }
+        ]
+      },
+      "rice": {
+        "displayName": "Choose Two Rice Varieties", 
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "jeera-rice",
+            "name": "Jeera Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Cumin flavored basmati rice"
+          },
+          {
+            "id": "plain-rice",
+            "name": "Steamed Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Plain basmati rice"
+          },
+          {
+            "id": "saffron-rice",
+            "name": "Saffron Rice",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Aromatic saffron flavored rice"
+          },
+          {
+            "id": "coconut-rice",
+            "name": "Coconut Rice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "South Indian coconut flavored rice"
+          }
+        ]
+      },
+      "breads": {
+        "displayName": "Choose Two Bread Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "butter-naan",
+            "name": "Butter Naan",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft leavened bread with butter"
+          },
+          {
+            "id": "garlic-naan",
+            "name": "Garlic Naan", 
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Naan topped with garlic"
+          },
+          {
+            "id": "roti",
+            "name": "Tandoori Roti",
+            "extraPrice": 8,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Whole wheat tandoori bread"
+          },
+          {
+            "id": "plain-naan",
+            "name": "Plain Naan",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional leavened bread"
+          }
+        ]
+      },
+      "sweets": {
+        "displayName": "Choose Two Sweet Items",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "gulab-jamun",
+            "name": "Gulab Jamun",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional milk based sweet"
+          },
+          {
+            "id": "rasmalai",
+            "name": "Rasmalai",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,  
+            "description": "Cottage cheese dumplings in cream"
+          },
+          {
+            "id": "kheer",
+            "name": "Rice Kheer",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional rice pudding"
+          },
+          {
+            "id": "gajar-halwa",
+            "name": "Gajar Ka Halwa",
+            "extraPrice": 35,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Carrot pudding with nuts"
+          }
+        ]
+      },
+      "accompaniments": {
+        "displayName": "Accompaniments (Choose Three)",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "raita", 
+            "name": "Mixed Vegetable Raita",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Yogurt with fresh vegetables"
+          },
+          {
+            "id": "pickle",
+            "name": "Mango Pickle",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional mango pickle"
+          },
+          {
+            "id": "papad",
+            "name": "Roasted Papad",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy lentil wafer"
+          },
+          {
+            "id": "salad",
+            "name": "Fresh Green Salad",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Mixed fresh vegetable salad"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Premium Complimentary Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Premium disposable plates & cutlery",
+          "Cloth napkins",
+          "Packaged mineral water",
+          "Food warmers & serving dishes",
+          "Professional service staff (for orders 100+)",
+          "Table setup & decoration",
+          "Complimentary mouth freshener"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 25,
+      "maximumOrder": 500,
+      "advanceBooking": "12 hours",
+      "cancellationPolicy": "8 hours before delivery",
+      "paymentMethods": ["Online", "Corporate Account", "Cash on Delivery"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 88,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  },
+  "premium-catering-package": {
+    "id": "premium-catering-package",
+    "name": "Premium Catering Package",
+    "description": "Comprehensive catering solution for large events, weddings, and corporate functions. Full-service experience with live counters, multiple cuisines, and professional staff in Hyderabad.",
+    "price": {
+      "base": 450,
+      "min": 400,
+      "max": 600
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Premium+Catering&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "Multi-Cuisine",
+    "mealType": "full-service",
+    "serves": {
+      "min": 50,
+      "max": 1000,
+      "display": "50-1000 people",
+      "recommended": 200
+    },
+    "timing": {
+      "preparationTime": "24-48 hours",
+      "preparationMinutes": 1440,
+      "orderDeadline": "48 hours before event",
+      "servingTime": ["Flexible based on event timing"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["All Hyderabad locations", "Outstation events within 100km radius"],
+      "deliveryRadius": 100
+    },
+    "tags": ["premium", "catering", "wedding", "corporate", "live-counters", "full-service", "hyderabad", "luxury"],
+    "categories": {
+      "welcomedrinks": {
+        "displayName": "Welcome Drinks (Choose Two)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "fresh-juice",
+            "name": "Fresh Fruit Juice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Seasonal fresh fruit juices"
+          },
+          {
+            "id": "lassi",
+            "name": "Flavored Lassi",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Sweet/salty yogurt drinks"
+          },
+          {
+            "id": "milkshakes",
+            "name": "Assorted Milkshakes",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Variety of flavored milkshakes"
+          },
+          {
+            "id": "mocktails",
+            "name": "Non-Alcoholic Mocktails", 
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Refreshing fruit-based mocktails"
+          }
+        ]
+      },
+      "livecounters": {
+        "displayName": "Live Counters (Choose Three)",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "chaat-counter",
+            "name": "Live Chaat Counter",
+            "extraPrice": 80,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Pani puri, bhel puri, sev puri live preparation"
+          },
+          {
+            "id": "dosa-counter",
+            "name": "Live Dosa Counter",
+            "extraPrice": 100,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh dosas made to order"
+          },
+          {
+            "id": "pasta-counter",
+            "name": "Live Pasta Counter",
+            "extraPrice": 120,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Italian pasta prepared live"
+          },
+          {
+            "id": "sandwich-counter",
+            "name": "Sandwich & Burger Counter",
+            "extraPrice": 90,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "Grilled sandwiches and burgers"
+          },
+          {
+            "id": "ice-cream-counter",
+            "name": "Ice Cream Counter",
+            "extraPrice": 60,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Multiple ice cream flavors"
+          },
+          {
+            "id": "chocolate-fountain",
+            "name": "Chocolate Fountain",
+            "extraPrice": 150,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Chocolate fountain with fruits & treats"
+          }
+        ]
+      },
+      "maincourses": {
+        "displayName": "Main Course Options (Choose Four)",
+        "selectionType": "choose_four",
+        "required": true, 
+        "items": [
+          {
+            "id": "veg-biryani",
+            "name": "Vegetable Biryani",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Aromatic vegetable biryani"
+          },
+          {
+            "id": "chicken-biryani",
+            "name": "Chicken Biryani",
+            "extraPrice": 100,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Traditional Hyderabadi chicken biryani"
+          },
+          {
+            "id": "paneer-curry",
+            "name": "Paneer Butter Masala",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rich paneer curry"
+          },
+          {
+            "id": "chicken-curry",
+            "name": "Chicken Curry",
+            "extraPrice": 80,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Traditional chicken curry"
+          },
+          {
+            "id": "mutton-curry",
+            "name": "Mutton Curry",
+            "extraPrice": 120,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "Slow-cooked mutton curry"
+          },
+          {
+            "id": "fish-curry",
+            "name": "Fish Curry",
+            "extraPrice": 100,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "Coastal-style fish curry"
+          }
+        ]
+      },
+      "appetizers": {
+        "displayName": "Appetizers & Snacks (Choose Five)",
+        "selectionType": "choose_five",
+        "required": true,
+        "items": [
+          {
+            "id": "samosa",
+            "name": "Vegetable Samosa",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy pastry with spiced filling"
+          },
+          {
+            "id": "pakoda",
+            "name": "Mixed Vegetable Pakoda",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Deep fried vegetable fritters"
+          },
+          {
+            "id": "paneer-tikka",
+            "name": "Paneer Tikka",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Grilled cottage cheese"
+          },
+          {
+            "id": "chicken-tikka",
+            "name": "Chicken Tikka",
+            "extraPrice": 60,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Grilled chicken pieces"
+          },
+          {
+            "id": "fish-fry",
+            "name": "Fish Fry",
+            "extraPrice": 80,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "Crispy fried fish"
+          },
+          {
+            "id": "mutton-kebab",
+            "name": "Mutton Seekh Kebab",
+            "extraPrice": 100,
+            "isVeg": false,
+            "isPopular": false,
+            "description": "Grilled minced mutton rolls"
+          }
+        ]
+      },
+      "desserts": {
+        "displayName": "Dessert Selection (Choose Three)",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "gulab-jamun",
+            "name": "Gulab Jamun",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional milk sweet"
+          },
+          {
+            "id": "ice-cream",
+            "name": "Assorted Ice Creams",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Multiple flavors of ice cream"
+          },
+          {
+            "id": "cake",
+            "name": "Fresh Cake Varieties",
+            "extraPrice": 60,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Chocolate, vanilla, fruit cakes"
+          },
+          {
+            "id": "traditional-sweets",
+            "name": "Traditional Indian Sweets",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Assorted mithai varieties"
+          }
+        ]
+      },
+      "services": {
+        "displayName": "Professional Services (Choose Three)",
+        "selectionType": "choose_three",
+        "required": true,
+        "items": [
+          {
+            "id": "service-staff",
+            "name": "Professional Service Staff",
+            "extraPrice": 200,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Trained waiters and service personnel"
+          },
+          {
+            "id": "decoration",
+            "name": "Basic Event Decoration",
+            "extraPrice": 300,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Table setup and basic decorations"
+          },
+          {
+            "id": "live-music",
+            "name": "Live Musical Entertainment",
+            "extraPrice": 500,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional music performance"
+          },
+          {
+            "id": "photography",
+            "name": "Event Photography",
+            "extraPrice": 800,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Professional event photography"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Premium Complimentary Services (Included)",
+        "selectionType": "included", 
+        "required": false,
+        "extras": [
+          "Complete table setup with linens",
+          "Premium crockery and cutlery",
+          "Food warmers and serving equipment",
+          "Event coordinator",
+          "Cleanup service",
+          "Complimentary mineral water",
+          "Mouth fresheners and digestives",
+          "Basic sound system for announcements"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 50,
+      "maximumOrder": 2000,
+      "advanceBooking": "48 hours",
+      "cancellationPolicy": "24 hours before delivery",
+      "paymentMethods": ["Online", "Corporate Account", "Bank Transfer"],
+      "specialRequirements": ["Site visit required for orders 200+", "Separate kitchen setup for large events"]
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 75,
+      "createdAt": "2025-08-04T18:00:00Z",
+      "updatedAt": "2025-08-04T18:00:00Z"
+    }
+  }
+}

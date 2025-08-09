@@ -1,0 +1,177 @@
+/* OrderConfirmation.module.css */
+
+.wrapper {
+  min-height: 100vh;
+  background: #FEFEFA;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.confirmationCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 2px solid #0A5247;
+}
+
+.successIcon {
+  margin-bottom: 2rem;
+}
+
+.checkmark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 auto;
+  animation: bounce 0.6s ease-out;
+}
+
+@keyframes bounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.confirmationTitle {
+  font-size: 2.5rem;
+  color: #0A5247;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.confirmationMessage {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.orderInfo {
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.orderDetail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.orderDetail:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.value {
+  font-weight: 700;
+  color: #0A5247;
+}
+
+.nextSteps {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.nextSteps h3 {
+  color: #0A5247;
+  margin-bottom: 1rem;
+}
+
+.nextSteps ul {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.nextSteps li {
+  margin-bottom: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryBtn, .secondaryBtn {
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.primaryBtn {
+  background: #0A5247;
+  color: white;
+  border: none;
+}
+
+.primaryBtn:hover {
+  background: #0F4B2E;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #0A5247;
+  border: 2px solid #0A5247;
+}
+
+.secondaryBtn:hover {
+  background: #0A5247;
+  color: white;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.emptyState h2 {
+  color: #0A5247;
+  margin-bottom: 1rem;
+}
+
+.emptyState button {
+  background: #0A5247;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 2rem 1rem;
+  }
+  
+  .confirmationCard {
+    padding: 2rem 1rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}

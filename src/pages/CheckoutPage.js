@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GlobalHeader, GlobalFooter } from "../components/GlobalHeader&Footer";
+import styles from "./CheckoutPage.module.css";
 
 export default function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  // Address info passed from cart page (which gets it from HomeScreen popup)
+  
+  // Enhanced to handle both platter and meal box data
+  const { orderItems = [], orderTotal = 0, orderType = 'bulk' } = location.state || {};
   const popupAddress = location.state?.addressInfo || {};
 
   const [address, setAddress] = useState({
@@ -17,95 +20,265 @@ export default function CheckoutPage() {
     street: "",
     landmark: "",
     eventDate: "",
-    mealType: "",
+    eventTime: "",
+    specialInstructions: ""
   });
-  // Removed unused payment state
+
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [loading, setLoading] = useState(false);
 
   // Handle input changes
   function handleChange(e) {
-    setAddress({ ...address, [e.target.name]: e.target.value });
+    setAddress({
+      ...address,
+      [e.target.name]: e.target.value
+    });
   }
 
-  // Correctly define handleMealTypeChange as a top-level function
-  function handleMealTypeChange(e) {
-    setAddress({ ...address, mealType: e.target.value });
-  }
-
+  // Enhanced finish handler for real meal box orders
   function handleFinish() {
-    // TODO: Implement order submission logic
-    alert("Order placed successfully!");
-    navigate("/"); // Redirect to home or order confirmation
+    // Validate required fields
+    if (!address.name || !address.phone || !address.eventDate || !address.eventTime) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    setLoading(true);
+
+    // Simulate order processing
+    setTimeout(() => {
+      // Calculate total items and preparation time based on order type
+      const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+      const isMealBoxOrder = orderItems.some(item => item.type === 'meal-box');
+      const maxPrepTime = orderItems.reduce((max, item) => {
+        if (item.type === 'meal-box' && item.preparationTime) {
+          return Math.max(max, item.preparationTime.max || 60);
+        }
+        return Math.max(max, 45); // Default platter prep time
+      }, 30);
+
+      alert(
+        `Order placed successfully!\n\n` +
+        `Order Type: ${orderType === 'meal-box' ? 'Meal Boxes' : 
+                      orderType === 'mixed' ? 'Mixed Order' : 'Platters'}\n` +
+        `Total Items: ${totalItems} ${isMealBoxOrder ? 'boxes/items' : 'plates'}\n` +
+        `Total Amount: ₹${orderTotal.toLocaleString('en-IN')}\n` +
+        `Estimated Preparation: ${maxPrepTime} minutes\n` +
+        `Payment: ${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}\n\n` +
+        `Contact: ${address.pincode?.startsWith('50') ? '+91 8919354409 (Hyderabad)' : '+91 7396081234 (Khammam)'}\n\n` +
+        `We'll call you to confirm the order details.`
+      );
+      
+      navigate("/order-confirmation", {
+        state: {
+          orderId: `FUDO-${Date.now()}`,
+          orderItems,
+          deliveryInfo: address,
+          orderTotal,
+          paymentMethod,
+          orderType,
+          estimatedPreparation: maxPrepTime
+        }
+      });
+      
+      setLoading(false);
+    }, 2000);
+  }
+
+  // Enhanced empty state
+  if (!orderItems || orderItems.length === 0) {
+    return (
+      <div className={styles.wrapper}>
+        <GlobalHeader />
+        <div className={styles.main}>
+          <div className={styles.emptyState}>
+            <h2>No items to checkout</h2>
+            <p>Please add items to your cart first.</p>
+            <div className={styles.actionButtons}>
+              <button onClick={() => navigate('/bulk-orders')}>
+                Browse Platters
+              </button>
+              <button onClick={() => navigate('/meal-boxes')}>
+                Browse Meal Boxes
+              </button>
+            </div>
+          </div>
+        </div>
+        <GlobalFooter />
+      </div>
+    );
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FEFEF8", position: "relative" }}>
+    <div className={styles.wrapper}>
       <GlobalHeader />
-      <main style={{
-        paddingTop: 80,
-        paddingBottom: 120,
-        width: "100%",
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "0 1rem",
-        position: "relative",
-        zIndex: 1,
-      }}>
-        <h1 style={{ textAlign: "center", color: "#0F4B2E", marginBottom: "2rem" }}>Checkout</h1>
-        <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Name</label>
-              <input name="name" value={address.name} onChange={handleChange} required style={{ width: "100%" }} />
+      
+      <div className={styles.main}>
+        <div className={styles.checkoutHeader}>
+          <h1>Checkout - {orderType === 'meal-box' ? 'Meal Boxes' : 
+                              orderType === 'mixed' ? 'Mixed Order' : 'Platters'}</h1>
+          <p>Complete your order with delivery details</p>
+        </div>
+
+        <div className={styles.checkoutContainer}>
+          {/* Order Summary Section */}
+          <div className={styles.orderSummarySection}>
+            <h2>Order Summary</h2>
+            <div className={styles.orderItems}>
+              {orderItems.map((item, index) => (
+                <div key={index} className={styles.checkoutItem}>
+                  <div className={styles.itemInfo}>
+                    <h3>{item.mealBoxName || item.platterName}</h3>
+                    <p>
+                      {item.type === 'meal-box' ? (
+                        <>🍱 {item.compartments} Compartments • {item.mealType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}</>
+                      ) : (
+                        <>🍽️ {item.cuisine}</>
+                      )}
+                    </p>
+                  </div>
+                  <div className={styles.itemQuantity}>
+                    {item.quantity} {item.type === 'meal-box' ? 'boxes' : 'plates'}
+                  </div>
+                  <div className={styles.itemPrice}>
+                    ₹{item.totalPrice.toLocaleString('en-IN')}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Phone</label>
-              <input name="phone" value={address.phone} onChange={handleChange} required style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Pincode</label>
-              <input name="pincode" value={address.pincode} onChange={handleChange} required style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Locality</label>
-              <input name="locality" value={address.locality} onChange={handleChange} required style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>City</label>
-              <input name="city" value={address.city} onChange={handleChange} required style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Street Address</label>
-              <input name="street" value={address.street} onChange={handleChange} required style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Landmark</label>
-              <input name="landmark" value={address.landmark} onChange={handleChange} style={{ width: "100%" }} />
-            </div>
-            <div style={{ flex: "1 1 45%" }}>
-              <label>Event Date</label>
-              <input type="date" name="eventDate" value={address.eventDate} onChange={handleChange} style={{ width: "100%" }} />
+            <div className={styles.orderTotal}>
+              <strong>Total: ₹{orderTotal.toLocaleString('en-IN')}</strong>
             </div>
           </div>
-          <div style={{ marginTop: "1.5rem" }}>
-            <label style={{ marginRight: "1rem" }}>Meal Type:</label>
-            <label style={{ marginRight: "1rem" }}>
-              <input type="radio" name="mealType" value="Breakfast" checked={address.mealType === "Breakfast"} onChange={handleMealTypeChange} />
-              Breakfast
-            </label>
-            <label style={{ marginRight: "1rem" }}>
-              <input type="radio" name="mealType" value="Lunch" checked={address.mealType === "Lunch"} onChange={handleMealTypeChange} />
-              Lunch
-            </label>
-            <label>
-              <input type="radio" name="mealType" value="Dinner" checked={address.mealType === "Dinner"} onChange={handleMealTypeChange} />
-              Dinner
-            </label>
+
+          {/* Delivery Form */}
+          <div className={styles.deliveryForm}>
+            <h2>Delivery Information</h2>
+            
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name*"
+                value={address.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number*"
+                value={address.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                name="pincode"
+                placeholder="Pincode"
+                value={address.pincode}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                value={address.city}
+                onChange={handleChange}
+              />
+            </div>
+
+            <input
+              type="text"
+              name="street"
+              placeholder="Street Address*"
+              value={address.street}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="text"
+              name="landmark"
+              placeholder="Landmark (Optional)"
+              value={address.landmark}
+              onChange={handleChange}
+            />
+
+            <div className={styles.formGroup}>
+              <input
+                type="date"
+                name="eventDate"
+                value={address.eventDate}
+                onChange={handleChange}
+                min={new Date().toISOString().split('T')[0]}
+                required
+              />
+              <input
+                type="time"
+                name="eventTime"
+                value={address.eventTime}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <textarea
+              name="specialInstructions"
+              placeholder="Special Instructions (Optional)"
+              value={address.specialInstructions}
+              onChange={handleChange}
+              rows={3}
+            />
+
+            {/* Payment Method Selection */}
+            <div className={styles.paymentSection}>
+              <h3>Payment Method</h3>
+              <div className={styles.paymentOptions}>
+                <label className={styles.paymentOption}>
+                  <input
+                    type="radio"
+                    value="cod"
+                    checked={paymentMethod === 'cod'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  💵 Cash on Delivery
+                </label>
+                <label className={styles.paymentOption}>
+                  <input
+                    type="radio"
+                    value="online"
+                    checked={paymentMethod === 'online'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  💳 Online Payment
+                </label>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className={styles.contactInfo}>
+              <h3>Questions? Contact Us:</h3>
+              <div className={styles.contactNumbers}>
+                <p>📍 Hyderabad: +91 8919354409 / +91 9703344431</p>
+                <p>📍 Khammam: +91 7396081234 / +91 9246946473</p>
+              </div>
+            </div>
+
+            <button 
+              className={styles.placeOrderBtn} 
+              onClick={handleFinish}
+              disabled={loading}
+            >
+              {loading ? 'Placing Order...' : 'Place Order'}
+            </button>
           </div>
-          <button type="button" onClick={handleFinish} style={{ background: "#0F4B2E", color: "#fff", padding: "1rem", border: "none", borderRadius: "6px", fontSize: "1.1rem", marginTop: "2rem" }}>
-            Finish
-          </button>
-        </form>
-      </main>
+        </div>
+      </div>
+
       <GlobalFooter />
     </div>
   );
