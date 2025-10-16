@@ -1,0 +1,260 @@
+{
+  "basic-non-veg-platter": {
+    "id": "basic-non-veg-platter",
+    "name": "Basic Non-Veg Platter",
+    "description": "Embark on a flavorful adventure with our Basic Non-Veg Platter! A curated selection of succulent dishes featuring traditional South Indian and Hyderabadi flavors, perfect for corporate meals and everyday celebrations.",
+    "price": {
+      "base": 280,
+      "min": 280,
+      "max": 350
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Basic+Non+Veg+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "South Indian & Hyderabadi",
+    "mealType": "lunch",
+    "serves": {
+      "min": 20,
+      "max": 150,
+      "display": "20-150 people",
+      "recommended": 40
+    },
+    "timing": {
+      "preparationTime": "3-5 hours",
+      "preparationMinutes": 240,
+      "orderDeadline": "6 hours before event",
+      "servingTime": ["11:00 AM", "3:00 PM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": [
+        "Madhapur", "Gachibowli", "Hitech City", "Banjara Hills",
+        "Jubilee Hills", "Secunderabad", "Khammam"
+      ],
+      "deliveryRadius": 30
+    },
+    "tags": [
+      "basic", "non-vegetarian", "south-indian", "hyderabadi", "lunch",
+      "corporate", "affordable", "traditional", "biryani", "curry"
+    ],
+    "categories": {
+      "appetizers": {
+        "displayName": "Appetizers (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "paneer-65",
+            "name": "Paneer 65",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Spicy and tangy paneer cubes, a vegetarian delight"
+          },
+          {
+            "id": "chicken-fry",
+            "name": "Chicken Fry",
+            "extraPrice": 20,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy and flavorful chicken fry, perfect way to kick off your meal"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Main Course (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "plain-rice",
+            "name": "Plain Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft and fluffy steamed white rice"
+          },
+          {
+            "id": "curd-rice",
+            "name": "Curd Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Creamy yogurt rice, seasoned with spices"
+          },
+          {
+            "id": "jeera-rice",
+            "name": "Jeera Rice",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Simple and flavorful rice cooked with cumin seeds"
+          },
+          {
+            "id": "bagara-rice",
+            "name": "Bagara Rice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Flavorful and aromatic rice dish cooked with spices"
+          },
+          {
+            "id": "chicken-dum-biryani",
+            "name": "Chicken Dum Biryani",
+            "extraPrice": 40,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Aromatic rice layered with tender chicken and spices"
+          }
+        ]
+      },
+      "breads": {
+        "displayName": "Breads (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "poori",
+            "name": "Poori",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Deep-fried puffed bread, light and crispy"
+          },
+          {
+            "id": "rumali-roti",
+            "name": "Rumali Roti",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Thin and soft Indian flatbread, folded like a handkerchief"
+          }
+        ]
+      },
+      "curries": {
+        "displayName": "Curries and Dals (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "tomato-pappu",
+            "name": "Tomato Pappu",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional South Indian lentil dish made with toor dal"
+          },
+          {
+            "id": "sambar-rasam",
+            "name": "Sambar/Rasam",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Tangy South Indian soup"
+          },
+          {
+            "id": "pachi-pulusu",
+            "name": "Pachi Pulusu",
+            "extraPrice": 5,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Tamarind-based soup"
+          },
+          {
+            "id": "chicken-curry",
+            "name": "Chicken Curry",
+            "extraPrice": 30,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Tender chicken simmered in a rich and flavorful curry sauce"
+          }
+        ]
+      },
+      "desserts": {
+        "displayName": "Desserts (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "gulab-jamun",
+            "name": "Gulab Jamun",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Classic deep-fried milk balls soaked in rose syrup"
+          },
+          {
+            "id": "kala-jamun",
+            "name": "Kala Jamun",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Dark-colored milk balls soaked in sugar syrup"
+          },
+          {
+            "id": "double-ka-meetha",
+            "name": "Double ka Meetha",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Hyderabadi bread pudding soaked in saffron syrup"
+          }
+        ]
+      },
+      "pickles": {
+        "displayName": "Pickles & Roti Pachadi (Bonus Treat)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Fruit Pickles - Sweet and tangy addition",
+          "Veg Pickles - Savory taste",
+          "Dry Fruit Pickle - Innovative taste",
+          "Roti Pachadi: Dosakaya/Birakaya/Tomato"
+        ]
+      },
+      "complimentary": {
+        "displayName": "Courtesy Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Ghee",
+          "Fresh Curd",
+          "Packaged water bottles",
+          "Cutlery and disposables",
+          "Podi",
+          "Raita and salads",
+          "Crispy papads",
+          "Creamy mudha pappu",
+          "Professional delivery & setup"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 20,
+      "maximumOrder": 150,
+      "advanceBooking": "6 hours",
+      "cancellationPolicy": "4 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"],
+      "pricingRules": {
+        "basePrice": 280,
+        "maxPrice": 350,
+        "freeItemsRule": "Each 'choose_n' section has exactly n free (₹0) options available",
+        "calculation": "Base ₹280 + sum of extraPrice for selected items (capped at ₹350)"
+      }
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 75,
+      "createdAt": "2025-09-27T22:01:00.000Z",
+      "updatedAt": "2025-09-27T22:01:00.000Z",
+      "contactInfo": {
+        "hyderabad": ["+918919354409", "+919703344431"],
+        "khammam": ["+917396081234", "+919246946473"]
+      }
+    }
+  }
+}

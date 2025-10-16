@@ -1,0 +1,61 @@
+{
+  "gold-menu-balanced-premium": {
+    "id": "gold-menu-balanced-premium",
+    "name": "Gold Menu - Balanced Premium",
+    "description": "A well-balanced premium wedding feast with enhanced variety and quality. Features premium ingredients and traditional techniques for discerning guests.",
+    "price": {
+      "perPlate": 750,
+      "currency": "INR",
+      "exampleGuests": 500,
+      "totalCostExample": 375000
+    },
+    "imageUrl": "https://placehold.co/600x400/FFD700/000000?text=Gold+Menu&font=poppins",
+    "isActive": true,
+    "category": "premium",
+    "tier": "gold",
+    "cuisine": "Traditional Indian Wedding",
+    "mealType": "lunch",
+    "serves": {
+      "min": 150,
+      "max": 1500,
+      "recommended": 500,
+      "display": "150-1500 guests"
+    },
+    "timing": {
+      "preparationTime": "30-48 hours",
+      "orderDeadline": "10 days before event",
+      "eventDuration": "4-6 hours"
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Hyderabad Metro", "Khammam", "Surrounding districts"],
+      "serviceRadius": 100
+    },
+    "menuItems": {
+      "welcomeDrinks": ["Fresh Fruit Mocktail", "Fresh Seasonal Juices", "Badam Milk"],
+      "starters": ["Murgh Mulayam Kebab", "Apollo Fish", "Veg Sheek Kebab"],
+      "mainCourse": ["Zafrani Gosht Ki Biryani", "Chicken Dum Biryani", "Boti Fry", "Achari Murgh", "Chepala Pulusu", "Dum Ka Gosht", "Mutton Marag", "Kaju Paneer Masala", "Gutti Vankaya Masala", "Mirchi Ka Salan", "Rumali Roti", "Mango Pappu", "Veg Fry", "Sambar", "Rasam", "Bagara Rice", "White Rice", "Curd", "Perugu Pachadi"],
+      "accompaniments": ["Fruit Pickles", "Dry Fruit Pickles", "Veg Pickles", "Mint Raita", "Roti Pachadi", "Green Salad", "Papad/Fryums", "Mirchi Bajji"],
+      "desserts": ["Qubani Ka Meetha", "Kaddu Ki Kheer", "Gulab Jamun with Rabri"],
+      "liveCounters": ["Ice Cream", "Paan Counter", "Dosa Counter", "Chat Counter"]
+    },
+    "features": [
+      "Premium ingredients and variety",
+      "Extensive menu options",
+      "Traditional preparation",
+      "Live cooking stations",
+      "Professional service staff",
+      "Setup and cleanup included"
+    ],
+    "businessRules": {
+      "minimumOrder": 150,
+      "advanceBooking": "10 days",
+      "cancellationPolicy": "72 hours before event"
+    },
+    "meta": {
+      "popularity": 90,
+      "createdAt": "2025-10-02T17:54:00.000Z"
+    }
+  }
+}

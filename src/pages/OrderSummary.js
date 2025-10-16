@@ -4,19 +4,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './OrderSummary.module.css';
 import { GlobalHeader, GlobalFooter } from '../components/GlobalHeader&Footer';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
+import { auth, db } from '../firebase'; // Added auth import
 
 const OrderSummary = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const { 
-    customizations = {}, 
-    orderTotal = 0, 
-    totalQuantity = 0, 
-    orderType = 'bulk', 
+
+  const {
+    customizations = {},
+    orderTotal = 0,
+    totalQuantity = 0,
+    orderType = 'bulk',
     preFilledData = {},
-    fromCart = false 
+    fromCart = false
   } = location.state || {};
 
   const [deliveryInfo, setDeliveryInfo] = useState({
@@ -29,7 +29,7 @@ const OrderSummary = () => {
     eventTime: '',
     specialInstructions: ''
   });
-  
+
   const [paymentMethod, setPaymentMethod] = useState('online');
   const [loading, setLoading] = useState(false);
 
@@ -42,10 +42,10 @@ const OrderSummary = () => {
         const quantity = customization.quantity || 4; // Real minimum orders vary by box type
         const mealType = customization.mealType || 'veg';
         const compartmentSelections = customization.compartmentSelections || {};
-        
         const basePrice = mealBox.pricing?.[mealType]?.basePrice || 0;
+
         let extrasTotal = 0;
-        
+
         // Format compartment selections for admin system based on real structure
         const selections = [];
         
@@ -54,14 +54,14 @@ const OrderSummary = () => {
             // Use proper category display names from real data
             const categoryDisplayNames = {
               'flavored-rice': 'Flavored Rice',
-              'curry': 'Curry', 
+              'curry': 'Curry',
               'appetizer': 'Appetizer',
               'crispy-fry': 'Crispy Fry',
               'dessert': 'Dessert',
               'extras': 'Extras',
               'plain-rice': 'Plain Rice'
             };
-            
+
             const categorySelection = {
               categoryName: categoryDisplayNames[compartmentCategory] || compartmentCategory,
               items: selectedItems.map(item => {
@@ -73,6 +73,7 @@ const OrderSummary = () => {
                 };
               })
             };
+
             selections.push(categorySelection);
           }
         });
@@ -95,22 +96,21 @@ const OrderSummary = () => {
           preparationTime: mealBox.businessRules?.preparationTime
         };
       }
-      
+
       // Handle regular Platter orders (existing logic)
       const platter = customization.platter;
       const quantity = customization.quantity || 15;
       const categories = customization.categories || {};
-      
       const basePrice = platter.price?.base || 0;
+
       let extrasTotal = 0;
-      
       const selections = [];
-      
+
       Object.entries(categories).forEach(([categoryKey, selectedItems]) => {
         if (selectedItems && selectedItems.length > 0) {
           const categoryData = platter.categories?.[categoryKey];
           const categoryName = categoryData?.displayName || categoryKey;
-          
+
           const categorySelection = {
             categoryName,
             items: selectedItems.map(item => {
@@ -121,6 +121,7 @@ const OrderSummary = () => {
               };
             })
           };
+
           selections.push(categorySelection);
         }
       });
@@ -142,20 +143,13 @@ const OrderSummary = () => {
   }, [customizations]);
 
   const isOrderComplete = useMemo(() => {
-    return deliveryInfo.name && 
-           deliveryInfo.phone && 
-           deliveryInfo.email && 
-           deliveryInfo.address && 
-           deliveryInfo.eventDate && 
-           deliveryInfo.eventTime && 
+    return deliveryInfo.name && deliveryInfo.phone && deliveryInfo.email && 
+           deliveryInfo.address && deliveryInfo.eventDate && deliveryInfo.eventTime && 
            orderItems.length > 0;
   }, [deliveryInfo, orderItems]);
 
   const handleInputChange = (field, value) => {
-    setDeliveryInfo(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setDeliveryInfo(prev => ({ ...prev, [field]: value }));
   };
 
   // Enhanced Firebase save with meal box support aligned to real data
@@ -166,15 +160,17 @@ const OrderSummary = () => {
     }
 
     setLoading(true);
-
     try {
+      const currentUser = auth.currentUser; // Get authenticated user
+      
       // Create order data structure aligned with real meal box data
       const orderData = {
-        customerId: 'guest',
+        userId: currentUser ? currentUser.uid : null, // Add userId for My Orders
+        customerId: currentUser ? currentUser.uid : 'guest', // Keep existing field
         customerInfo: {
           name: deliveryInfo.name,
           phone: deliveryInfo.phone,
-          email: deliveryInfo.email,
+          email: currentUser?.email || deliveryInfo.email, // Prefer auth email
           address: deliveryInfo.address,
           pincode: deliveryInfo.pincode
         },
@@ -209,9 +205,7 @@ const OrderSummary = () => {
       };
 
       console.log('📝 Saving real meal box order data:', orderData);
-
       const orderDoc = await addDoc(collection(db, 'orders'), orderData);
-      
       console.log('✅ Real meal box order saved with ID:', orderDoc.id);
 
       if (fromCart) {
@@ -229,10 +223,8 @@ const OrderSummary = () => {
           businessContact: "+91 8919354409" // Real business number
         }
       });
-
     } catch (error) {
       console.error('❌ Error placing real meal box order:', error);
-      
       let errorMessage = 'Failed to place order. ';
       if (error.code === 'permission-denied') {
         errorMessage += 'Please check your internet connection and try again.';
@@ -250,20 +242,17 @@ const OrderSummary = () => {
     return (
       <div className={styles.wrapper}>
         <GlobalHeader />
-        <div className={styles.main}>
+        <main className={styles.main}>
           <div className={styles.emptyState}>
-            <h2>No order items found</h2>
+            <h2>No Order Items</h2>
             <p>Please go back and complete your order customization.</p>
             <div className={styles.emptyStateActions}>
-              <button onClick={() => navigate('/bulk-orders')}>
-                Browse Platters
-              </button>
-              <button onClick={() => navigate('/meal-boxes')}>
-                Browse Meal Boxes
+              <button onClick={() => navigate(-1)}>
+                Go Back
               </button>
             </div>
           </div>
-        </div>
+        </main>
         <GlobalFooter />
       </div>
     );
@@ -272,111 +261,81 @@ const OrderSummary = () => {
   return (
     <div className={styles.wrapper}>
       <GlobalHeader />
-      
-      <div className={styles.main}>
+
+      <main className={styles.main}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Order Summary</h1>
           <p className={styles.pageDescription}>
-            Review your {orderType === 'meal-box' ? 'meal box' : 
-                         orderType === 'mixed' ? 'mixed' : 'platter'} order and provide delivery information
+            Review your {orderType === 'meal-box' ? 'meal box' : orderType === 'mixed' ? 'mixed' : 'platter'} order and provide delivery information
           </p>
         </div>
 
         <div className={styles.summaryContainer}>
           <div className={styles.orderDetails}>
-            {/* Order Items Section */}
             <section className={styles.itemsSection}>
               <h2 className={styles.sectionTitle}>Order Items</h2>
-              
               {orderItems.map((item, index) => (
                 <div key={index} className={styles.orderItem}>
-                  <img 
-                    src={item.imageUrl || '/assets/meal-box-placeholder.jpg'} 
-                    alt={item.mealBoxName || item.platterName}
-                    className={styles.itemImage}
-                    onError={(e) => {
-                      e.target.src = '/assets/meal-box-placeholder.jpg';
-                    }}
-                  />
+                  {item.imageUrl && (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.mealBoxName || item.platterName}
+                      className={styles.itemImage}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  )}
                   
                   <div className={styles.itemDetails}>
-                    <h3 className={styles.itemName}>
+                    <div className={styles.itemName}>
                       {item.mealBoxName || item.platterName}
-                      {item.type === 'meal-box' && (
-                        <span className={styles.itemType}>
-                          🍱 {item.compartments} Compartments
-                        </span>
-                      )}
-                      {item.type === 'platter' && (
-                        <span className={styles.itemType}>
-                          🍽️ {item.cuisine}
-                        </span>
-                      )}
-                    </h3>
+                      <span className={styles.itemType}>{item.type}</span>
+                    </div>
                     
-                    {/* Display meal type for meal boxes */}
-                    {item.type === 'meal-box' && (
-                      <p className={styles.mealType}>
-                        {item.mealType === 'veg' ? '🥬 Vegetarian' : '🍗 Non-Vegetarian'}
-                      </p>
-                    )}
+                    <div className={styles.itemCuisine}>
+                      {item.cuisine || (item.mealType === 'veg' ? '🥬 Vegetarian' : '🍗 Non-Vegetarian')}
+                    </div>
                     
-                    <p className={styles.itemQuantity}>
+                    <div className={styles.itemQuantity}>
                       {item.quantity} {item.type === 'meal-box' ? 'boxes' : 'plates'}
                       {item.type === 'meal-box' && item.minimumOrder && (
-                        <span className={styles.minOrder}>
-                          (Min: {item.minimumOrder})
-                        </span>
+                        <span className={styles.mealType}> (Min: {item.minimumOrder})</span>
                       )}
-                    </p>
-                    
+                    </div>
+
                     {/* Enhanced selections display */}
                     {item.selections.length > 0 && (
                       <div className={styles.selectedItems}>
-                        <h4 className={styles.selectionsTitle}>
-                          {item.type === 'meal-box' ? 'Compartment Selections:' : 'Your Selections:'}
-                        </h4>
+                        <div className={styles.selectionsTitle}>Selected Items:</div>
                         <div className={styles.selectionsList}>
-                          {item.selections.map((selection, selIndex) => (
-                            <div key={selIndex} className={styles.selectionCategory}>
-                              <strong>{selection.categoryName}:</strong>
-                              <span className={styles.selectionItems}>
-                                {selection.items.map((selItem, itemIndex) => (
-                                  <span key={itemIndex} className={styles.selectionItem}>
-                                    {selItem.name}
-                                    {selItem.isDefault && <span className={styles.defaultTag}> (Default)</span>}
-                                    {selItem.extraPrice > 0 && <span className={styles.extraPrice}> (+₹{selItem.extraPrice})</span>}
-                                  </span>
-                                )).reduce((prev, curr) => [prev, ', ', curr])}
+                          {item.selections.map((selection, idx) => 
+                            selection.items.map((selItem, itemIdx) => (
+                              <span key={`${idx}-${itemIdx}`} className={styles.selectionItem}>
+                                {selItem.name}
+                                {selItem.extraPrice > 0 && ` (+₹${selItem.extraPrice})`}
                               </span>
-                            </div>
-                          ))}
+                            ))
+                          )}
                         </div>
                       </div>
                     )}
                   </div>
                   
                   <div className={styles.itemPrice}>
-                    <div className={styles.price}>₹{item.totalPrice.toLocaleString('en-IN')}</div>
-                    {item.type === 'meal-box' && item.preparationTime && (
-                      <div className={styles.prepTime}>
-                        ⏱️ {item.preparationTime.min}-{item.preparationTime.max} min
-                      </div>
-                    )}
+                    ₹{item.totalPrice?.toLocaleString() || '0'}
                   </div>
                 </div>
               ))}
             </section>
 
-            {/* Delivery Information Section */}
             <section className={styles.deliverySection}>
               <h2 className={styles.sectionTitle}>Delivery Information</h2>
-              
               <div className={styles.deliveryForm}>
                 <div className={styles.formRow}>
                   <input
                     type="text"
-                    placeholder="Full Name*"
+                    placeholder="Full Name"
                     value={deliveryInfo.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     className={styles.formInput}
@@ -384,18 +343,18 @@ const OrderSummary = () => {
                   />
                   <input
                     type="tel"
-                    placeholder="Phone Number*"
+                    placeholder="Phone Number"
                     value={deliveryInfo.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className={styles.formInput}
                     required
                   />
                 </div>
-                
+
                 <div className={styles.formRow}>
                   <input
                     type="email"
-                    placeholder="Email Address*"
+                    placeholder="Email Address"
                     value={deliveryInfo.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     className={styles.formInput}
@@ -407,37 +366,35 @@ const OrderSummary = () => {
                     value={deliveryInfo.pincode}
                     onChange={(e) => handleInputChange('pincode', e.target.value)}
                     className={styles.formInput}
+                    required
                   />
                 </div>
-                
+
                 <textarea
-                  placeholder="Complete Address*"
+                  placeholder="Complete Delivery Address"
                   value={deliveryInfo.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
                   className={styles.formTextarea}
                   required
                 />
-                
+
                 <div className={styles.formRow}>
                   <input
                     type="date"
-                    placeholder="Event Date*"
                     value={deliveryInfo.eventDate}
                     onChange={(e) => handleInputChange('eventDate', e.target.value)}
                     className={styles.formInput}
                     required
-                    min={new Date().toISOString().split('T')[0]}
                   />
                   <input
                     type="time"
-                    placeholder="Event Time*"
                     value={deliveryInfo.eventTime}
                     onChange={(e) => handleInputChange('eventTime', e.target.value)}
                     className={styles.formInput}
                     required
                   />
                 </div>
-                
+
                 <textarea
                   placeholder="Special Instructions (Optional)"
                   value={deliveryInfo.specialInstructions}
@@ -448,57 +405,25 @@ const OrderSummary = () => {
             </section>
           </div>
 
-          {/* Order Summary Card */}
           <div className={styles.orderSummaryCard}>
-            <h3 className={styles.summaryTitle}>Order Summary</h3>
+            <h2 className={styles.summaryTitle}>Order Summary</h2>
             
             <div className={styles.summaryBreakdown}>
-              <div className={styles.summaryRow}>
-                <span>Items</span>
-                <span>{orderItems.length}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Total Units</span>
-                <span>
-                  {orderItems.reduce((sum, item) => sum + item.quantity, 0)}
-                  {orderItems.every(item => item.type === 'meal-box') ? ' boxes' : 
-                   orderItems.every(item => item.type !== 'meal-box') ? ' plates' : ' items'}
-                </span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Order Type</span>
-                <span className={styles.orderTypeBadge}>
-                  {orderType === 'meal-box' ? '🍱 Meal Boxes' : 
-                   orderType === 'mixed' ? '🍽️🍱 Mixed Order' : 
-                   '🍽️ Platters'}
-                </span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Subtotal</span>
-                <span>₹{orderTotal.toLocaleString('en-IN')}</span>
-              </div>
-              <div className={`${styles.summaryRow} ${styles.totalRow}`}>
-                <span>Total Amount</span>
-                <span>₹{orderTotal.toLocaleString('en-IN')}</span>
-              </div>
+              {orderItems.map((item, index) => (
+                <div key={index} className={styles.summaryRow}>
+                  <span>{item.mealBoxName || item.platterName} (x{item.quantity})</span>
+                  <span>₹{item.totalPrice?.toLocaleString() || '0'}</span>
+                </div>
+              ))}
             </div>
 
-            {/* Contact Information */}
-            <div className={styles.contactInfo}>
-              <h4 className={styles.contactTitle}>Questions?</h4>
-              <div className={styles.contactNumbers}>
-                <div className={styles.contactNumber}>
-                  📍 Hyderabad: +91 8919354409
-                </div>
-                <div className={styles.contactNumber}>
-                  📍 Khammam: +91 7396081234
-                </div>
-              </div>
+            <div className={`${styles.summaryRow} ${styles.totalRow}`}>
+              <span>Total Amount</span>
+              <span>₹{orderTotal?.toLocaleString() || orderItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0).toLocaleString()}</span>
             </div>
 
-            {/* Payment Methods */}
             <div className={styles.paymentMethods}>
-              <h4 className={styles.paymentTitle}>Payment Method</h4>
+              <h3 className={styles.paymentTitle}>Payment Method</h3>
               <div className={styles.paymentOptions}>
                 <label className={styles.paymentOption}>
                   <input
@@ -508,7 +433,7 @@ const OrderSummary = () => {
                     checked={paymentMethod === 'online'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  💳 Online Payment
+                  Online Payment
                 </label>
                 <label className={styles.paymentOption}>
                   <input
@@ -518,21 +443,28 @@ const OrderSummary = () => {
                     checked={paymentMethod === 'cod'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  💵 Cash on Delivery
+                  Cash on Delivery
                 </label>
               </div>
             </div>
 
-            <button 
-              className={styles.placeOrderBtn}
+            <button
               onClick={handleSubmitOrder}
               disabled={!isOrderComplete || loading}
+              className={styles.placeOrderBtn}
             >
-              {loading ? 'Placing Order...' : 'Place Order'}
+              {loading ? (
+                <>
+                  <span className={styles.loadingSpinner}></span>
+                  Placing Order...
+                </>
+              ) : (
+                'Place Order'
+              )}
             </button>
           </div>
         </div>
-      </div>
+      </main>
 
       <GlobalFooter />
     </div>

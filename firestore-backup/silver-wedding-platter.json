@@ -1,0 +1,61 @@
+{
+  "silver-menu-budget-feast": {
+    "id": "silver-menu-budget-feast",
+    "name": "Silver Menu - Budget Friendly Feast",
+    "description": "Affordable and comprehensive feast with traditional flavors and live cooking counters designed for large weddings and events.",
+    "price": {
+      "perPlate": 650,
+      "currency": "INR",
+      "exampleGuests": 500,
+      "totalCostExample": 325000
+    },
+    "imageUrl": "https://placehold.co/600x400/C0C0C0/000000?text=Silver+Menu&font=poppins",
+    "isActive": true,
+    "category": "budget",
+    "tier": "silver",
+    "cuisine": "Traditional Indian Wedding",
+    "mealType": "lunch",
+    "serves": {
+      "min": 150,
+      "max": 1000,
+      "recommended": 500,
+      "display": "100-1000 guests"
+    },
+    "timing": {
+      "preparationTime": "24-48 hours",
+      "orderDeadline": "4 days before event",
+      "eventDuration": "4-6 hours"
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Hyderabad Metro", "Khammam", "Surrounding districts"],
+      "serviceRadius": 100
+    },
+    "menuItems": {
+      "welcomeDrinks": ["Fresh Fruit Mocktail", "Badam Milk"],
+      "starters": ["Chicken 65", "Veg Spring Rolls"],
+      "mainCourse": ["Chicken Dum Biryani", "Mutton Dum Biryani", "Dum Ka Gosht", "Chepala Pulusu", "Paneer Butter Masala", "Gutti Vankaya Masala", "Mirchi Ka Salan", "Mango Pappu", "Rumali Roti", "Veg Fry", "Sambar", "Rasam", "Bagara Rice", "White Rice", "Curd", "Perugu Pachadi"],
+      "accompaniments": ["Fruit Pickles", "Veg Pickles", "Dry Fruit Pickles", "Mint Raita", "Roti Pachadi", "Green Salad", "Papad / Fryums", "Mirchi Bajji"],
+      "desserts": ["Double Ka Meetha", "Kaddu Ki Kheer", "Gulab Jamun"],
+      "liveCounters": ["Ice Cream", "Paan Counter", "Dosa Counter"]
+    },
+    "features": [
+      "Budget-friendly wedding feast",
+      "Traditional Hyderabadi cuisine",
+      "Live cooking counters",
+      "Complete meal solution",
+      "Professional service staff",
+      "Setup and cleanup included"
+    ],
+    "businessRules": {
+      "minimumOrder": 150,
+      "advanceBooking": "7 days",
+      "cancellationPolicy": "48 hours before event"
+    },
+    "meta": {
+      "popularity": 85,
+      "createdAt": "2025-10-02T17:54:00.000Z"
+    }
+  }
+}

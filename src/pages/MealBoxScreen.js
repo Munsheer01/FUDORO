@@ -303,26 +303,6 @@ const MealBoxScreen = () => {
           </div>
         </section>
 
-        {/* Contact Information - Based on real business data */}
-        <section className={styles.contactSection}>
-          <div className={styles.contactContainer}>
-            <h2 className={styles.contactTitle}>Create Your Meal Box Today!</h2>
-            <p className={styles.contactDescription}>
-              Personalize your meal box with an array of delicious and high-quality dishes.
-            </p>
-            
-            <div className={styles.contactInfo}>
-              <div className={styles.contactLocation}>
-                <h3>📍 Hyderabad</h3>
-                <p>+91 8919354409 / +91 9703344431</p>
-              </div>
-              <div className={styles.contactLocation}>
-                <h3>📍 Khammam</h3>
-                <p>+91 7396081234 / +91 9246946473</p>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
       <GlobalFooter />

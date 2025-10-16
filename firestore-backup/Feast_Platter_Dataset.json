@@ -1,0 +1,507 @@
+{
+  "feast-platter": {
+    "id": "feast-platter",
+    "name": "Experience the Ultimate Feast Platter",
+    "description": "Indulge in a symphony of flavors. Our carefully curated Feast Platter offers the finest meats and seafood, grilled, roasted, and spiced to perfection. Designed for those who appreciate the art of non-vegetarian cuisine, each bite delivers an explosion of taste.",
+    "price": {
+      "base": 450,
+      "min": 450,
+      "max": 600
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Ultimate+Feast+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "Multi-cuisine Non-Vegetarian",
+    "mealType": "lunch",
+    "serves": {
+      "min": 20,
+      "max": 200,
+      "display": "20-200 people",
+      "recommended": 60
+    },
+    "timing": {
+      "preparationTime": "8-10 hours",
+      "preparationMinutes": 540,
+      "orderDeadline": "24 hours before event",
+      "servingTime": ["11:00 AM", "4:00 PM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": [
+        "Madhapur", "Gachibowli", "Hitech City", "Banjara Hills",
+        "Jubilee Hills", "Secunderabad", "Khammam"
+      ],
+      "deliveryRadius": 35
+    },
+    "tags": [
+      "feast", "premium", "seafood", "non-vegetarian", "biryani",
+      "multi-cuisine", "luxury", "corporate", "celebration", "ultimate"
+    ],
+    "categories": {
+      "appetizers": {
+        "displayName": "Appetizers (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "chicken-pakoda",
+            "name": "Chicken Pakoda",
+            "extraPrice": 0,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy, golden-brown chicken fritters, spiced with aromatic herbs"
+          },
+          {
+            "id": "chicken-65",
+            "name": "Chicken 65",
+            "extraPrice": 0,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Spicy, crispy, and flavorful fried chicken dish, marinated with bold spices"
+          },
+          {
+            "id": "chicken-drumstick",
+            "name": "Chicken Drumstick",
+            "extraPrice": 20,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Juicy, tender, and flavorful chicken legs, marinated and cooked to golden perfection"
+          },
+          {
+            "id": "chilli-chicken",
+            "name": "Chilli Chicken",
+            "extraPrice": 30,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Spicy Indo-Chinese delight with crispy chicken tossed in soy sauce and spices"
+          },
+          {
+            "id": "apollo-fish",
+            "name": "Apollo Fish",
+            "extraPrice": 40,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Succulent fish marinated in unique spices, lightly fried for delightful crunch"
+          },
+          {
+            "id": "fish-fingers",
+            "name": "Fish Fingers",
+            "extraPrice": 50,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy, golden-brown fish fillets with flavorful breadcrumb crust"
+          },
+          {
+            "id": "loose-prawns",
+            "name": "Loose Prawns",
+            "extraPrice": 70,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy, spice-coated prawns stir-fried to perfection with bold flavors"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Main Course (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "chicken-dum-biryani",
+            "name": "Chicken Dum Biryani",
+            "extraPrice": 0,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Fragrant basmati rice layered with tender chicken, slow-cooked with traditional spices"
+          },
+          {
+            "id": "chicken-fry-biryani",
+            "name": "Chicken Fry Biryani",
+            "extraPrice": 30,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Flavorful fusion of aromatic biryani and crispy, spice-infused fried chicken"
+          },
+          {
+            "id": "fish-biryani",
+            "name": "Fish Biryani",
+            "extraPrice": 50,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Delectable blend of aromatic basmati rice and succulent, spice-marinated fish"
+          },
+          {
+            "id": "mutton-biryani",
+            "name": "Mutton Biryani",
+            "extraPrice": 80,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Fragrant dish with tender, slow-cooked mutton layered with aromatic basmati rice"
+          },
+          {
+            "id": "prawn-biryani",
+            "name": "Prawn Biryani",
+            "extraPrice": 100,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Succulent prawns infused with aromatic spices - a seafood lover's dream"
+          }
+        ]
+      },
+      "flavored_rice": {
+        "displayName": "Flavored Rice (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "plain-rice",
+            "name": "Plain Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Simple steamed basmati rice"
+          },
+          {
+            "id": "jeera-rice",
+            "name": "Jeera Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fragrant rice cooked with cumin seeds"
+          },
+          {
+            "id": "tomato-rice",
+            "name": "Tomato Rice",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Tangy rice cooked with fresh tomatoes and spices"
+          },
+          {
+            "id": "pudina-rice",
+            "name": "Pudina Rice",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh mint-flavored rice with aromatic herbs"
+          },
+          {
+            "id": "sambar-rice",
+            "name": "Sambar Rice",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rice mixed with traditional South Indian sambar"
+          },
+          {
+            "id": "avakaya-ghee-rice",
+            "name": "Avakaya Ghee Rice",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Rice mixed with mango pickle and ghee"
+          }
+        ]
+      },
+      "breads": {
+        "displayName": "Breads (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "poori",
+            "name": "Poori",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Deep-fried, puffed bread, perfect with curries"
+          },
+          {
+            "id": "naan",
+            "name": "Naan",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Simple and wholesome flatbread, a staple in Indian cuisine"
+          },
+          {
+            "id": "rumali-roti",
+            "name": "Rumali Roti",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft, thin, hand-tossed flatbread with delicate, paper-like texture"
+          }
+        ]
+      },
+      "curries": {
+        "displayName": "Curry Choice (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "egg-masala-curry",
+            "name": "Egg Masala Curry",
+            "extraPrice": 0,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Boiled eggs in rich, flavorful masala gravy"
+          },
+          {
+            "id": "chicken-fry",
+            "name": "Chicken Fry",
+            "extraPrice": 30,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy, spiced chicken pieces fried to perfection"
+          },
+          {
+            "id": "chicken-curry",
+            "name": "Chicken Curry",
+            "extraPrice": 40,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Tender chicken simmered in aromatic curry sauce"
+          },
+          {
+            "id": "fish-pulusu",
+            "name": "Fish Pulusu",
+            "extraPrice": 50,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Traditional Andhra-style fish curry with tamarind base"
+          },
+          {
+            "id": "prawns-curry",
+            "name": "Prawns Curry",
+            "extraPrice": 70,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Succulent prawns in rich, spiced coconut curry"
+          },
+          {
+            "id": "mutton-curry",
+            "name": "Mutton Curry",
+            "extraPrice": 80,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Tender mutton slow-cooked in traditional spicy gravy"
+          }
+        ]
+      },
+      "dals": {
+        "displayName": "Delectable Dals (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "tomato-pappu",
+            "name": "Tomato Pappu",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Lentils cooked with ripe tomatoes - a simple yet flavorful classic"
+          },
+          {
+            "id": "sambar-rasam",
+            "name": "Sambar/Rasam",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Tangy South Indian soup with tamarind, tomatoes, and aromatic herbs"
+          },
+          {
+            "id": "pachi-pulusu",
+            "name": "Pachi Pulusu",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Refreshing uncooked tamarind-based dish with tangy and mildly spicy flavor"
+          },
+          {
+            "id": "mango-pappu",
+            "name": "Mango Pappu",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Lentils with tangy mango - a seasonal delicacy"
+          },
+          {
+            "id": "gongura-palakura-pappu",
+            "name": "Gongura/Palakura Pappu",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Lentils with gongura/palakura leaves offering unique and tangy flavor"
+          }
+        ]
+      },
+      "desserts": {
+        "displayName": "Desserts (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "gulab-jamun",
+            "name": "Gulab Jamun",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Classic deep-fried milk balls soaked in rose syrup"
+          },
+          {
+            "id": "double-ka-meetha",
+            "name": "Double Ka Meetha",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional Hyderabadi bread pudding soaked in saffron syrup"
+          },
+          {
+            "id": "kala-jamun",
+            "name": "Kala Jamun",
+            "extraPrice": 10,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Dark-colored milk balls soaked in aromatic sugar syrup"
+          },
+          {
+            "id": "kesari-bath",
+            "name": "Kesari Bath",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Traditional South Indian semolina dessert with saffron"
+          },
+          {
+            "id": "carrot-halwa",
+            "name": "Carrot Halwa",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rich, creamy carrot pudding with nuts and cardamom"
+          },
+          {
+            "id": "rasmalai",
+            "name": "Rasmalai",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Soft cottage cheese dumplings in sweetened milk"
+          },
+          {
+            "id": "kubhani-ka-meetha",
+            "name": "Kubhani Ka Meetha",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Hyderabadi apricot dessert with rich, sweet flavor"
+          },
+          {
+            "id": "kaddu-ka-kheer",
+            "name": "Kaddu Ka Kheer",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Sweet pumpkin pudding with milk and cardamom"
+          },
+          {
+            "id": "kalakand-bobbattu",
+            "name": "Kalakand Bobbattu",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional stuffed sweet flatbread with milk solid filling"
+          },
+          {
+            "id": "jalebi",
+            "name": "Jalebi",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy, spiral-shaped sweets soaked in sugar syrup"
+          },
+          {
+            "id": "kakinada-kaaja",
+            "name": "Kakinada Kaaja",
+            "extraPrice": 35,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Traditional Andhra sweet with flaky layers"
+          },
+          {
+            "id": "kaju-katli",
+            "name": "Kaju Katli",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Premium cashew-based diamond-shaped sweets"
+          }
+        ]
+      },
+      "gravies": {
+        "displayName": "Gravies: The Perfect Pair (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Mirchi ka Salan - Tangy and spicy gravy, ideal complement to biryani",
+          "Raitha - Cool and refreshing yogurt-based side dish, soothing counterpoint"
+        ]
+      },
+      "pickles": {
+        "displayName": "Pickles & Roti Pachadi (Bonus Treat)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Fruit Pickles - Sweet and tangy addition",
+          "Veg Pickles - Savory taste",
+          "Dry Fruit Pickle - Innovative taste",
+          "Roti Pachadi: Dosakaya/Birakaya/Tomato"
+        ]
+      },
+      "complimentary": {
+        "displayName": "Courtesy Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Ghee",
+          "Fresh Curd",
+          "Packaged water bottles",
+          "Cutlery and disposables",
+          "Podi",
+          "Raita and salads",
+          "Crispy papads",
+          "Creamy mudha pappu",
+          "Professional delivery & setup"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 20,
+      "maximumOrder": 200,
+      "advanceBooking": "24 hours",
+      "cancellationPolicy": "12 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"],
+      "pricingRules": {
+        "basePrice": 450,
+        "maxPrice": 600,
+        "freeItemsRule": "Each 'choose_n' section has exactly n free (₹0) options available",
+        "calculation": "Base ₹450 + sum of extraPrice for selected items (capped at ₹600)"
+      }
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 90,
+      "createdAt": "2025-09-29T16:32:00.000Z",
+      "updatedAt": "2025-09-29T16:32:00.000Z",
+      "contactInfo": {
+        "hyderabad": ["+918919354409", "+919703344431"],
+        "khammam": ["+917396081234", "+919246946473"]
+      }
+    }
+  }
+}

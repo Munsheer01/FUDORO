@@ -1,0 +1,647 @@
+/* MyOrders.module.css - Matching FUDORO Design System */
+
+.wrapper {
+  min-height: 100vh;
+  background: #fefefa;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.main {
+  padding-bottom: 4rem;
+}
+
+/* Loading & Error States - Matching MealBoxes */
+.loadingContainer, .errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: #0A5247;
+}
+
+.loadingSpinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #0A5247;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.retryButton {
+  background: #0A5247;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background: #0F4B2E;
+}
+
+/* Hero Section - Matching MealBoxes */
+.heroSection {
+  background: linear-gradient(135deg, #0A5247 0%, #0F4B2E 100%);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #EDD49B;
+  margin-bottom: 1rem;
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statNumber {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #EDD49B;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  display: block;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Filters Section - Matching MealBoxes */
+.filtersSection {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 2rem;
+}
+
+.filtersContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filterGroups {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 2px solid #e5e7eb;
+  border-radius: 2rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  border-color: #0A5247;
+  color: #0A5247;
+}
+
+.filterTab.active {
+  background: linear-gradient(135deg, #0A5247, #0F4B2E);
+  color: white;
+  border-color: #0A5247;
+}
+
+.tabCount {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.filterTab.active .tabCount {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.resultsCount {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Orders Section */
+.ordersSection {
+  padding: 3rem 2rem;
+}
+
+.ordersContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ordersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+/* Order Cards - Matching MealBox Card Design */
+.orderCard {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.orderCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.orderInfo h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0A5247;
+  margin-bottom: 0.25rem;
+}
+
+.orderDate {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.statusBadge {
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.orderItems {
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.itemName {
+  color: #374151;
+  font-weight: 500;
+}
+
+.itemQuantity {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.moreItems {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.orderSummary {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.summaryRow:last-child {
+  margin-bottom: 0;
+}
+
+.summaryRow span:first-child {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.summaryRow strong {
+  color: #D4AF37;
+  font-weight: 700;
+}
+
+.orderType {
+  text-transform: capitalize;
+  color: #0A5247;
+  font-weight: 600;
+}
+
+.orderActions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.viewDetailsBtn {
+  flex: 1;
+  background: transparent;
+  color: #0A5247;
+  border: 2px solid #0A5247;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.viewDetailsBtn:hover {
+  background: #0A5247;
+  color: white;
+}
+
+.reorderBtn {
+  flex: 1;
+  background: linear-gradient(135deg, #EDD49B, #D4AF37);
+  color: #0A5247;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reorderBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(237, 212, 155, 0.3);
+}
+
+/* No Results - Matching MealBoxes */
+.noResults {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+}
+
+.noResultsIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.noResults h3 {
+  font-size: 1.5rem;
+  color: #0A5247;
+  margin-bottom: 0.5rem;
+}
+
+.exploreButton {
+  background: linear-gradient(135deg, #0A5247, #0F4B2E);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.exploreButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(10, 82, 71, 0.3);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modalHeader h2 {
+  color: #0A5247;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modalCloseBtn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #6b7280;
+  line-height: 1;
+}
+
+.modalCloseBtn:hover {
+  color: #374151;
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+.modalSection {
+  margin-bottom: 2rem;
+}
+
+.modalSection:last-child {
+  margin-bottom: 0;
+}
+
+.modalSection h3 {
+  color: #0A5247;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.modalStatusBadge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.modalItemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.modalItemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modalItemName {
+  font-weight: 600;
+  color: #374151;
+}
+
+.modalItemQuantity {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.modalItemPrice {
+  font-weight: 700;
+  color: #D4AF37;
+}
+
+.deliveryInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deliveryInfo p {
+  margin: 0;
+  color: #374151;
+}
+
+.modalTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 2px solid #0A5247;
+}
+
+.modalTotal strong {
+  color: #D4AF37;
+}
+
+.modalFooter {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modalReorderBtn {
+  background: linear-gradient(135deg, #EDD49B, #D4AF37);
+  color: #0A5247;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modalReorderBtn:hover {
+  transform: translateY(-1px);
+}
+
+.modalCloseBtn2 {
+  background: transparent;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modalCloseBtn2:hover {
+  border-color: #0A5247;
+  color: #0A5247;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroStats {
+    gap: 2rem;
+  }
+
+  .filtersContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterGroups {
+    justify-content: center;
+  }
+
+  .resultsCount {
+    text-align: center;
+  }
+
+  .ordersGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .orderActions {
+    flex-direction: column;
+  }
+
+  .modalContent {
+    margin: 0.5rem;
+    max-height: calc(100vh - 1rem);
+  }
+
+  .modalFooter {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .ordersSection {
+    padding: 2rem 1rem;
+  }
+
+  .filtersSection {
+    padding: 1rem;
+  }
+
+  .heroSection {
+    padding: 3rem 1rem;
+  }
+
+  .filterGroups {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterTab {
+    justify-content: center;
+  }
+}

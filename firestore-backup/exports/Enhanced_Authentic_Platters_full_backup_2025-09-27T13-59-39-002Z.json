@@ -9,7 +9,6 @@
       "max": 200
     },
     "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Mixed+Breakfast+Platter&font=poppins",
-    "isActive": true,
     "isVeg": true,
     "isPopular": false,
     "cuisine": "Mixed Indian",
@@ -24,15 +23,31 @@
       "preparationTime": "4-6 hours",
       "preparationMinutes": 300,
       "orderDeadline": "8 hours before event",
-      "servingTime": ["7:00 AM", "11:00 AM"]
+      "servingTime": [
+        "7:00 AM",
+        "11:00 AM"
+      ]
     },
     "location": {
       "city": "Hyderabad",
       "state": "Telangana",
-      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad"],
+      "deliveryAreas": [
+        "Madhapur",
+        "Gachibowli",
+        "Hitech City",
+        "Banjara Hills",
+        "Jubilee Hills",
+        "Secunderabad"
+      ],
       "deliveryRadius": 25
     },
-    "tags": ["mixed", "breakfast", "corporate", "vegetarian", "hyderabad"],
+    "tags": [
+      "mixed",
+      "breakfast",
+      "corporate",
+      "vegetarian",
+      "hyderabad"
+    ],
     "categories": {
       "beverages": {
         "displayName": "Choose Two Beverages",
@@ -152,7 +167,10 @@
       "maximumOrder": 200,
       "advanceBooking": "8 hours",
       "cancellationPolicy": "4 hours before delivery",
-      "paymentMethods": ["Online", "Cash on Delivery"]
+      "paymentMethods": [
+        "Online",
+        "Cash on Delivery"
+      ]
     },
     "meta": {
       "rating": 0,
@@ -161,7 +179,8 @@
       "popularity": 0,
       "createdAt": "2025-08-04T18:00:00Z",
       "updatedAt": "2025-08-04T18:00:00Z"
-    }
+    },
+    "isActive": false
   },
   "north-indian-breakfast": {
     "id": "north-indian-breakfast",
@@ -173,8 +192,6 @@
       "max": 250
     },
     "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=North+Indian+Breakfast&font=poppins",
-    "isActive": true,
-    "isVeg": false,
     "isPopular": true,
     "cuisine": "North Indian",
     "mealType": "breakfast",
@@ -188,15 +205,34 @@
       "preparationTime": "5-7 hours",
       "preparationMinutes": 360,
       "orderDeadline": "8 hours before event",
-      "servingTime": ["7:00 AM", "11:00 AM"]
+      "servingTime": [
+        "7:00 AM",
+        "11:00 AM"
+      ]
     },
     "location": {
       "city": "Hyderabad",
       "state": "Telangana",
-      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad", "Kukatpally", "Miyapur"],
+      "deliveryAreas": [
+        "Madhapur",
+        "Gachibowli",
+        "Hitech City",
+        "Banjara Hills",
+        "Jubilee Hills",
+        "Secunderabad",
+        "Kukatpally",
+        "Miyapur"
+      ],
       "deliveryRadius": 30
     },
-    "tags": ["north-indian", "breakfast", "corporate", "mixed", "hyderabad", "popular"],
+    "tags": [
+      "north-indian",
+      "breakfast",
+      "corporate",
+      "mixed",
+      "hyderabad",
+      "popular"
+    ],
     "categories": {
       "beverages": {
         "displayName": "Choose Two Beverages",
@@ -376,7 +412,7 @@
         "required": false,
         "extras": [
           "Eco-friendly disposable plates",
-          "Spoons & forks", 
+          "Spoons & forks",
           "Paper napkins",
           "Packaged drinking water",
           "Food warmers (for orders 50+)",
@@ -389,7 +425,11 @@
       "maximumOrder": 300,
       "advanceBooking": "8 hours",
       "cancellationPolicy": "6 hours before delivery",
-      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+      "paymentMethods": [
+        "Online",
+        "Cash on Delivery",
+        "Corporate Account"
+      ]
     },
     "meta": {
       "rating": 0,
@@ -398,10 +438,12 @@
       "popularity": 85,
       "createdAt": "2025-08-04T18:00:00Z",
       "updatedAt": "2025-08-04T18:00:00Z"
-    }
+    },
+    "isVeg": true,
+    "isActive": false
   },
   "south-indian-breakfast": {
-    "id": "south-indian-breakfast", 
+    "id": "south-indian-breakfast",
     "name": "South Indian Breakfast Platter",
     "description": "Traditional South Indian breakfast with idli, dosa, vada and authentic chutneys. A healthy start to your corporate events in Hyderabad.",
     "price": {
@@ -411,7 +453,6 @@
     },
     "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=South+Indian+Breakfast&font=poppins",
     "isActive": true,
-    "isVeg": false,
     "isPopular": true,
     "cuisine": "South Indian",
     "mealType": "breakfast",
@@ -425,19 +466,39 @@
       "preparationTime": "4-6 hours",
       "preparationMinutes": 300,
       "orderDeadline": "8 hours before event",
-      "servingTime": ["7:00 AM", "11:00 AM"]
+      "servingTime": [
+        "7:00 AM",
+        "11:00 AM"
+      ]
     },
     "location": {
       "city": "Hyderabad",
-      "state": "Telangana", 
-      "deliveryAreas": ["Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", "Jubilee Hills", "Secunderabad", "Kukatpally", "LB Nagar", "Dilsukhnagar"],
+      "state": "Telangana",
+      "deliveryAreas": [
+        "Madhapur",
+        "Gachibowli",
+        "Hitech City",
+        "Banjara Hills",
+        "Jubilee Hills",
+        "Secunderabad",
+        "Kukatpally",
+        "LB Nagar",
+        "Dilsukhnagar"
+      ],
       "deliveryRadius": 35
     },
-    "tags": ["south-indian", "breakfast", "healthy", "traditional", "hyderabad", "popular"],
+    "tags": [
+      "south-indian",
+      "breakfast",
+      "healthy",
+      "traditional",
+      "hyderabad",
+      "popular"
+    ],
     "categories": {
       "beverages": {
         "displayName": "Choose Two Beverages",
-        "selectionType": "choose_two", 
+        "selectionType": "choose_two",
         "required": true,
         "items": [
           {
@@ -633,8 +694,12 @@
       "minimumOrder": 15,
       "maximumOrder": 250,
       "advanceBooking": "8 hours",
-      "cancellationPolicy": "6 hours before delivery", 
-      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+      "cancellationPolicy": "6 hours before delivery",
+      "paymentMethods": [
+        "Online",
+        "Cash on Delivery",
+        "Corporate Account"
+      ]
     },
     "meta": {
       "rating": 0,
@@ -643,7 +708,8 @@
       "popularity": 90,
       "createdAt": "2025-08-04T18:00:00Z",
       "updatedAt": "2025-08-04T18:00:00Z"
-    }
+    },
+    "isVeg": true
   },
   "traditional-temple-platter": {
     "id": "traditional-temple-platter",
@@ -670,15 +736,29 @@
       "preparationTime": "6-8 hours",
       "preparationMinutes": 420,
       "orderDeadline": "8 hours before event",
-      "servingTime": ["11:00 AM", "3:00 PM"]
+      "servingTime": [
+        "11:00 AM",
+        "3:00 PM"
+      ]
     },
     "location": {
       "city": "Hyderabad",
       "state": "Telangana",
-      "deliveryAreas": ["All areas within Hyderabad city limits"],
+      "deliveryAreas": [
+        "All areas within Hyderabad city limits"
+      ],
       "deliveryRadius": 40
     },
-    "tags": ["traditional", "temple-food", "vegetarian", "south-indian", "religious", "cultural", "hyderabad", "premium"],
+    "tags": [
+      "traditional",
+      "temple-food",
+      "vegetarian",
+      "south-indian",
+      "religious",
+      "cultural",
+      "hyderabad",
+      "premium"
+    ],
     "categories": {
       "rice": {
         "displayName": "Choose Two Rice Varieties",
@@ -814,7 +894,7 @@
             "id": "poori",
             "name": "Poori (2 pcs)",
             "extraPrice": 0,
-            "isVeg": true,  
+            "isVeg": true,
             "isPopular": true,
             "description": "Deep fried puffed bread"
           },
@@ -865,7 +945,7 @@
             "isPopular": false,
             "description": "Vermicelli pudding"
           }
-        ]  
+        ]
       },
       "accompaniments": {
         "displayName": "Choose Three Accompaniments",
@@ -926,7 +1006,11 @@
       "maximumOrder": 500,
       "advanceBooking": "8 hours",
       "cancellationPolicy": "6 hours before delivery",
-      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"]
+      "paymentMethods": [
+        "Online",
+        "Cash on Delivery",
+        "Corporate Account"
+      ]
     },
     "meta": {
       "rating": 0,
@@ -962,15 +1046,28 @@
       "preparationTime": "6-8 hours",
       "preparationMinutes": 420,
       "orderDeadline": "8 hours before event",
-      "servingTime": ["12:00 PM", "3:00 PM"]
+      "servingTime": [
+        "12:00 PM",
+        "3:00 PM"
+      ]
     },
     "location": {
       "city": "Hyderabad",
       "state": "Telangana",
-      "deliveryAreas": ["Premium locations in Hyderabad - Banjara Hills, Jubilee Hills, Madhapur, Gachibowli, Hitech City"],
+      "deliveryAreas": [
+        "Premium locations in Hyderabad - Banjara Hills, Jubilee Hills, Madhapur, Gachibowli, Hitech City"
+      ],
       "deliveryRadius": 25
     },
-    "tags": ["premium", "vegetarian", "north-indian", "corporate", "paneer", "luxury", "hyderabad"],
+    "tags": [
+      "premium",
+      "vegetarian",
+      "north-indian",
+      "corporate",
+      "paneer",
+      "luxury",
+      "hyderabad"
+    ],
     "categories": {
       "starters": {
         "displayName": "Choose One Starter",
@@ -1013,7 +1110,7 @@
       },
       "maincourse": {
         "displayName": "Choose One Main Course",
-        "selectionType": "choose_one", 
+        "selectionType": "choose_one",
         "required": true,
         "items": [
           {
@@ -1098,7 +1195,7 @@
         ]
       },
       "rice": {
-        "displayName": "Choose Two Rice Varieties", 
+        "displayName": "Choose Two Rice Varieties",
         "selectionType": "choose_two",
         "required": true,
         "items": [
@@ -1151,7 +1248,7 @@
           },
           {
             "id": "garlic-naan",
-            "name": "Garlic Naan", 
+            "name": "Garlic Naan",
             "extraPrice": 20,
             "isVeg": true,
             "isPopular": true,
@@ -1193,7 +1290,7 @@
             "name": "Rasmalai",
             "extraPrice": 40,
             "isVeg": true,
-            "isPopular": true,  
+            "isPopular": true,
             "description": "Cottage cheese dumplings in cream"
           },
           {
@@ -1220,7 +1317,7 @@
         "required": true,
         "items": [
           {
-            "id": "raita", 
+            "id": "raita",
             "name": "Mixed Vegetable Raita",
             "extraPrice": 0,
             "isVeg": true,
@@ -1273,363 +1370,17 @@
       "maximumOrder": 500,
       "advanceBooking": "12 hours",
       "cancellationPolicy": "8 hours before delivery",
-      "paymentMethods": ["Online", "Corporate Account", "Cash on Delivery"]
+      "paymentMethods": [
+        "Online",
+        "Corporate Account",
+        "Cash on Delivery"
+      ]
     },
     "meta": {
       "rating": 0,
       "reviewCount": 0,
       "orderCount": 0,
       "popularity": 88,
-      "createdAt": "2025-08-04T18:00:00Z",
-      "updatedAt": "2025-08-04T18:00:00Z"
-    }
-  },
-  "premium-catering-package": {
-    "id": "premium-catering-package",
-    "name": "Premium Catering Package",
-    "description": "Comprehensive catering solution for large events, weddings, and corporate functions. Full-service experience with live counters, multiple cuisines, and professional staff in Hyderabad.",
-    "price": {
-      "base": 450,
-      "min": 400,
-      "max": 600
-    },
-    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Premium+Catering&font=poppins",
-    "isActive": true,
-    "isVeg": false,
-    "isPopular": true,
-    "cuisine": "Multi-Cuisine",
-    "mealType": "full-service",
-    "serves": {
-      "min": 50,
-      "max": 1000,
-      "display": "50-1000 people",
-      "recommended": 200
-    },
-    "timing": {
-      "preparationTime": "24-48 hours",
-      "preparationMinutes": 1440,
-      "orderDeadline": "48 hours before event",
-      "servingTime": ["Flexible based on event timing"]
-    },
-    "location": {
-      "city": "Hyderabad",
-      "state": "Telangana",
-      "deliveryAreas": ["All Hyderabad locations", "Outstation events within 100km radius"],
-      "deliveryRadius": 100
-    },
-    "tags": ["premium", "catering", "wedding", "corporate", "live-counters", "full-service", "hyderabad", "luxury"],
-    "categories": {
-      "welcomedrinks": {
-        "displayName": "Welcome Drinks (Choose Two)",
-        "selectionType": "choose_two",
-        "required": true,
-        "items": [
-          {
-            "id": "fresh-juice",
-            "name": "Fresh Fruit Juice",
-            "extraPrice": 0,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Seasonal fresh fruit juices"
-          },
-          {
-            "id": "lassi",
-            "name": "Flavored Lassi",
-            "extraPrice": 20,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Sweet/salty yogurt drinks"
-          },
-          {
-            "id": "milkshakes",
-            "name": "Assorted Milkshakes",
-            "extraPrice": 30,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Variety of flavored milkshakes"
-          },
-          {
-            "id": "mocktails",
-            "name": "Non-Alcoholic Mocktails", 
-            "extraPrice": 40,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Refreshing fruit-based mocktails"
-          }
-        ]
-      },
-      "livecounters": {
-        "displayName": "Live Counters (Choose Three)",
-        "selectionType": "choose_three",
-        "required": true,
-        "items": [
-          {
-            "id": "chaat-counter",
-            "name": "Live Chaat Counter",
-            "extraPrice": 80,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Pani puri, bhel puri, sev puri live preparation"
-          },
-          {
-            "id": "dosa-counter",
-            "name": "Live Dosa Counter",
-            "extraPrice": 100,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Fresh dosas made to order"
-          },
-          {
-            "id": "pasta-counter",
-            "name": "Live Pasta Counter",
-            "extraPrice": 120,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Italian pasta prepared live"
-          },
-          {
-            "id": "sandwich-counter",
-            "name": "Sandwich & Burger Counter",
-            "extraPrice": 90,
-            "isVeg": false,
-            "isPopular": false,
-            "description": "Grilled sandwiches and burgers"
-          },
-          {
-            "id": "ice-cream-counter",
-            "name": "Ice Cream Counter",
-            "extraPrice": 60,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Multiple ice cream flavors"
-          },
-          {
-            "id": "chocolate-fountain",
-            "name": "Chocolate Fountain",
-            "extraPrice": 150,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Chocolate fountain with fruits & treats"
-          }
-        ]
-      },
-      "maincourses": {
-        "displayName": "Main Course Options (Choose Four)",
-        "selectionType": "choose_four",
-        "required": true, 
-        "items": [
-          {
-            "id": "veg-biryani",
-            "name": "Vegetable Biryani",
-            "extraPrice": 0,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Aromatic vegetable biryani"
-          },
-          {
-            "id": "chicken-biryani",
-            "name": "Chicken Biryani",
-            "extraPrice": 100,
-            "isVeg": false,
-            "isPopular": true,
-            "description": "Traditional Hyderabadi chicken biryani"
-          },
-          {
-            "id": "paneer-curry",
-            "name": "Paneer Butter Masala",
-            "extraPrice": 50,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Rich paneer curry"
-          },
-          {
-            "id": "chicken-curry",
-            "name": "Chicken Curry",
-            "extraPrice": 80,
-            "isVeg": false,
-            "isPopular": true,
-            "description": "Traditional chicken curry"
-          },
-          {
-            "id": "mutton-curry",
-            "name": "Mutton Curry",
-            "extraPrice": 120,
-            "isVeg": false,
-            "isPopular": false,
-            "description": "Slow-cooked mutton curry"
-          },
-          {
-            "id": "fish-curry",
-            "name": "Fish Curry",
-            "extraPrice": 100,
-            "isVeg": false,
-            "isPopular": false,
-            "description": "Coastal-style fish curry"
-          }
-        ]
-      },
-      "appetizers": {
-        "displayName": "Appetizers & Snacks (Choose Five)",
-        "selectionType": "choose_five",
-        "required": true,
-        "items": [
-          {
-            "id": "samosa",
-            "name": "Vegetable Samosa",
-            "extraPrice": 0,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Crispy pastry with spiced filling"
-          },
-          {
-            "id": "pakoda",
-            "name": "Mixed Vegetable Pakoda",
-            "extraPrice": 10,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Deep fried vegetable fritters"
-          },
-          {
-            "id": "paneer-tikka",
-            "name": "Paneer Tikka",
-            "extraPrice": 40,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Grilled cottage cheese"
-          },
-          {
-            "id": "chicken-tikka",
-            "name": "Chicken Tikka",
-            "extraPrice": 60,
-            "isVeg": false,
-            "isPopular": true,
-            "description": "Grilled chicken pieces"
-          },
-          {
-            "id": "fish-fry",
-            "name": "Fish Fry",
-            "extraPrice": 80,
-            "isVeg": false,
-            "isPopular": false,
-            "description": "Crispy fried fish"
-          },
-          {
-            "id": "mutton-kebab",
-            "name": "Mutton Seekh Kebab",
-            "extraPrice": 100,
-            "isVeg": false,
-            "isPopular": false,
-            "description": "Grilled minced mutton rolls"
-          }
-        ]
-      },
-      "desserts": {
-        "displayName": "Dessert Selection (Choose Three)",
-        "selectionType": "choose_three",
-        "required": true,
-        "items": [
-          {
-            "id": "gulab-jamun",
-            "name": "Gulab Jamun",
-            "extraPrice": 0,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Traditional milk sweet"
-          },
-          {
-            "id": "ice-cream",
-            "name": "Assorted Ice Creams",
-            "extraPrice": 40,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Multiple flavors of ice cream"
-          },
-          {
-            "id": "cake",
-            "name": "Fresh Cake Varieties",
-            "extraPrice": 60,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Chocolate, vanilla, fruit cakes"
-          },
-          {
-            "id": "traditional-sweets",
-            "name": "Traditional Indian Sweets",
-            "extraPrice": 50,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Assorted mithai varieties"
-          }
-        ]
-      },
-      "services": {
-        "displayName": "Professional Services (Choose Three)",
-        "selectionType": "choose_three",
-        "required": true,
-        "items": [
-          {
-            "id": "service-staff",
-            "name": "Professional Service Staff",
-            "extraPrice": 200,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Trained waiters and service personnel"
-          },
-          {
-            "id": "decoration",
-            "name": "Basic Event Decoration",
-            "extraPrice": 300,
-            "isVeg": true,
-            "isPopular": true,
-            "description": "Table setup and basic decorations"
-          },
-          {
-            "id": "live-music",
-            "name": "Live Musical Entertainment",
-            "extraPrice": 500,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Traditional music performance"
-          },
-          {
-            "id": "photography",
-            "name": "Event Photography",
-            "extraPrice": 800,
-            "isVeg": true,
-            "isPopular": false,
-            "description": "Professional event photography"
-          }
-        ]
-      },
-      "complimentary": {
-        "displayName": "Premium Complimentary Services (Included)",
-        "selectionType": "included", 
-        "required": false,
-        "extras": [
-          "Complete table setup with linens",
-          "Premium crockery and cutlery",
-          "Food warmers and serving equipment",
-          "Event coordinator",
-          "Cleanup service",
-          "Complimentary mineral water",
-          "Mouth fresheners and digestives",
-          "Basic sound system for announcements"
-        ]
-      }
-    },
-    "businessRules": {
-      "minimumOrder": 50,
-      "maximumOrder": 2000,
-      "advanceBooking": "48 hours",
-      "cancellationPolicy": "24 hours before delivery",
-      "paymentMethods": ["Online", "Corporate Account", "Bank Transfer"],
-      "specialRequirements": ["Site visit required for orders 200+", "Separate kitchen setup for large events"]
-    },
-    "meta": {
-      "rating": 0,
-      "reviewCount": 0,
-      "orderCount": 0,
-      "popularity": 75,
       "createdAt": "2025-08-04T18:00:00Z",
       "updatedAt": "2025-08-04T18:00:00Z"
     }

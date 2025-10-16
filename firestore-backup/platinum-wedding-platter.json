@@ -1,0 +1,59 @@
+{
+  "platinum-menu-premium-feast": {
+    "id": "platinum-menu-premium-feast",
+    "name": "Platinum Menu - Premium Wedding Feast",
+    "description": "The ultimate luxury wedding feast experience. Features finest ingredients, extensive variety, and premium live counters for exclusive celebrations.",
+    "price": {
+      "perPlate": 900,
+      "currency": "INR",
+      "exampleGuests": 500,
+      "totalCostExample": 450000
+    },
+    "imageUrl": "https://placehold.co/600x400/E5E4E2/000000?text=Platinum+Menu&font=poppins",
+    "isActive": true,
+    "category": "luxury",
+    "tier": "platinum",
+    "cuisine": "Traditional Indian Wedding",
+    "mealType": "lunch",
+    "serves": {
+      "min": 200,
+      "max": 2000,
+      "recommended": 500,
+      "display": "200-2000 guests"
+    },
+    "timing": {
+      "preparationTime": "40-72 hours",
+      "orderDeadline": "14 days before event",
+      "eventDuration": "4-6 hours"
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": ["Hyderabad Metro", "Khammam", "Surrounding districts"],
+      "serviceRadius": 100
+    },
+    "menuItems": {
+      "welcomeDrinks": ["Hot Badam Milk", "Jal Jeera Cooler", "Fresh Seasonal Juices"],
+      "starters": ["Chilli Prawns", "Murgh Afghani Kebab", "Apollo Fish", "Hara Bhara Kebab", "Paneer Tikka"],
+      "mainCourse": ["Zafrani Gosht Ki Biryani", "Zafrani Murgh Ki Biryani", "Royyala Pulao", "Naatu Kodi Pulusu", "Boti Fry", "Zafrani Gosht ka Marag", "Talakaya Curry", "Dum Ka Gosht", "Achari Chicken", "Haleem", "Chepala Pulusu", "Kaju Paneer Masala", "Gutti Vankaya Masala", "Mirchi Ka Salan", "Mango Pappu", "Veg Fry", "Sambar / Rasam", "Bagara Rice", "White Rice", "Curd", "Perugu Pachadi"],
+      "accompaniments": ["Fruit Pickles", "Veg Pickles", "Dry Fruit Pickles", "Mint Raita", "Green Salad", "Roti Pachadi", "Papad / Fryums", "Mirchi Bajji"],
+      "desserts": ["Qubani Ka Meetha", "Kaddu Ki Kheer", "Gulab Jamun with Rabri", "Rasmalai", "Malai Sandwich"],
+      "liveCounters": ["Ice Cream with Toppings", "Paan Counter", "Phulka Counter", "Dosa Counter", "Chat Counter", "Sweet Counter"]
+    },
+    "features": [
+      "Luxury menu with premium ingredients",
+      "Extensive variety and live stations",
+      "Professional catering team",
+      "Complete setup and cleanup"
+    ],
+    "businessRules": {
+      "minimumOrder": 200,
+      "advanceBooking": "14 days",
+      "cancellationPolicy": "96 hours before event"
+    },
+    "meta": {
+      "popularity": 95,
+      "createdAt": "2025-10-02T17:54:00.000Z"
+    }
+  }
+}

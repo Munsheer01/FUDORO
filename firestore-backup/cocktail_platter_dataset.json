@@ -1,0 +1,339 @@
+{
+  "cocktail-platter": {
+    "id": "cocktail-platter",
+    "name": "Cocktail Platter - An Evening of Exquisite Flavors",
+    "description": "An unforgettable evening of delightful bites, refreshing sips, and joyous celebration. A curated culinary journey designed to tantalize taste buds with premium ingredients and diverse flavors, perfect for corporate events and special celebrations.",
+    "price": {
+      "base": 400,
+      "min": 400,
+      "max": 600
+    },
+    "imageUrl": "https://placehold.co/600x400/0A5247/EDD49B?text=Cocktail+Platter&font=poppins",
+    "isActive": true,
+    "isVeg": false,
+    "isPopular": true,
+    "cuisine": "Multi-cuisine Indian",
+    "mealType": "dinner",
+    "serves": {
+      "min": 20,
+      "max": 200,
+      "display": "20-200 people",
+      "recommended": 50
+    },
+    "timing": {
+      "preparationTime": "6-8 hours",
+      "preparationMinutes": 420,
+      "orderDeadline": "12 hours before event",
+      "servingTime": ["6:00 PM", "10:00 PM"]
+    },
+    "location": {
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "deliveryAreas": [
+        "Madhapur", "Gachibowli", "Hitech City", "Banjara Hills", 
+        "Jubilee Hills", "Secunderabad", "Khammam"
+      ],
+      "deliveryRadius": 30
+    },
+    "tags": [
+      "cocktail", "evening", "premium", "multi-cuisine", "dinner", 
+      "corporate", "celebration", "hyderabad", "non-vegetarian", 
+      "biryani", "popular"
+    ],
+    "categories": {
+      "appetizers": {
+        "displayName": "Savor the Starting Lineup (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "boiled-peanuts-chana",
+            "name": "Boiled Peanuts/Chana",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Healthy boiled peanuts and chana, perfect for evening snacking"
+          },
+          {
+            "id": "fried-chana-peanuts",
+            "name": "Fried Chana/Peanuts",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy fried chana and peanuts with aromatic spices"
+          },
+          {
+            "id": "sweet-corn",
+            "name": "Sweet Corn",
+            "extraPrice": 30,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fresh sweet corn kernels, buttered and spiced"
+          },
+          {
+            "id": "mixed-nuts",
+            "name": "Mixed Nuts",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Premium assorted nuts mixture"
+          }
+        ]
+      },
+      "starters": {
+        "displayName": "Starters (Choose Any 2)",
+        "selectionType": "choose_two",
+        "required": true,
+        "items": [
+          {
+            "id": "aloo-pakoda",
+            "name": "Aloo Pakoda",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Crispy potato fritters with green chutney"
+          },
+          {
+            "id": "crispy-corn",
+            "name": "Crispy Corn",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Golden fried corn kernels with spices"
+          },
+          {
+            "id": "paneer-tikka",
+            "name": "Paneer Tikka",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Marinated paneer cubes grilled to perfection"
+          },
+          {
+            "id": "boiled-egg-fry",
+            "name": "Boiled Egg Fry",
+            "extraPrice": 30,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Spiced fried boiled eggs"
+          },
+          {
+            "id": "chicken-pakoda",
+            "name": "Chicken Pakoda",
+            "extraPrice": 50,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Crispy chicken fritters with spices"
+          },
+          {
+            "id": "chicken-fry",
+            "name": "Chicken Fry",
+            "extraPrice": 60,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Spiced chicken pieces fried to crispy perfection"
+          },
+          {
+            "id": "fish-fry",
+            "name": "Fish Fry",
+            "extraPrice": 70,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Fresh fish marinated and fried golden"
+          },
+          {
+            "id": "mutton-roast",
+            "name": "Mutton Roast",
+            "extraPrice": 90,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Tender mutton pieces roasted with aromatic spices"
+          },
+          {
+            "id": "prawns-fry",
+            "name": "Prawns Fry",
+            "extraPrice": 120,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Fresh prawns marinated and fried to perfection"
+          }
+        ]
+      },
+      "mains": {
+        "displayName": "Main Courses (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "bagara-rice",
+            "name": "Bagara Rice",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Fragrant Hyderabadi-style rice dish sautéed with whole spices and herbs"
+          },
+          {
+            "id": "paneer-kaju-biryani",
+            "name": "Paneer Kaju Biryani",
+            "extraPrice": 50,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Rich and aromatic biryani made with succulent paneer cubes and crunchy cashews"
+          },
+          {
+            "id": "chicken-dum-biryani",
+            "name": "Chicken Dum Biryani",
+            "extraPrice": 80,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Aromatic basmati rice layered with succulent marinated chicken, slow-cooked in dum style"
+          },
+          {
+            "id": "mutton-dum-biryani",
+            "name": "Mutton Dum Biryani",
+            "extraPrice": 120,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Traditional dum style basmati rice layered with succulent mutton, slow-cooked to perfection"
+          }
+        ]
+      },
+      "breads": {
+        "displayName": "Breads (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "tandoori-roti",
+            "name": "Tandoori Roti",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Simple and wholesome flatbread, a staple in Indian cuisine"
+          },
+          {
+            "id": "rumali-roti",
+            "name": "Rumali Roti",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Thin and soft Indian flatbread, folded like a handkerchief"
+          }
+        ]
+      },
+      "curries": {
+        "displayName": "Curries (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "egg-masala-curry",
+            "name": "Egg Masala Curry",
+            "extraPrice": 0,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Boiled eggs in a thick, flavorful masala"
+          },
+          {
+            "id": "paneer-kaju-curry",
+            "name": "Paneer Kaju Curry",
+            "extraPrice": 40,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Paneer and cashews simmered in a spiced tomato gravy"
+          },
+          {
+            "id": "chicken-curry",
+            "name": "Chicken Curry",
+            "extraPrice": 60,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Classic chicken curry, a universally loved dish"
+          },
+          {
+            "id": "mutton-curry",
+            "name": "Mutton Curry",
+            "extraPrice": 90,
+            "isVeg": false,
+            "isPopular": true,
+            "description": "Tender mutton simmered in a rich, aromatic gravy"
+          }
+        ]
+      },
+      "desserts": {
+        "displayName": "Desserts (Choose Any 1)",
+        "selectionType": "choose_one",
+        "required": true,
+        "items": [
+          {
+            "id": "gulab-jamun",
+            "name": "Gulab Jamun",
+            "extraPrice": 0,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Golden fried dumplings, swimming in rose-flavored syrup"
+          },
+          {
+            "id": "kala-jamun",
+            "name": "Kala Jamun",
+            "extraPrice": 15,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Dark, sweet milk solids, soaked in aromatic syrup"
+          },
+          {
+            "id": "kaddu-ka-kheer",
+            "name": "Kaddu Ka Kheer",
+            "extraPrice": 20,
+            "isVeg": true,
+            "isPopular": false,
+            "description": "Sweet pumpkin pudding, a creamy, delightful treat"
+          },
+          {
+            "id": "double-ka-meetha",
+            "name": "Double Ka Meetha",
+            "extraPrice": 25,
+            "isVeg": true,
+            "isPopular": true,
+            "description": "Bread pudding, a rich Hyderabadi delicacy"
+          }
+        ]
+      },
+      "complimentary": {
+        "displayName": "Courtesy Items (Included)",
+        "selectionType": "included",
+        "required": false,
+        "extras": [
+          "Basmati Rice", "Tomato Pappu (Dal)", "Fresh Curd", "Mixed Raita",
+          "Fruit Pickle", "Vegetable Pickle", "Disposable plates & cutlery",
+          "Paper napkins", "Packaged drinking water bottles", "Professional delivery & setup"
+        ]
+      }
+    },
+    "businessRules": {
+      "minimumOrder": 20,
+      "maximumOrder": 200,
+      "advanceBooking": "12 hours",
+      "cancellationPolicy": "8 hours before delivery",
+      "paymentMethods": ["Online", "Cash on Delivery", "Corporate Account"],
+      "pricingRules": {
+        "basePrice": 400,
+        "maxPrice": 600,
+        "freeItemsRule": "Each 'choose_n' section has exactly n free (₹0) options available",
+        "calculation": "Base ₹400 + sum of extraPrice for selected items (capped at ₹600)"
+      }
+    },
+    "meta": {
+      "rating": 0,
+      "reviewCount": 0,
+      "orderCount": 0,
+      "popularity": 85,
+      "createdAt": "2025-09-27T21:39:00.000Z",
+      "updatedAt": "2025-09-27T21:39:00.000Z",
+      "contactInfo": {
+        "hyderabad": ["+918919354409", "+919703344431"],
+        "khammam": ["+917396081234", "+919246946473"]
+      }
+    }
+  }
+}
