@@ -11,6 +11,6 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
-    "firebase-admin": "^13.4.0"
+    "firebase-admin": "^13.5.0"
   }
 }

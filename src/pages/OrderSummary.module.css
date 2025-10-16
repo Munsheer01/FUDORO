@@ -46,10 +46,7 @@
 .pageHeader::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
   animation: shimmer 3s infinite;
 }
@@ -409,20 +406,61 @@
   margin-bottom: 2rem;
 }
 
-.emptyState button {
-  background: var(--primary-color);
-  color: var(--white);
+.emptyStateActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.emptyStateActions button {
+  background: #0A5247;
+  color: white;
   border: none;
   padding: 1rem 2rem;
   border-radius: 0.75rem;
   font-weight: 600;
-  font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.emptyState button:hover {
-  background: var(--secondary-color);
+.emptyStateActions button:hover {
+  background: #0F4B2E;
+}
+
+.itemType {
+  display: inline-block;
+  background: #f3f4f6;
+  color: #0A5247;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-left: 0.75rem;
+}
+
+.mealType {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+
+/* Loading States */
+.loadingSpinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
@@ -516,182 +554,4 @@
   .paymentOption {
     padding: 0.75rem;
   }
-}
-
-/* Loading States */
-.loading {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.loadingSpinner {
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-  margin-right: 0.5rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Form Validation */
-.formInput:invalid,
-.formTextarea:invalid {
-  border-color: var(--error-color);
-}
-
-.formInput:valid,
-.formTextarea:valid {
-  border-color: var(--success-color);
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .placeOrderBtn,
-  .paymentOption,
-  .formInput,
-  .formTextarea {
-    transition: none;
-  }
-  
-  .pageHeader::before {
-    animation: none;
-  }
-  
-  .loadingSpinner {
-    animation: none;
-  }
-}
-
-@media (prefers-contrast: high) {
-  .orderSummaryCard,
-  .itemsSection,
-  .deliverySection {
-    border: 3px solid var(--primary-color);
-  }
-  
-  .placeOrderBtn,
-  .paymentOption {
-    border: 2px solid currentColor;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .placeOrderBtn,
-  .paymentMethods {
-    display: none;
-  }
-  
-  .orderSummaryCard {
-    position: static;
-    box-shadow: none;
-    border: 2px solid #000;
-  }
-  
-  .pageHeader {
-    background: none;
-    color: var(--primary-color);
-  }
-  
-  .summaryContainer {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Focus Styles */
-.placeOrderBtn:focus-visible,
-.paymentOption:focus-visible,
-.formInput:focus-visible,
-.formTextarea:focus-visible {
-  outline: 3px solid var(--text-gold);
-  outline-offset: 2px;
-}
-
-/* Animation for form validation */
-.formInput.error,
-.formTextarea.error {
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-
-/* Success states */
-.success {
-  background: #dcfce7;
-  border-color: var(--success-color);
-  color: #166534;
-}
-
-.warning {
-  background: #fef3c7;
-  border-color: var(--warning-color);
-  color: #92400e;
-}
-
-.error {
-  background: #fee2e2;
-  border-color: var(--error-color);
-  color: #dc2626;
-}
-
-/* Add to your existing OrderSummary.module.css */
-
-.itemType {
-  display: inline-block;
-  background: #f3f4f6;
-  color: #0A5247;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  margin-left: 0.75rem;
-}
-
-.mealType {
-  color: #6b7280;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin: 0.25rem 0;
-}
-
-.orderTypeBadge {
-  background: #0A5247;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.emptyStateActions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.emptyStateActions button {
-  background: #0A5247;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.emptyStateActions button:hover {
-  background: #0F4B2E;
 }
