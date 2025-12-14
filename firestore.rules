@@ -3,39 +3,265 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Menu Data: Everyone can read, admins can write
-    match /Enhanced_Authentic_Platters/{docId} {
+    // ==================== HELPER FUNCTIONS ====================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isGuestUser(customerId) {
+      return !isAuthenticated() && customerId.matches('guest_.*');
+    }
+    
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    
+    function isNotModified(field) {
+      return !(field in request.resource.data) || 
+             request.resource.data[field] == resource.data[field];
+    }
+    
+    function isValidStatus(status) {
+      return status in ['pending', 'confirmed', 'preparing', 'ready', 'delivered', 'cancelled'];
+    }
+    
+    function isValidCreatedAt(createdAt) {
+      return createdAt == request.time;
+    }
+    
+    function isPositiveNumber(value) {
+      return value is number && value > 0;
+    }
+    
+    // ==================== MENU COLLECTIONS ====================
+    
+    // Enhanced Authentic Platters Collection
+    match /Enhanced_Authentic_Platters/{platterId} {
       allow read: if true;
-      allow write: if true; // Temporarily allow all writes for testing
+      
+      allow create: if isAdmin() && 
+                       hasRequiredFields(['name', 'price', 'categories', 'isActive']);
+      
+      allow update: if isAdmin();
+      
+      allow delete: if isAdmin();
     }
-
-    // ✅ NEW: MealBoxes Collection - Public read, admin write
+    
+    // MealBoxes Collection  
     match /MealBoxes/{mealBoxId} {
-      allow read: if true; // Anyone can browse meal boxes
-      allow write: if true; // Temporarily allow all writes for testing
-      // For production: allow write: if request.auth != null && request.auth.token.admin == true;
+      allow read: if true;
+      
+      allow create: if isAdmin() &&
+                       hasRequiredFields(['name', 'configuration', 'pricing', 'foodOptions']);
+      
+      allow update: if isAdmin();
+      
+      allow delete: if isAdmin();
     }
-
-    // Orders: Anyone can create (including guests), read own orders
+    
+    // Wedding Catering Menus Collection
+    match /weddings_caterings/{menuId} {
+      allow read: if true;
+      
+      allow create: if isAdmin() &&
+                       hasRequiredFields(['name', 'tier', 'price', 'serves', 'menuItems']);
+      
+      allow update: if isAdmin();
+      
+      allow delete: if isAdmin();
+    }
+    
+    // ==================== ORDER COLLECTIONS ====================
+    
+    // Orders Collection
     match /orders/{orderId} {
-      allow create: if true; // ✅ This fixes your order placement issue
-      allow read: if true; // Temporarily allow all reads for testing
-      allow update, delete: if false; // Prevent order modifications
+      allow create: if 
+        hasRequiredFields([
+          'customerId', 
+          'customerInfo', 
+          'items', 
+          'totalAmount', 
+          'status', 
+          'orderType',
+          'createdAt'
+        ]) &&
+        (
+          (isAuthenticated() && request.resource.data.customerId == request.auth.uid) ||
+          isGuestUser(request.resource.data.customerId)
+        ) &&
+        request.resource.data.items is list &&
+        request.resource.data.items.size() > 0 &&
+        isPositiveNumber(request.resource.data.totalAmount) &&
+        request.resource.data.status == 'pending' &&
+        isValidCreatedAt(request.resource.data.createdAt) &&
+        request.resource.data.customerInfo.keys().hasAll(['name', 'phone', 'address']) &&
+        request.resource.data.customerInfo.name is string &&
+        request.resource.data.customerInfo.name.size() >= 2 &&
+        request.resource.data.customerInfo.phone is string &&
+        request.resource.data.customerInfo.phone.size() >= 10 &&
+        request.resource.data.orderType in ['meal-box', 'platter', 'bulk', 'mixed', 'wedding-catering'];
+      
+      allow read: if 
+        (isAuthenticated() && resource.data.customerId == request.auth.uid) ||
+        isAdmin();
+      
+      allow update: if isAdmin() &&
+        isNotModified('customerId') &&
+        isNotModified('createdAt') &&
+        isNotModified('totalAmount') &&
+        isNotModified('items') &&
+        isValidStatus(request.resource.data.status) &&
+        request.resource.data.updatedAt == request.time;
+      
+      allow delete: if isAdmin();
     }
-
-    // Inventory: Admin operations (allow all for testing)
-    match /inventory/{docId} {
-      allow read, write: if true; // Temporarily allow all for admin testing
+    
+    // ==================== INVENTORY MANAGEMENT ====================
+    
+    // Inventory Collection
+    match /inventory/{itemId} {
+      allow read, write: if isAdmin();
     }
-
-    // Inventory Logs: Admin operations (allow all for testing)
-    match /inventory_logs/{docId} {
-      allow read, write: if true; // Temporarily allow all for admin testing
+    
+    // Inventory Logs Collection (Immutable audit trail)
+    match /inventory_logs/{logId} {
+      allow read: if isAdmin();
+      
+      allow create: if isAdmin() &&
+        hasRequiredFields(['itemId', 'action', 'timestamp']) &&
+        request.resource.data.timestamp == request.time;
+      
+      allow update, delete: if false;
     }
-
-    // User profiles (if implemented later)
+    
+    // ==================== USER MANAGEMENT ====================
+    
+    // User Profiles
     match /users/{userId} {
-      allow read, write: if true;
+      allow read: if isOwner(userId) || isAdmin();
+      
+      allow create: if isOwner(userId) &&
+        hasRequiredFields(['email', 'createdAt']) &&
+        isValidCreatedAt(request.resource.data.createdAt) &&
+        !('admin' in request.resource.data) &&
+        !('role' in request.resource.data);
+      
+      allow update: if isOwner(userId) &&
+        isNotModified('createdAt') &&
+        isNotModified('userId') &&
+        (
+          !('admin' in request.resource.data) &&
+          !('role' in request.resource.data) ||
+          isAdmin()
+        );
+      
+      allow delete: if isAdmin();
+    }
+    
+    // ==================== CART & SESSION DATA ====================
+    
+    // User Carts (for persistent cart storage)
+    match /carts/{userId} {
+      allow read, write: if isOwner(userId);
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+    
+    // ==================== CUSTOMER INTERACTIONS ====================
+    
+    // Customer Inquiries
+    match /customer_inquiries/{inquiryId} {
+      allow create: if 
+        hasRequiredFields(['name', 'email', 'message', 'createdAt']) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 2 &&
+        request.resource.data.email.matches('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}') &&
+        request.resource.data.message.size() >= 10 &&
+        isValidCreatedAt(request.resource.data.createdAt) &&
+        request.resource.data.status == 'pending';
+      
+      allow read: if 
+        (isAuthenticated() && resource.data.email == request.auth.token.email) ||
+        isAdmin();
+      
+      allow update, delete: if isAdmin();
+    }
+    
+    // Event Bookings
+    match /event_bookings/{bookingId} {
+      allow create: if 
+        hasRequiredFields(['customerId', 'customerInfo', 'eventDate', 'eventType', 'createdAt']) &&
+        (
+          (isAuthenticated() && request.resource.data.customerId == request.auth.uid) ||
+          isGuestUser(request.resource.data.customerId)
+        ) &&
+        isValidCreatedAt(request.resource.data.createdAt) &&
+        request.resource.data.status == 'pending';
+      
+      allow read: if 
+        (isAuthenticated() && resource.data.customerId == request.auth.uid) ||
+        isAdmin();
+      
+      allow update: if isAdmin() &&
+        isNotModified('customerId') &&
+        isNotModified('createdAt');
+      
+      allow delete: if isAdmin();
+    }
+    
+    // Wedding Catering Orders (if you add this collection later)
+    match /wedding_catering_orders/{orderId} {
+      allow create: if 
+        hasRequiredFields([
+          'customerId',
+          'customerInfo', 
+          'items',
+          'totalAmount',
+          'status',
+          'eventDate',
+          'createdAt'
+        ]) &&
+        (
+          (isAuthenticated() && request.resource.data.customerId == request.auth.uid) ||
+          isGuestUser(request.resource.data.customerId)
+        ) &&
+        request.resource.data.items.size() > 0 &&
+        isPositiveNumber(request.resource.data.totalAmount) &&
+        request.resource.data.status == 'pending' &&
+        isValidCreatedAt(request.resource.data.createdAt);
+      
+      allow read: if 
+        (isAuthenticated() && resource.data.customerId == request.auth.uid) ||
+        isAdmin();
+      
+      allow update: if isAdmin() &&
+        isNotModified('customerId') &&
+        isNotModified('createdAt') &&
+        isNotModified('totalAmount');
+      
+      allow delete: if isAdmin();
+    }
+    
+    // ==================== ANALYTICS & LOGS ====================
+    
+    // Activity Logs
+    match /activity_logs/{logId} {
+      allow read: if isAdmin();
+      
+      allow create: if isAuthenticated() &&
+        hasRequiredFields(['userId', 'action', 'timestamp']) &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.timestamp == request.time;
+      
+      allow update, delete: if false;
     }
   }
 }
