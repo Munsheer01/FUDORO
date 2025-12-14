@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "./BulkOrders.module.css";
 import { GlobalFooter, GlobalHeader } from "../components/GlobalHeader&Footer";
@@ -75,9 +75,6 @@ const PlatterCard = React.memo(function PlatterCard({ platter, onSelect, isSelec
         <div className={styles.platterImageOverlay}></div>
         
         {/* Badges */}
-        {platter.isPopular && (
-          <div className={styles.popularBadge}>Popular</div>
-        )}
         
         <div className={styles.compartmentsBadge}>
           {totalCategories} Categories
@@ -207,50 +204,41 @@ const BulkOrders = () => {
   const [filters, setFilters] = useState({
     cuisine: 'all',
     priceRange: 'all',
-    servingSize: 'all',
-    showPopularOnly: false
+    servingSize: 'all'
   });
 
-  // Fetch platters from Firestore - Fixed Query
+  // Fetch platters from Firestore with optimized query
   useEffect(() => {
     const fetchPlatters = async () => {
       setLoading(true);
       setError(null);
-      
       try {
-        console.log('🍽️ Fetching FUDORO Platters from Firestore...');
+        console.log('Fetching Enhanced Authentic Platters from Firestore...');
         
-        // Simplified query to avoid compound query issues
-        const plattersQuery = query(
+        // OPTIMIZED QUERY - Filter active platters and sort by popularity
+        const platterQuery = query(
           collection(db, 'Enhanced_Authentic_Platters'),
+          where('isActive', '==', true),
           orderBy('isPopular', 'desc')
         );
-
-        const querySnapshot = await getDocs(plattersQuery);
+        
+        const querySnapshot = await getDocs(platterQuery);
         
         if (querySnapshot.empty) {
-          setError('No platters found. Please check back later.');
+          setError('No platters available at the moment. Please check back later.');
           return;
         }
 
-        const plattersData = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          // Filter active platters in code instead of query
-          if (data.isActive !== false) {
-            plattersData.push({
-              id: doc.id,
-              ...data
-            });
-          }
-        });
+        const plattersData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
 
-        console.log(`✅ Loaded ${plattersData.length} platters`);
+        console.log(`Fetched ${plattersData.length} platters successfully`);
         setPlatters(plattersData);
-        
-      } catch (err) {
-        console.error('❌ Error fetching platters:', err);
-        setError('Failed to load platters. Please try again later.');
+      } catch (error) {
+        console.error('Error fetching platters:', error);
+        setError('Failed to load platters. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -264,9 +252,18 @@ const BulkOrders = () => {
     let filtered = [...platters];
 
     if (filters.cuisine !== 'all') {
-      filtered = filtered.filter(platter => 
-        platter.cuisine?.toLowerCase() === filters.cuisine.toLowerCase()
-      );
+      filtered = filtered.filter(platter => {
+        const platterCuisine = platter.cuisine?.toLowerCase() || '';
+        const filterCuisine = filters.cuisine.toLowerCase();
+        
+        // For multi-cuisine filter, match platters with 'multi-cuisine' or those that contain multiple cuisines
+        if (filterCuisine === 'multi-cuisine') {
+          return platterCuisine === 'multi-cuisine' || platterCuisine.includes('multi');
+        }
+        
+        // For specific cuisines, match exact or includes (in case of compound cuisine names)
+        return platterCuisine === filterCuisine || platterCuisine.includes(filterCuisine);
+      });
     }
 
     if (filters.priceRange !== 'all') {
@@ -291,10 +288,6 @@ const BulkOrders = () => {
           default: return true;
         }
       });
-    }
-
-    if (filters.showPopularOnly) {
-      filtered = filtered.filter(platter => platter.isPopular === true);
     }
 
     return filtered;
@@ -332,8 +325,7 @@ const BulkOrders = () => {
     setFilters({
       cuisine: 'all',
       priceRange: 'all',
-      servingSize: 'all',
-      showPopularOnly: false
+      servingSize: 'all'
     });
   }, []);
 
@@ -476,23 +468,14 @@ const BulkOrders = () => {
                 </select>
               </div>
 
-              <div className={styles.filterCheckbox}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={filters.showPopularOnly}
-                    onChange={(e) => handleFilterChange('showPopularOnly', e.target.checked)}
-                  />
-                  <span>Show Popular Only</span>
-                </label>
-              </div>
+              
 
               <div className={styles.resultsCount}>
                 <span>{filteredPlatters.length} platter{filteredPlatters.length !== 1 ? 's' : ''} found</span>
               </div>
             </div>
             
-            {(filters.cuisine !== 'all' || filters.priceRange !== 'all' || filters.servingSize !== 'all' || filters.showPopularOnly) && (
+            {(filters.cuisine !== 'all' || filters.priceRange !== 'all' || filters.servingSize !== 'all') && (
               <button 
                 className={styles.clearFiltersBtn}
                 onClick={handleClearFilters}

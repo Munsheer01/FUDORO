@@ -15,6 +15,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import CustomizeOrder from './pages/CustomizeOrder';
 import OrderSummary from './pages/OrderSummary';
 import OrderConfirmation from './pages/OrderConfirmation';
+import MyOrders from './pages/MyOrders';
 
 // Admin App
 import AdminApp from './admin/AdminApp';
@@ -49,6 +50,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-summary" element={<OrderSummary />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/my-orders" element={<MyOrders />} />
         
         {/* Admin Routes */}
         <Route path="/admin/*" element={<AdminApp />} />

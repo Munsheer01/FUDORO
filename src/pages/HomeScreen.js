@@ -267,6 +267,7 @@ const QuickOrderModal = React.memo(({ isOpen, onClose, onProceed, featuredPlatte
 const ServiceCard = React.memo(({ service, isExpanded, onToggle, onExplore, index }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const isComingSoon = service.key === 'meal-boxes' || service.key === 'catering-services';
 
   const handleImageLoad = useCallback(() => setImageLoaded(true), []);
   const handleImageError = useCallback(() => setImageError(true), []);
@@ -278,11 +279,19 @@ const ServiceCard = React.memo(({ service, isExpanded, onToggle, onExplore, inde
     }
   }, [onToggle]);
 
+  const handleCardClick = useCallback((e) => {
+    if (isComingSoon) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, [isComingSoon]);
+
   return (
     <article 
-      className={`${styles.serviceCard} ${isExpanded ? styles.expanded : ''} ${service.featured ? styles.featured : ''}`}
+      className={`${styles.serviceCard} ${isExpanded ? styles.expanded : ''} ${service.featured ? styles.featured : ''} ${isComingSoon ? styles.comingSoon : ''}`}
       style={{ '--gradient': service.gradient }}
       data-index={index}
+      onClick={handleCardClick}
     >
       <div className={styles.imageContainer}>
         <img
@@ -294,6 +303,15 @@ const ServiceCard = React.memo(({ service, isExpanded, onToggle, onExplore, inde
           loading={index > 1 ? "lazy" : "eager"}
         />
         <div className={styles.imageOverlay} />
+        
+        {isComingSoon && (
+          <div className={styles.comingSoonOverlay}>
+            <div className={styles.comingSoonContent}>
+              <h4 className={styles.comingSoonText}>Coming Soon</h4>
+              <p className={styles.comingSoonSubtext}>Available in the future</p>
+            </div>
+          </div>
+        )}
         
         {service.featured && (
           <div className={styles.featuredBadge}>
@@ -340,6 +358,7 @@ const ServiceCard = React.memo(({ service, isExpanded, onToggle, onExplore, inde
         <button
           className={styles.exploreBtn}
           onClick={onExplore}
+          disabled={isComingSoon}
           aria-label={`Explore ${service.title} options`}
         >
           {service.ctaText} →
