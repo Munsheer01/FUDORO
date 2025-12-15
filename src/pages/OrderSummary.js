@@ -67,21 +67,16 @@ const validators = {
   },
 
   address: (value) => {
-    if (!value || value.trim().length === 0) {
-      return { error: 'Address is required', suggestion: 'Please enter your complete delivery address' };
-    }
-    if (value.trim().length < 10) {
-      return { error: 'Address is too short', suggestion: `Please add ${10 - value.trim().length} more character(s) for a complete address` };
-    }
-    if (value.trim().length > 200) {
-      return { error: 'Address is too long', suggestion: 'Address must be less than 200 characters' };
-    }
-    // Check if address has at least some structure
-    if (!/\d/.test(value)) {
-      return { error: 'Address seems incomplete', suggestion: 'Please include house/flat number in your address' };
-    }
-    return null;
-  },
+  if (!value || value.trim().length === 0) {
+    return {
+      error: 'Address is required',
+      suggestion: 'Please enter your delivery address',
+    };
+  }
+  // No strict format checks; any non-empty value is accepted
+  return null;
+},
+
 
   pincode: (value) => {
     if (!value || value.trim().length === 0) {
