@@ -719,6 +719,114 @@ body {
   border-color: var(--primary-green);
 }
 
+/* Address Form Styles */
+.address-form {
+  background: var(--surface-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+}
+
+.address-form h3 {
+  margin-top: 0;
+  color: var(--primary-green);
+  margin-bottom: 1.5rem;
+}
+
+.address-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.address-form .form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.address-form .form-input,
+.address-form .form-select,
+.address-form .form-textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all var(--transition-base);
+}
+
+.address-form .form-input:focus,
+.address-form .form-select:focus,
+.address-form .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(10, 82, 71, 0.1);
+}
+
+.address-form .form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.address-form .form-group.checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.address-form .form-group.checkbox label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.address-form .form-group.checkbox input[type="checkbox"] {
+  margin-right: 0.6rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.address-form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.address-form-actions .btn-primary,
+.address-form-actions .btn-secondary {
+  flex: 1;
+}
+
+.btn-set-default {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--primary-green);
+  background: transparent;
+  color: var(--primary-green);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-set-default:hover {
+  background: var(--primary-green);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.no-addresses {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 /* ======================
    MOBILE MENU STYLES
    ====================== */

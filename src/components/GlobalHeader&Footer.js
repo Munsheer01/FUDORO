@@ -178,7 +178,7 @@ const UserDetailDialog = ({ user, isOpen, onClose }) => {
 
 // Address Management Dialog Component  
 const AddressDialog = ({ isOpen, onClose }) => {
-  const [addresses] = useState([
+  const [addresses, setAddresses] = useState([
     {
       id: 1,
       type: 'Home',
@@ -189,6 +189,110 @@ const AddressDialog = ({ isOpen, onClose }) => {
       isDefault: true
     }
   ]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState({
+    type: 'Home',
+    address: '',
+    city: '',
+    state: '',
+    pincode: '',
+    isDefault: false
+  });
+
+  const handleAddAddress = () => {
+    if (!formData.address || !formData.city || !formData.state || !formData.pincode) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    if (formData.isDefault) {
+      setAddresses(prev => prev.map(addr => ({ ...addr, isDefault: false })));
+    }
+
+    const newAddress = {
+      id: Date.now(),
+      ...formData
+    };
+
+    setAddresses(prev => [...prev, newAddress]);
+    resetForm();
+    setShowAddForm(false);
+    alert('Address added successfully!');
+  };
+
+  const handleEditAddress = (address) => {
+    setEditingId(address.id);
+    setFormData({
+      type: address.type,
+      address: address.address,
+      city: address.city,
+      state: address.state,
+      pincode: address.pincode,
+      isDefault: address.isDefault
+    });
+    setShowAddForm(true);
+  };
+
+  const handleUpdateAddress = () => {
+    if (!formData.address || !formData.city || !formData.state || !formData.pincode) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    if (formData.isDefault) {
+      setAddresses(prev => prev.map(addr => ({ 
+        ...addr, 
+        isDefault: addr.id === editingId ? true : false 
+      })));
+    }
+
+    setAddresses(prev => prev.map(addr => 
+      addr.id === editingId 
+        ? { ...addr, ...formData }
+        : addr
+    ));
+
+    resetForm();
+    setShowAddForm(false);
+    alert('Address updated successfully!');
+  };
+
+  const handleDeleteAddress = (id) => {
+    if (window.confirm('Are you sure you want to delete this address?')) {
+      const deletedAddress = addresses.find(addr => addr.id === id);
+      setAddresses(prev => prev.filter(addr => addr.id !== id));
+      
+      // If deleted address was default, make first address default
+      if (deletedAddress.isDefault && addresses.length > 1) {
+        setAddresses(prev => {
+          const updated = [...prev];
+          updated[0].isDefault = true;
+          return updated;
+        });
+      }
+      alert('Address deleted successfully!');
+    }
+  };
+
+  const handleSetDefault = (id) => {
+    setAddresses(prev => prev.map(addr => ({
+      ...addr,
+      isDefault: addr.id === id ? true : false
+    })));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      type: 'Home',
+      address: '',
+      city: '',
+      state: '',
+      pincode: '',
+      isDefault: false
+    });
+    setEditingId(null);
+  };
 
   if (!isOpen) return null;
 
@@ -201,26 +305,151 @@ const AddressDialog = ({ isOpen, onClose }) => {
         </div>
 
         <div className="dialog-body">
-          {addresses.map(address => (
-            <div key={address.id} className="address-card">
-              <div className="address-header">
-                <h4>{address.type}</h4>
-                {address.isDefault && <span className="default-badge">Default</span>}
-              </div>
-              <p className="address-text">
-                {address.address}<br/>
-                {address.city}, {address.state} - {address.pincode}
-              </p>
-              <div className="address-actions">
-                <button className="btn-edit">Edit</button>
-                <button className="btn-delete">Delete</button>
-              </div>
-            </div>
-          ))}
+          {!showAddForm ? (
+            <>
+              {addresses.length > 0 ? (
+                addresses.map(address => (
+                  <div key={address.id} className="address-card">
+                    <div className="address-header">
+                      <h4>{address.type}</h4>
+                      {address.isDefault && <span className="default-badge">Default</span>}
+                    </div>
+                    <p className="address-text">
+                      {address.address}<br/>
+                      {address.city}, {address.state} - {address.pincode}
+                    </p>
+                    <div className="address-actions">
+                      <button 
+                        className="btn-edit"
+                        onClick={() => handleEditAddress(address)}
+                        title="Edit this address"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="btn-delete"
+                        onClick={() => handleDeleteAddress(address.id)}
+                        title="Delete this address"
+                      >
+                        Delete
+                      </button>
+                      {!address.isDefault && (
+                        <button 
+                          className="btn-set-default"
+                          onClick={() => handleSetDefault(address.id)}
+                          title="Set as default address"
+                        >
+                          Set as Default
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="no-addresses">No addresses saved yet.</p>
+              )}
 
-          <button className="btn-add-address">
-            + Add New Address
-          </button>
+              <button 
+                className="btn-add-address"
+                onClick={() => setShowAddForm(true)}
+              >
+                + Add New Address
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="address-form">
+                <h3>{editingId ? 'Edit Address' : 'Add New Address'}</h3>
+                
+                <div className="form-group">
+                  <label>Address Type</label>
+                  <select 
+                    className="form-select"
+                    value={formData.type}
+                    onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                  >
+                    <option value="Home">Home</option>
+                    <option value="Work">Work</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Address</label>
+                  <textarea
+                    className="form-textarea"
+                    rows="2"
+                    value={formData.address}
+                    onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                    placeholder="House/Flat No., Street, Landmark"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={formData.city}
+                    onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                    placeholder="Enter city"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={formData.state}
+                    onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
+                    placeholder="Enter state"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Pincode</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={formData.pincode}
+                    onChange={(e) => setFormData(prev => ({ ...prev, pincode: e.target.value }))}
+                    placeholder="Enter 6-digit pincode"
+                    maxLength="6"
+                  />
+                </div>
+
+                <div className="form-group checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={formData.isDefault}
+                      onChange={(e) => setFormData(prev => ({ ...prev, isDefault: e.target.checked }))}
+                    />
+                    Set as default address
+                  </label>
+                </div>
+              </div>
+
+              <div className="address-form-actions">
+                <button 
+                  className="btn-primary"
+                  onClick={editingId ? handleUpdateAddress : handleAddAddress}
+                >
+                  {editingId ? 'Update Address' : 'Add Address'}
+                </button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => {
+                    resetForm();
+                    setShowAddForm(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="dialog-footer">
@@ -236,11 +465,86 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [categories, setCategories] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const feedbackCategories = [
     'Food Quality', 'Delivery Service', 'Website Experience',
     'Customer Support', 'Pricing', 'Other'
   ];
+
+  const resetForm = () => {
+    setRating(0);
+    setFeedback('');
+    setCategories([]);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+  };
+
+  const handleSubmitFeedback = async () => {
+    // Validation
+    if (rating === 0) {
+      setSubmitError('Please select a rating');
+      return;
+    }
+
+    if (categories.length === 0) {
+      setSubmitError('Please select at least one feedback category');
+      return;
+    }
+
+    if (!feedback.trim()) {
+      setSubmitError('Please provide feedback details');
+      return;
+    }
+
+    if (feedback.trim().length < 10) {
+      setSubmitError('Feedback must be at least 10 characters long');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Prepare feedback data
+      const feedbackData = {
+        rating,
+        categories,
+        feedback: feedback.trim(),
+        submittedAt: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      };
+
+      console.log('Submitting feedback:', feedbackData);
+
+      // Simulate API call (replace with actual Firebase/API call)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // In production, you would send this to your backend:
+      // const response = await fetch('/api/feedback', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(feedbackData)
+      // });
+      // const result = await response.json();
+
+      setSubmitSuccess(true);
+      
+      // Reset form after 2 seconds and close dialog
+      setTimeout(() => {
+        resetForm();
+        onClose();
+      }, 2000);
+
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setSubmitError('Failed to submit feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -253,58 +557,112 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
         </div>
 
         <div className="dialog-body">
-          <div className="form-group">
-            <label>How would you rate your experience?</label>
-            <div className="rating-stars">
-              {[1, 2, 3, 4, 5].map(star => (
-                <button
-                  key={star}
-                  className={`star ${star <= rating ? 'active' : ''}`}
-                  onClick={() => setRating(star)}
-                >
-                  ⭐
-                </button>
-              ))}
+          {submitSuccess ? (
+            <div className="feedback-success">
+              <div className="success-icon">✅</div>
+              <h3>Thank You!</h3>
+              <p>Your feedback has been submitted successfully. We appreciate your input!</p>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="form-group">
+                <label>How would you rate your experience?</label>
+                <div className="rating-stars">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                      key={star}
+                      className={`star ${star <= rating ? 'active' : ''}`}
+                      onClick={() => {
+                        setRating(star);
+                        setSubmitError(null);
+                      }}
+                      title={`Rate ${star} star${star !== 1 ? 's' : ''}`}
+                    >
+                      ⭐
+                    </button>
+                  ))}
+                </div>
+                {rating > 0 && <span className="rating-text">{rating} out of 5 stars</span>}
+              </div>
 
-          <div className="form-group">
-            <label>What would you like to give feedback about?</label>
-            <div className="checkbox-group">
-              {feedbackCategories.map(category => (
-                <label key={category} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={categories.includes(category)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setCategories(prev => [...prev, category]);
-                      } else {
-                        setCategories(prev => prev.filter(c => c !== category));
-                      }
-                    }}
-                  />
-                  {category}
-                </label>
-              ))}
-            </div>
-          </div>
+              <div className="form-group">
+                <label>What would you like to give feedback about?</label>
+                <div className="checkbox-group">
+                  {feedbackCategories.map(category => (
+                    <label key={category} className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={categories.includes(category)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setCategories(prev => [...prev, category]);
+                          } else {
+                            setCategories(prev => prev.filter(c => c !== category));
+                          }
+                          setSubmitError(null);
+                        }}
+                      />
+                      {category}
+                    </label>
+                  ))}
+                </div>
+                {categories.length > 0 && (
+                  <span className="selected-categories">
+                    Selected: {categories.join(', ')}
+                  </span>
+                )}
+              </div>
 
-          <div className="form-group">
-            <label>Tell us more about your experience</label>
-            <textarea
-              className="form-textarea"
-              rows="4"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Share your thoughts, suggestions, or concerns..."
-            />
-          </div>
+              <div className="form-group">
+                <label>Tell us more about your experience</label>
+                <textarea
+                  className="form-textarea"
+                  rows="4"
+                  value={feedback}
+                  onChange={(e) => {
+                    setFeedback(e.target.value);
+                    setSubmitError(null);
+                  }}
+                  placeholder="Share your thoughts, suggestions, or concerns..."
+                  disabled={isSubmitting}
+                />
+                <span className="character-count">
+                  {feedback.length} / 500 characters
+                </span>
+              </div>
+
+              {submitError && (
+                <div className="error-message">
+                  <span className="error-icon">⚠️</span>
+                  {submitError}
+                </div>
+              )}
+            </>
+          )}
         </div>
 
         <div className="dialog-footer">
-          <button className="btn-primary">Submit Feedback</button>
-          <button className="btn-secondary" onClick={onClose}>Cancel</button>
+          {!submitSuccess && (
+            <>
+              <button 
+                className="btn-primary"
+                onClick={handleSubmitFeedback}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+              </button>
+              <button 
+                className="btn-secondary" 
+                onClick={() => {
+                  resetForm();
+                  onClose();
+                }}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -324,10 +682,10 @@ export const GlobalHeader = () => {
   // Navigation items
   const navItems = [
     { path: '/home', label: 'Home', icon: '🏠' },
-    { path: '/meal-boxes', label: 'Meal Boxes', icon: '📦' },
+    /*{ path: '/meal-boxes', label: 'Meal Boxes', icon: '📦' },*/
     { path: '/bulk-orders', label: 'Bulk Orders', icon: '🍽️' },
-    { path: '/catering-services', label: 'Catering', icon: '🎉' }
-  ];
+    /*{ path: '/catering-services', label: 'Catering', icon: '🎉' }*/
+  ];  
 
   // Scroll effect
   useEffect(() => {
