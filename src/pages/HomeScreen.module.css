@@ -218,6 +218,15 @@
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
+.serviceCard.comingSoonCard {
+  opacity: 0.85;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.serviceCard.comingSoonCard:hover {
+  pointer-events: auto;
+}
 
 .serviceCard.featured {
   transform: scale(1.02);
@@ -304,6 +313,54 @@
 .plateRange {
   font-size: 0.95rem;
   opacity: 0.9;
+}
+
+/* Coming Soon Overlay Styles */
+.comingSoonOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 82, 71, 0.7);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.serviceCard.comingSoonCard:hover .comingSoonOverlay {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.comingSoonContent {
+  text-align: center;
+  color: white;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.serviceCard.comingSoonCard:hover .comingSoonContent {
+  transform: scale(1.05);
+}
+
+.comingSoonText {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.comingSoonSubtext {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .chevronBtn {

@@ -11,6 +11,96 @@ import {
   updateProfile,
 } from "firebase/auth";
 
+// Authentication form component — moved OUTSIDE to prevent recreation on parent re-render
+const AuthForm = React.memo(({
+  isLogin,
+  email,
+  password,
+  error,
+  loading,
+  onEmailChange,
+  onPasswordChange,
+  onSubmit,
+  onToggleMode,
+}) => {
+  return (
+    <form className={styles.loginForm} onSubmit={onSubmit} noValidate>
+      <label htmlFor="email" className={styles.label}>
+        Email
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={onEmailChange}
+          required
+          className={styles.input}
+          autoComplete="email"
+        />
+      </label>
+      <label htmlFor="password" className={styles.label}>
+        Password
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={onPasswordChange}
+          required
+          className={styles.input}
+          autoComplete={isLogin ? "current-password" : "new-password"}
+          minLength={6}
+        />
+      </label>
+      {error && (
+        <div role="alert" className={styles.formError}>
+          {error}
+        </div>
+      )}
+      <button
+        type="submit"
+        disabled={loading}
+        className={styles.authButton}
+      >
+        {loading
+          ? "Please wait..."
+          : isLogin
+          ? "Sign In"
+          : "Create Account"}
+      </button>
+      <div className={styles.toggleContainer}>
+        {isLogin ? (
+          <>
+            New to FUDORO?{" "}
+            <button
+              type="button"
+              onClick={() => onToggleMode(false)}
+              className={styles.toggleButton}
+            >
+              Create an account
+            </button>
+          </>
+        ) : (
+          <>
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() => onToggleMode(true)}
+              className={styles.toggleButton}
+            >
+              Sign In
+            </button>
+          </>
+        )}
+      </div>
+    </form>
+  );
+});
+
+AuthForm.displayName = "AuthForm";
+
 export default function WelcomeScreen() {
   const navigate = useNavigate();
 
@@ -25,10 +115,9 @@ export default function WelcomeScreen() {
 
   // Monitor auth state WITHOUT automatic redirect
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, loggedInUser => {
+    const unsubscribe = onAuthStateChanged(auth, (loggedInUser) => {
       setUser(loggedInUser);
-      setAuthChecked(true); // Mark that we've checked auth state
-      // NO automatic navigation here - let user stay on welcome page
+      setAuthChecked(true);
     });
     return () => unsubscribe();
   }, []);
@@ -40,7 +129,6 @@ export default function WelcomeScreen() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      // Navigate only after successful sign in
       navigate("/home");
     } catch (err) {
       setError(err.message || "Failed to sign in.");
@@ -55,11 +143,14 @@ export default function WelcomeScreen() {
     setError("");
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-      await updateProfile(userCredential.user, { 
-        displayName: email.split('@')[0] || "Fudoro User" 
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password
+      );
+      await updateProfile(userCredential.user, {
+        displayName: email.split("@")[0] || "Fudoro User",
       });
-      // Navigate only after successful sign up
       navigate("/home");
     } catch (err) {
       setError(err.message || "Failed to create account.");
@@ -90,70 +181,6 @@ export default function WelcomeScreen() {
     );
   }
 
-  // Authentication form component
-  const AuthForm = () => (
-    <form className={styles.loginForm} onSubmit={isLogin ? handleSignIn : handleSignUp} noValidate>
-      <label htmlFor="email" className={styles.label}>
-        Email
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          className={styles.input}
-          autoComplete="email"
-        />
-      </label>
-      <label htmlFor="password" className={styles.label}>
-        Password
-        <input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          className={styles.input}
-          autoComplete={isLogin ? "current-password" : "new-password"}
-          minLength={6}
-        />
-      </label>
-      {error && <div role="alert" className={styles.formError}>{error}</div>}
-      <button type="submit" disabled={loading} className={styles.authButton}>
-        {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
-      </button>
-      <div className={styles.toggleContainer}>
-        {isLogin ? (
-          <>
-            New to FUDORO?{" "}
-            <button
-              type="button"
-              onClick={() => { setIsLogin(false); setError(""); }}
-              className={styles.toggleButton}
-            >
-              Create an account
-            </button>
-          </>
-        ) : (
-          <>
-            Already have an account?{" "}
-            <button
-              type="button"
-              onClick={() => { setIsLogin(true); setError(""); }}
-              className={styles.toggleButton}
-            >
-              Sign In
-            </button>
-          </>
-        )}
-      </div>
-    </form>
-  );
-
   // Service Cards component
   const ServiceCard = ({ title, description }) => (
     <div className={styles.card} tabIndex={0} aria-label={title}>
@@ -166,8 +193,12 @@ export default function WelcomeScreen() {
     <main className={styles.wrapper} role="main" tabIndex={-1}>
       <header className={styles.header}>
         <div className={styles.headerCenter}>
-          <div className={styles.logo} aria-label="Fudoro logo">FUDORO</div>
-          <div className={styles.tagline}>Reliable, hygienic food delivery for your needs</div>
+          <div className={styles.logo} aria-label="Fudoro logo">
+            FUDORO
+          </div>
+          <div className={styles.tagline}>
+            Reliable, hygienic food delivery for your needs
+          </div>
         </div>
         <button
           className={styles.ctaBtn}
@@ -179,13 +210,18 @@ export default function WelcomeScreen() {
             fontSize: "0.95rem",
             padding: "0.5rem 1.5rem",
             minWidth: 100,
-            minHeight: 36
+            minHeight: 36,
           }}
           onClick={() => {
-            const loginSection = document.querySelector(`.${styles.loginSection}`);
+            const loginSection = document.querySelector(
+              `.${styles.loginSection}`
+            );
             if (loginSection) {
-              const yOffset = -100; // offset for fixed header
-              const y = loginSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              const yOffset = -100;
+              const y =
+                loginSection.getBoundingClientRect().top +
+                window.pageYOffset +
+                yOffset;
               window.scrollTo({ top: y, behavior: "smooth" });
             }
           }}
@@ -195,9 +231,16 @@ export default function WelcomeScreen() {
         </button>
       </header>
 
-      <section className={styles.hero} aria-labelledby="welcome-hero-title">
-        <h1 id="welcome-hero-title" className={styles.heroLogo}>Welcome to FUDORO</h1>
-        <p className={styles.heroTagline}>Bulk Meals • Event Catering • Daily Boxes</p>
+      <section
+        className={styles.hero}
+        aria-labelledby="welcome-hero-title"
+      >
+        <h1 id="welcome-hero-title" className={styles.heroLogo}>
+          Welcome to FUDORO
+        </h1>
+        <p className={styles.heroTagline}>
+          Bulk Meals • Event Catering • Daily Boxes
+        </p>
         <button
           className={styles.ctaBtn}
           onClick={() => navigate("/home")}
@@ -207,7 +250,10 @@ export default function WelcomeScreen() {
         </button>
       </section>
 
-      <section className={styles.servicesSection} aria-label="Our service offerings">
+      <section
+        className={styles.servicesSection}
+        aria-label="Our service offerings"
+      >
         <h2 className={styles.sectionTitle}>Our Services</h2>
         <div className={styles.cardsStack}>
           <ServiceCard
@@ -229,7 +275,10 @@ export default function WelcomeScreen() {
         </div>
       </section>
 
-      <section className={styles.loginSection} aria-label={user ? "User signed in" : "User sign in or sign up"}>
+      <section
+        className={styles.loginSection}
+        aria-label={user ? "User signed in" : "User sign in or sign up"}
+      >
         {user ? (
           <div className={styles.signedInContainer}>
             <h2 className={styles.sectionTitle}>Welcome back!</h2>
@@ -237,14 +286,14 @@ export default function WelcomeScreen() {
               Signed in as <strong>{user.displayName || user.email}</strong>
             </p>
             <div className={styles.signedInActions}>
-              <button 
-                onClick={() => navigate("/home")} 
+              <button
+                onClick={() => navigate("/home")}
                 className={styles.ctaBtn}
               >
                 Go to Home
               </button>
-              <button 
-                onClick={handleSignOut} 
+              <button
+                onClick={handleSignOut}
                 className={styles.signOutButton}
               >
                 Sign Out
@@ -254,53 +303,109 @@ export default function WelcomeScreen() {
         ) : (
           <>
             <h2 className={styles.sectionTitle}>Sign In / Register</h2>
-            <AuthForm />
+            <AuthForm
+              isLogin={isLogin}
+              email={email}
+              password={password}
+              error={error}
+              loading={loading}
+              onEmailChange={(e) => setEmail(e.target.value)}
+              onPasswordChange={(e) => setPassword(e.target.value)}
+              onSubmit={isLogin ? handleSignIn : handleSignUp}
+              onToggleMode={(nextIsLogin) => {
+                setIsLogin(nextIsLogin);
+                setError("");
+              }}
+            />
           </>
         )}
       </section>
 
-      <section className={styles.howItWorksSection} aria-label="How FUDORO works">
+
+      <section
+        className={styles.howItWorksSection}
+        aria-label="How FUDORO works"
+      >
         <h2 className={styles.sectionTitle}>How We Work</h2>
         <ol className={styles.stepsList}>
-          <li><b>Place Your Order:</b> Choose your service and submit your requirements.</li>
-          <li><b>Confirmation:</b> We confirm your order and delivery details.</li>
-          <li><b>Preparation:</b> Our chefs prepare your meals fresh.</li>
-          <li><b>Delivery:</b> Meals are delivered on time, hot and hygienic.</li>
-          <li><b>Enjoy:</b> Savor your food and let us know your feedback!</li>
+          <li>
+            <b>Place Your Order:</b> Choose your service and submit your
+            requirements.
+          </li>
+          <li>
+            <b>Confirmation:</b> We confirm your order and delivery
+            details.
+          </li>
+          <li>
+            <b>Preparation:</b> Our chefs prepare your meals fresh.
+          </li>
+          <li>
+            <b>Delivery:</b> Meals are delivered on time, hot and
+            hygienic.
+          </li>
+          <li>
+            <b>Enjoy:</b> Savor your food and let us know your feedback!
+          </li>
         </ol>
       </section>
 
-      <section className={styles.eventsSection} aria-label="Events we cater">
+      <section
+        className={styles.eventsSection}
+        aria-label="Events we cater"
+      >
         <h2 className={styles.sectionTitle}>Events We Cater</h2>
         <p className={styles.eventsText}>
-          Weddings, corporate meetings, parties, and more. We tailor every menu to your event.
+          Weddings, corporate meetings, parties, and more. We tailor
+          every menu to your event.
         </p>
       </section>
 
-      <section className={styles.testimonialsSection} aria-label="Customer testimonials">
+      <section
+        className={styles.testimonialsSection}
+        aria-label="Customer testimonials"
+      >
         <h2 className={styles.sectionTitle}>Hear from Our Customers</h2>
         <div className={styles.testimonials}>
           <blockquote className={styles.testimonialCard}>
-            <p className={styles.quoteMark}>&ldquo;The food was delicious and the service was prompt. Highly recommended!&rdquo;</p>
-            <footer className={styles.testimonialAuthor}>- Happy Customer</footer>
+            <p className={styles.quoteMark}>
+              &ldquo;The food was delicious and the service was prompt.
+              Highly recommended!&rdquo;
+            </p>
+            <footer className={styles.testimonialAuthor}>
+              - Happy Customer
+            </footer>
           </blockquote>
           <blockquote className={styles.testimonialCard}>
-            <p className={styles.quoteMark}>&ldquo;Our corporate event was a hit thanks to FUDORO's catering!&rdquo;</p>
-            <footer className={styles.testimonialAuthor}>- Corporate Client</footer>
+            <p className={styles.quoteMark}>
+              &ldquo;Our corporate event was a hit thanks to FUDORO's
+              catering!&rdquo;
+            </p>
+            <footer className={styles.testimonialAuthor}>
+              - Corporate Client
+            </footer>
           </blockquote>
         </div>
       </section>
 
-      <section className={styles.contactSection} aria-label="Contact details">
+      <section
+        className={styles.contactSection}
+        aria-label="Contact details"
+      >
         <h2 className={styles.sectionTitle}>Contact Us</h2>
         <p className={styles.contactDetails}>
           <strong>Email:</strong>{" "}
-          <a href="mailto:info@fudoro.com" className={styles.contactLink}>
+          <a
+            href="mailto:info@fudoro.com"
+            className={styles.contactLink}
+          >
             info@fudoro.com
           </a>
           <br />
           <strong>Phone:</strong>{" "}
-          <a href="tel:+919999999999" className={styles.contactLink}>
+          <a
+            href="tel:+919999999999"
+            className={styles.contactLink}
+          >
             +91 99999 99999
           </a>
         </p>
