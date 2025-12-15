@@ -1049,33 +1049,7 @@ const OrderSummary = () => {
             </div>
 
             {/* Payment Methods */}
-            <div className={styles.paymentMethods}>
-              <h3 className={styles.paymentTitle}>Payment Method</h3>
-              <div className={styles.paymentOptions} role="radiogroup" aria-label="Payment Method">
-                <label className={styles.paymentOption}>
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="online"
-                    checked={paymentMethod === 'online'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    aria-label="Online Payment"
-                  />
-                  <span>Online Payment</span>
-                </label>
-                <label className={styles.paymentOption}>
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="cod"
-                    checked={paymentMethod === 'cod'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    aria-label="Cash on Delivery"
-                  />
-                  <span>Cash on Delivery</span>
-                </label>
-              </div>
-            </div>
+            
 
             <button
               onClick={handleSubmitOrder}
