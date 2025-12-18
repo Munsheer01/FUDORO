@@ -486,6 +486,17 @@ const BulkOrders = () => {
           </div>
         </section>
 
+        {/* Back Button Section */}
+        <div className={styles.backButtonSection}>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate('/home')}
+            aria-label="Navigate back to home page"
+          >
+            ← Back to Home
+          </button>
+        </div>
+
         {/* Platters Grid - Matching MealBoxes Design */}
         <section className={styles.plattersSection}>
           <div className={styles.plattersContainer}>

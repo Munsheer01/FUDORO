@@ -23,6 +23,42 @@
 
 .main {
   padding-bottom: 4rem;
+  margin-top: 72px;
+}
+
+/* Back Button Section */
+.backButtonSection {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+.backButton {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton:hover {
+  background: var(--secondary-color);
+  transform: translateX(-4px);
+}
+
+.backButton:active {
+  transform: translateX(-2px);
 }
 
 /* Loading & Error States - Matching MealBoxes */
