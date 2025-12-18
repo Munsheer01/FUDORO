@@ -225,12 +225,7 @@ const CartPage = () => {
               >
                 Browse Platters
               </button>
-              <button 
-                className={styles.shopBtn}
-                onClick={() => navigate('/meal-boxes')}
-              >
-                Browse Meal Boxes
-              </button>
+              
             </div>
           </div>
         ) : (

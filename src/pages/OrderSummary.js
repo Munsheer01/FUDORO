@@ -639,6 +639,17 @@ const OrderSummary = () => {
     <div className={styles.wrapper}>
       <GlobalHeader />
       <main className={styles.main}>
+        {/* Top Back Button */}
+        <div className={styles.topBackButtonSection}>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate(-1)}
+            aria-label="Go back to customize order"
+          >
+            ← Back to Customize
+          </button>
+        </div>
+
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Order Summary</h1>
           <p className={styles.pageDescription}>
