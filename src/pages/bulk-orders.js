@@ -204,7 +204,8 @@ const BulkOrders = () => {
   const [filters, setFilters] = useState({
     cuisine: 'all',
     priceRange: 'all',
-    servingSize: 'all'
+    servingSize: 'all',
+    vegNonVeg: 'all'
   });
 
   // Fetch platters from Firestore with optimized query
@@ -290,6 +291,17 @@ const BulkOrders = () => {
       });
     }
 
+    if (filters.vegNonVeg !== 'all') {
+      filtered = filtered.filter(platter => {
+        if (filters.vegNonVeg === 'veg') {
+          return platter.isVeg === true;
+        } else if (filters.vegNonVeg === 'non-veg') {
+          return platter.isVeg === false;
+        }
+        return true;
+      });
+    }
+
     return filtered;
   }, [platters, filters]);
 
@@ -325,7 +337,8 @@ const BulkOrders = () => {
     setFilters({
       cuisine: 'all',
       priceRange: 'all',
-      servingSize: 'all'
+      servingSize: 'all',
+      vegNonVeg: 'all'
     });
   }, []);
 
@@ -468,14 +481,25 @@ const BulkOrders = () => {
                 </select>
               </div>
 
-              
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Food Type:</label>
+                <select
+                  value={filters.vegNonVeg}
+                  onChange={(e) => handleFilterChange('vegNonVeg', e.target.value)}
+                  className={styles.filterSelect}
+                >
+                  <option value="all">All Types</option>
+                  <option value="veg">🥬 Vegetarian</option>
+                  <option value="non-veg">🍗 Non-Vegetarian</option>
+                </select>
+              </div>
 
               <div className={styles.resultsCount}>
                 <span>{filteredPlatters.length} platter{filteredPlatters.length !== 1 ? 's' : ''} found</span>
               </div>
             </div>
             
-            {(filters.cuisine !== 'all' || filters.priceRange !== 'all' || filters.servingSize !== 'all') && (
+            {(filters.cuisine !== 'all' || filters.priceRange !== 'all' || filters.servingSize !== 'all' || filters.vegNonVeg !== 'all') && (
               <button 
                 className={styles.clearFiltersBtn}
                 onClick={handleClearFilters}
