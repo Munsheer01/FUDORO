@@ -174,7 +174,6 @@ const OrderSummary = () => {
   const { 
     customizations = {}, 
     orderTotal = 0, 
-    totalQuantity = 0, 
     orderType = 'bulk',
     preFilledData = {},
     fromCart = false 
@@ -196,7 +195,7 @@ const OrderSummary = () => {
   const [touched, setTouched] = useState({});
   const [suggestions, setSuggestions] = useState({});
   const [fieldWarnings, setFieldWarnings] = useState({});
-  const [paymentMethod, setPaymentMethod] = useState('online');
+  const [paymentMethod] = useState('online');
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -207,6 +206,12 @@ const OrderSummary = () => {
     const timestamp = Date.now().toString(36);
     const randomStr = Math.random().toString(36).substring(2, 7);
     return `FUD-${timestamp}-${randomStr}`.toUpperCase();
+  }, []);
+
+  // Show toast notification
+  const showToast = useCallback((message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000);
   }, []);
 
   // Online/offline detection
@@ -227,7 +232,7 @@ const OrderSummary = () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
+  }, [showToast]);
 
   // Form state persistence
   useEffect(() => {
@@ -354,12 +359,6 @@ const OrderSummary = () => {
       };
     });
   }, [customizations]);
-
-  // Show toast notification
-  const showToast = useCallback((message, type = 'info') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 5000);
-  }, []);
 
   // Real-time validation as user types
   const handleInputChange = useCallback((field, value) => {

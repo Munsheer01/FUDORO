@@ -226,11 +226,12 @@ const MyOrders = () => {
         abortControllerRef.current.abort();
       }
     };
-  }, [user]);
+  }, [user, fetchOrders]);
 
   // Infinite scroll observer
   useEffect(() => {
-    if (!observerTarget.current || !hasMore || loadingMore) return;
+    const currentTarget = observerTarget.current;
+    if (!currentTarget || !hasMore || loadingMore) return;
 
     const observer = new IntersectionObserver(
       entries => {
@@ -241,11 +242,11 @@ const MyOrders = () => {
       { threshold: 0.1 }
     );
 
-    observer.observe(observerTarget.current);
+    observer.observe(currentTarget);
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
     };
   }, [hasMore, loadingMore, fetchOrders]);

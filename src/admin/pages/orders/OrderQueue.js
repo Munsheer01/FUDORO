@@ -1,6 +1,6 @@
 // src/admin/pages/orders/OrderQueue.js (Updated)
 import React, { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import OrderCard from './components/OrderCard';
 import styles from './OrderQueue.module.css';

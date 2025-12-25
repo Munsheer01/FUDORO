@@ -75,9 +75,12 @@ const CategorySelector = React.memo(
     const isMultiSelect = selectionLimit > 1;
 
     // Calculate valid selected items (filter out null/undefined)
-    const validSelectedItems = Array.isArray(selectedItems)
-      ? selectedItems.filter(item => item && item.id)
-      : [];
+    const validSelectedItems = useMemo(
+      () => Array.isArray(selectedItems)
+        ? selectedItems.filter(item => item && item.id)
+        : [],
+      [selectedItems]
+    );
     const selectedCount = validSelectedItems.length;
 
     const handleItemSelect = useCallback(
@@ -235,8 +238,10 @@ const CustomizeOrder = () => {
   const navigate = useNavigate();
 
   const locationState = location.state || {};
-  const selectedPlattersObj = locationState.selectedPlatters || {};
-  const orderType = locationState.orderType || 'bulk';
+  const selectedPlattersObj = useMemo(
+    () => locationState.selectedPlatters || {},
+    [locationState.selectedPlatters]
+  );
 
   const selectedPlattersArray = useMemo(() => {
     if (!selectedPlattersObj || typeof selectedPlattersObj !== 'object') {

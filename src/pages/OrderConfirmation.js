@@ -52,7 +52,6 @@ const OrderConfirmation = () => {
 
   // Calculate some order statistics
   const totalItems = orderItems.reduce((sum, item) => sum + item.quantity, 0);
-  const hasMealBoxes = orderItems.some(item => item.type === 'meal-box');
   const hasPlatter = orderItems.some(item => item.type === 'platter');
 
   // Calculate estimated delivery date/time

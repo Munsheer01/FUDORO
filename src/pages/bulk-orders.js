@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "./BulkOrders.module.css";
@@ -8,7 +8,6 @@ import { GlobalFooter, GlobalHeader } from "../components/GlobalHeader&Footer";
 // Enhanced Platter Card Component - Functionality Preserved, Design Aligned
 const PlatterCard = React.memo(function PlatterCard({ platter, onSelect, isSelected, selectedQuantity }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
 
   const handleImageLoad = useCallback(() => {
@@ -16,7 +15,7 @@ const PlatterCard = React.memo(function PlatterCard({ platter, onSelect, isSelec
   }, []);
 
   const handleImageError = useCallback(() => {
-    setImageError(true);
+    // Image error handled by alt text
   }, []);
 
   const handleCardClick = useCallback(() => {
@@ -195,7 +194,6 @@ const PlatterCard = React.memo(function PlatterCard({ platter, onSelect, isSelec
 
 const BulkOrders = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [platters, setPlatters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
