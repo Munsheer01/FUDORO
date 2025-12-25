@@ -396,6 +396,243 @@
   text-align: left;
 }
 
+/* ==================== PHONE AUTHENTICATION STYLES ==================== */
+
+/* Auth Mode Toggle (Email/Phone) */
+.authModeToggle {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  background-color: #e8f5f2;
+  padding: 0.5rem;
+  border-radius: 12px;
+}
+
+.authModeBtn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid transparent;
+  background-color: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.authModeBtn:hover {
+  background-color: rgba(10, 82, 71, 0.1);
+}
+
+.authModeBtn.active {
+  background-color: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(10, 82, 71, 0.3);
+}
+
+/* Phone Auth Container */
+.phoneAuthContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.backToEmailBtn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.backToEmailBtn:hover:not(:disabled) {
+  color: var(--primary-bg);
+  text-decoration: underline;
+}
+
+.backToEmailBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Phone Input Styling */
+.phoneInputContainer {
+  display: flex;
+  align-items: center;
+  border: 1.8px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.15s ease;
+}
+
+.phoneInputContainer:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 6px 2px rgba(10, 82, 71, 0.25);
+}
+
+.phonePrefix {
+  background-color: #e8f5f2;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.03rem;
+  padding: 0.7rem 0.75rem;
+  border-right: 1.8px solid var(--border-color);
+  user-select: none;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.phoneInput {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: none;
+  font-size: 1.03rem;
+  outline: none;
+  font-family: var(--font-main);
+  color: var(--dark-text);
+  min-height: 48px;
+}
+
+.phoneInput::placeholder {
+  color: #999;
+}
+
+/* OTP Input Styling */
+.otpInput {
+  padding: 0.9rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  outline-offset: 2px;
+  font-family: 'Courier New', monospace;
+  transition: border-color 0.2s ease, box-shadow 0.15s ease;
+  color: var(--accent);
+  min-height: 56px;
+}
+
+.otpInput:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px 2px rgba(10, 82, 71, 0.3);
+  outline: none;
+}
+
+.otpInput::placeholder {
+  color: #ccc;
+  letter-spacing: 0.3rem;
+}
+
+/* Input Hints */
+.inputHint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
+/* OTP Sent Message */
+.otpSentMessage {
+  background-color: #e8f5e8;
+  color: var(--success-color);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+  border: 1px solid #c3e6c3;
+}
+
+/* Resend Button */
+.resendButton {
+  background-color: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  margin-top: 0.5rem;
+  min-height: 44px;
+}
+
+.resendButton:hover:not(:disabled) {
+  background-color: var(--accent);
+  color: var(--white);
+  transform: scale(1.02);
+}
+
+.resendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* reCAPTCHA Container */
+.recaptchaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 78px;
+  margin: 0.5rem 0;
+}
+
+/* Hide reCAPTCHA badge for invisible mode but keep it accessible */
+.recaptchaContainer :global(.grecaptcha-badge) {
+  visibility: visible;
+  opacity: 0.7;
+}
+
+/* Ensure invisible reCAPTCHA doesn't break layout */
+.recaptchaContainer > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile Responsive Adjustments for Phone Auth */
+@media (max-width: 480px) {
+  .authModeToggle {
+    gap: 0.5rem;
+    padding: 0.4rem;
+  }
+
+  .authModeBtn {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .phonePrefix {
+    font-size: 0.95rem;
+    padding: 0.7rem 0.6rem;
+  }
+
+  .phoneInput {
+    font-size: 0.95rem;
+  }
+
+  .otpInput {
+    font-size: 1.3rem;
+    letter-spacing: 0.3rem;
+    padding: 0.8rem 0.75rem;
+  }
+}
+
+/* ==================== END PHONE AUTHENTICATION STYLES ==================== */
+
 /* How It Works Section */
 .howItWorksSection {
   max-width: 720px;

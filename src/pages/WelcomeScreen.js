@@ -9,6 +9,8 @@ import {
   onAuthStateChanged,
   signOut,
   updateProfile,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 } from "firebase/auth";
 
 // Authentication form component — moved OUTSIDE to prevent recreation on parent re-render
@@ -101,6 +103,166 @@ const AuthForm = React.memo(({
 
 AuthForm.displayName = "AuthForm";
 
+// Phone Authentication Component
+const PhoneAuthForm = React.memo(({ onBack, error, loading, onSubmit }) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [name, setName] = useState("");
+
+  const formatPhoneNumber = (value) => {
+    // Remove all non-digits
+    const digits = value.replace(/\D/g, '');
+    // Limit to 10 digits
+    return digits.slice(0, 10);
+  };
+
+  const handlePhoneChange = (e) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formatted);
+  };
+
+  const handleOtpChange = (e) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+    setOtp(digits);
+  };
+
+  const isValidPhone = phoneNumber.length === 10 && /^[6-9]/.test(phoneNumber);
+  const isValidOtp = otp.length === 6;
+
+  return (
+    <div className={styles.phoneAuthContainer}>
+      <button 
+        type="button" 
+        onClick={onBack} 
+        className={styles.backToEmailBtn}
+        disabled={loading}
+      >
+        ← Back to Email Login
+      </button>
+
+      {!otpSent ? (
+        <form onSubmit={(e) => onSubmit(e, phoneNumber, name, setOtpSent)} noValidate>
+          <label htmlFor="name" className={styles.label}>
+            Your Name
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className={styles.input}
+              autoComplete="name"
+            />
+          </label>
+
+          <label htmlFor="phoneNumber" className={styles.label}>
+            Phone Number
+            <div className={styles.phoneInputContainer}>
+              <span className={styles.phonePrefix}>+91</span>
+              <input
+                id="phoneNumber"
+                name="phoneNumber"
+                type="tel"
+                inputMode="numeric"
+                placeholder="9876543210"
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                required
+                className={styles.phoneInput}
+                autoComplete="tel"
+                maxLength={10}
+              />
+            </div>
+            {phoneNumber && !isValidPhone && (
+              <span className={styles.inputHint}>
+                {phoneNumber.length < 10 
+                  ? `Enter ${10 - phoneNumber.length} more digit(s)` 
+                  : 'Must start with 6, 7, 8, or 9'}
+              </span>
+            )}
+          </label>
+
+          {error && (
+            <div role="alert" className={styles.formError}>
+              {error}
+            </div>
+          )}
+
+          <div id="recaptcha-container" className={styles.recaptchaContainer}></div>
+
+          <button
+            type="submit"
+            disabled={loading || !isValidPhone || !name.trim()}
+            className={styles.authButton}
+          >
+            {loading ? "Sending OTP..." : "Send OTP"}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={(e) => onSubmit(e, phoneNumber, name, setOtpSent, otp)} noValidate>
+          <div className={styles.otpSentMessage}>
+            ✓ OTP sent to +91 {phoneNumber}
+          </div>
+
+          <label htmlFor="otp" className={styles.label}>
+            Enter OTP
+            <input
+              id="otp"
+              name="otp"
+              type="text"
+              inputMode="numeric"
+              placeholder="123456"
+              value={otp}
+              onChange={handleOtpChange}
+              required
+              className={styles.otpInput}
+              autoComplete="one-time-code"
+              maxLength={6}
+              autoFocus
+            />
+            {otp && !isValidOtp && (
+              <span className={styles.inputHint}>
+                Enter {6 - otp.length} more digit(s)
+              </span>
+            )}
+          </label>
+
+          {error && (
+            <div role="alert" className={styles.formError}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading || !isValidOtp}
+            className={styles.authButton}
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setOtpSent(false);
+              setOtp("");
+            }}
+            className={styles.resendButton}
+            disabled={loading}
+          >
+            Change Phone Number
+          </button>
+        </form>
+      )}
+    </div>
+  );
+});
+
+PhoneAuthForm.displayName = "PhoneAuthForm";
+
 export default function WelcomeScreen() {
   const navigate = useNavigate();
 
@@ -112,6 +274,11 @@ export default function WelcomeScreen() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true); // toggle between login/signup
+  const [authMode, setAuthMode] = useState("email"); // "email" or "phone"
+  
+  // Phone auth states
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
   // Monitor auth state WITHOUT automatic redirect
   useEffect(() => {
@@ -121,6 +288,55 @@ export default function WelcomeScreen() {
     });
     return () => unsubscribe();
   }, []);
+
+  // Initialize reCAPTCHA when switching to phone auth
+  useEffect(() => {
+    if (authMode === "phone" && !recaptchaVerifier) {
+      const timer = setTimeout(() => {
+        try {
+          const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            size: 'invisible',
+            callback: () => {
+              console.log('reCAPTCHA verified successfully');
+            },
+            'expired-callback': () => {
+              console.warn('reCAPTCHA expired');
+              setError('Verification expired. Please try again.');
+            },
+            'error-callback': (error) => {
+              console.error('reCAPTCHA error:', error);
+              setError('Verification failed. Please refresh and try again.');
+            }
+          });
+          
+          verifier.render().then(() => {
+            console.log('reCAPTCHA rendered successfully');
+            setRecaptchaVerifier(verifier);
+          }).catch((error) => {
+            console.error('reCAPTCHA render error:', error);
+            setError('Failed to load verification. Please refresh the page.');
+          });
+        } catch (err) {
+          console.error('reCAPTCHA initialization error:', err);
+          setError('Failed to initialize verification. Please refresh the page.');
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+
+    // Cleanup
+    return () => {
+      if (authMode !== "phone" && recaptchaVerifier) {
+        try {
+          recaptchaVerifier.clear();
+        } catch (e) {
+          console.error('Error clearing reCAPTCHA:', e);
+        }
+        setRecaptchaVerifier(null);
+      }
+    };
+  }, [authMode, recaptchaVerifier]);
 
   // Handle sign in with explicit navigation
   const handleSignIn = async (e) => {
@@ -169,6 +385,106 @@ export default function WelcomeScreen() {
       setError("");
     } catch (err) {
       setError("Failed to sign out.");
+    }
+  };
+
+  // Handle phone authentication
+  const handlePhoneAuth = async (e, phoneNumber, name, setOtpSent, otp) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      if (!otp) {
+        // Send OTP
+        if (!recaptchaVerifier) {
+          throw new Error('Verification not ready. Please wait a moment and try again.');
+        }
+
+        const fullPhoneNumber = `+91${phoneNumber}`;
+        console.log('Sending OTP to:', fullPhoneNumber);
+        
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Request timeout. Please try again.')), 30000)
+        );
+        
+        const authPromise = signInWithPhoneNumber(
+          auth,
+          fullPhoneNumber,
+          recaptchaVerifier
+        );
+        
+        const confirmation = await Promise.race([authPromise, timeoutPromise]);
+        
+        setConfirmationResult(confirmation);
+        setOtpSent(true);
+        setError("");
+        console.log('OTP sent successfully!');
+      } else {
+        // Verify OTP
+        if (!confirmationResult) {
+          throw new Error('No confirmation found. Please request OTP again.');
+        }
+
+        console.log('Verifying OTP:', otp);
+        
+        // Add timeout for verification
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Verification timeout. Please try again.')), 15000)
+        );
+        
+        const verifyPromise = confirmationResult.confirm(otp);
+        const result = await Promise.race([verifyPromise, timeoutPromise]);
+        
+        // Update user profile with name
+        if (result.user && name) {
+          await updateProfile(result.user, {
+            displayName: name.trim(),
+          });
+        }
+
+        console.log('Phone authentication successful!');
+        navigate("/home");
+      }
+    } catch (err) {
+      console.error('Phone auth error:', err);
+      
+      // User-friendly error messages
+      if (err.message.includes('timeout') || err.message.includes('Timeout')) {
+        setError('Request took too long. Please check your connection and try again.');
+      } else if (err.code === 'auth/invalid-phone-number') {
+        setError('Invalid phone number. Please check and try again.');
+      } else if (err.code === 'auth/invalid-verification-code') {
+        setError('Invalid OTP. Please check and try again.');
+      } else if (err.code === 'auth/code-expired') {
+        setError('OTP expired. Please request a new one.');
+      } else if (err.code === 'auth/too-many-requests') {
+        setError('Too many attempts. Please try again after a few minutes.');
+      } else if (err.code === 'auth/quota-exceeded') {
+        setError('Daily SMS quota exceeded. Please try email login or try again tomorrow.');
+      } else if (err.code === 'auth/network-request-failed') {
+        setError('Network error. Please check your internet connection.');
+      } else {
+        setError(err.message || 'Failed to authenticate. Please try again.');
+      }
+
+      // Reset reCAPTCHA on error (only for OTP send, not verify)
+      if (recaptchaVerifier && !otp) {
+        try {
+          recaptchaVerifier.clear();
+          const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            size: 'invisible',
+          });
+          await verifier.render();
+          setRecaptchaVerifier(verifier);
+        } catch (resetErr) {
+          console.error('Error resetting reCAPTCHA:', resetErr);
+          setError('Verification reset failed. Please refresh the page.');
+        }
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -303,20 +619,57 @@ export default function WelcomeScreen() {
         ) : (
           <>
             <h2 className={styles.sectionTitle}>Sign In / Register</h2>
-            <AuthForm
-              isLogin={isLogin}
-              email={email}
-              password={password}
-              error={error}
-              loading={loading}
-              onEmailChange={(e) => setEmail(e.target.value)}
-              onPasswordChange={(e) => setPassword(e.target.value)}
-              onSubmit={isLogin ? handleSignIn : handleSignUp}
-              onToggleMode={(nextIsLogin) => {
-                setIsLogin(nextIsLogin);
-                setError("");
-              }}
-            />
+            
+            {/* Auth Mode Toggle */}
+            <div className={styles.authModeToggle}>
+              <button
+                type="button"
+                className={`${styles.authModeBtn} ${authMode === "email" ? styles.active : ""}`}
+                onClick={() => {
+                  setAuthMode("email");
+                  setError("");
+                }}
+              >
+                📧 Email
+              </button>
+              <button
+                type="button"
+                className={`${styles.authModeBtn} ${authMode === "phone" ? styles.active : ""}`}
+                onClick={() => {
+                  setAuthMode("phone");
+                  setError("");
+                }}
+              >
+                📱 Phone
+              </button>
+            </div>
+
+            {authMode === "email" ? (
+              <AuthForm
+                isLogin={isLogin}
+                email={email}
+                password={password}
+                error={error}
+                loading={loading}
+                onEmailChange={(e) => setEmail(e.target.value)}
+                onPasswordChange={(e) => setPassword(e.target.value)}
+                onSubmit={isLogin ? handleSignIn : handleSignUp}
+                onToggleMode={(nextIsLogin) => {
+                  setIsLogin(nextIsLogin);
+                  setError("");
+                }}
+              />
+            ) : (
+              <PhoneAuthForm
+                onBack={() => {
+                  setAuthMode("email");
+                  setError("");
+                }}
+                error={error}
+                loading={loading}
+                onSubmit={handlePhoneAuth}
+              />
+            )}
           </>
         )}
       </section>
