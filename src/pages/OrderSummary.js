@@ -5,6 +5,7 @@ import styles from './OrderSummary.module.css';
 import { GlobalHeader, GlobalFooter } from '../components/GlobalHeader&Footer';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+import { sendOrderNotification } from '../services/notificationService';
 
 // Enhanced Validation utilities with helpful suggestions
 const validators = {
@@ -575,6 +576,21 @@ const OrderSummary = () => {
       });
 
       console.log('Order successfully placed with ID:', orderDoc.id);
+
+      // Send real-time notifications to business
+      try {
+        console.log('📱 Sending order notifications...');
+        const notificationResult = await sendOrderNotification(orderData);
+        
+        if (notificationResult.success) {
+          console.log('✅ Notifications sent successfully:', notificationResult.summary);
+        } else {
+          console.warn('⚠️ Some notifications failed:', notificationResult.results.errors);
+        }
+      } catch (notifyError) {
+        // Don't fail the order if notifications fail
+        console.error('❌ Notification error (non-critical):', notifyError);
+      }
 
       // Clear cart and form draft
       if (fromCart) {
