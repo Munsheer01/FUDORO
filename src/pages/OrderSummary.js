@@ -5,7 +5,7 @@ import styles from './OrderSummary.module.css';
 import { GlobalHeader, GlobalFooter } from '../components/GlobalHeader&Footer';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
-import { sendOrderNotification } from '../services/notificationService';
+import { sendOrderNotification, sendCustomerOrderConfirmation, sendCustomerOrderEmail } from '../services/notificationService';
 
 // Enhanced Validation utilities with helpful suggestions
 const validators = {
@@ -548,8 +548,20 @@ const OrderSummary = () => {
         totalAmount: orderTotal,
         totalQuantity: orderItems.reduce((sum, item) => sum + item.quantity, 0),
         status: 'pending',
-        paymentMethod,
-        paymentStatus: paymentMethod === 'cod' ? 'pending' : 'awaiting_confirmation',
+        
+        // Payment Tracking (Manual - No online gateway)
+        payment: {
+          method: 'manual', // manual, cash, upi, bank_transfer, online
+          status: 'pending', // pending, advance_paid, fully_paid, cod
+          advanceAmount: 0,
+          advancePaidDate: null,
+          remainingAmount: orderTotal,
+          fullyPaidDate: null,
+          paymentNotes: 'Awaiting marketing team contact for advance payment',
+          lastUpdated: serverTimestamp(),
+          history: [] // Track payment updates
+        },
+        
         eventDate: deliveryInfo.eventDate,
         eventTime: deliveryInfo.eventTime,
         specialInstructions: deliveryInfo.specialInstructions.trim(),
@@ -579,17 +591,47 @@ const OrderSummary = () => {
 
       // Send real-time notifications to business
       try {
-        console.log('📱 Sending order notifications...');
+        console.log('📱 Sending order notifications to business...');
         const notificationResult = await sendOrderNotification(orderData);
         
         if (notificationResult.success) {
-          console.log('✅ Notifications sent successfully:', notificationResult.summary);
+          console.log('✅ Business notifications sent successfully:', notificationResult.summary);
         } else {
-          console.warn('⚠️ Some notifications failed:', notificationResult.results.errors);
+          console.warn('⚠️ Some business notifications failed:', notificationResult.results.errors);
         }
       } catch (notifyError) {
         // Don't fail the order if notifications fail
-        console.error('❌ Notification error (non-critical):', notifyError);
+        console.error('❌ Business notification error (non-critical):', notifyError);
+      }
+
+      // Send order confirmation to customer (WhatsApp/SMS)
+      try {
+        console.log('📧 Sending order confirmation to customer...');
+        const customerNotification = await sendCustomerOrderConfirmation(orderData);
+        
+        if (customerNotification.success) {
+          console.log('✅ Customer confirmation sent successfully:', customerNotification.summary);
+        } else {
+          console.warn('⚠️ Customer confirmation failed:', customerNotification.results.errors);
+        }
+      } catch (customerError) {
+        // Don't fail the order if customer notification fails
+        console.error('❌ Customer notification error (non-critical):', customerError);
+      }
+
+      // Send order confirmation email to customer
+      try {
+        console.log('📧 Sending order confirmation email...');
+        const emailResult = await sendCustomerOrderEmail(orderData);
+        
+        if (emailResult.success) {
+          console.log('✅ Order confirmation email sent successfully');
+        } else {
+          console.warn('⚠️ Email failed:', emailResult.error);
+        }
+      } catch (emailError) {
+        // Don't fail the order if email fails
+        console.error('❌ Email error (non-critical):', emailError);
       }
 
       // Clear cart and form draft

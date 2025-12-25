@@ -574,6 +574,31 @@ const MyOrders = () => {
                           <span>Total Amount:</span>
                           <strong>₹{order.totalAmount?.toLocaleString('en-IN') || '0'}</strong>
                         </div>
+                        
+                        {/* Payment Status */}
+                        <div className={styles.summaryRow}>
+                          <span>Payment Status:</span>
+                          <span className={`${styles.paymentBadge} ${styles[order.payment?.status || 'pending']}`}>
+                            {(order.payment?.status || 'pending').replace('_', ' ').toUpperCase()}
+                          </span>
+                        </div>
+                        
+                        {order.payment?.advanceAmount > 0 && (
+                          <div className={styles.paymentDetails}>
+                            <div className={styles.summaryRow}>
+                              <span>Advance Paid:</span>
+                              <strong className={styles.paidAmount}>
+                                ₹{order.payment.advanceAmount?.toLocaleString('en-IN')}
+                              </strong>
+                            </div>
+                            <div className={styles.summaryRow}>
+                              <span>Remaining:</span>
+                              <strong className={styles.remainingAmount}>
+                                ₹{order.payment.remainingAmount?.toLocaleString('en-IN')}
+                              </strong>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className={styles.orderActions}>
@@ -682,6 +707,59 @@ const MyOrders = () => {
                   )}
                   {selectedOrder.eventTime && (
                     <p><strong>Event Time:</strong> {selectedOrder.eventTime}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Payment Information */}
+              <div className={styles.modalSection}>
+                <h3>💰 Payment Details</h3>
+                <div className={styles.paymentInfo}>
+                  <div className={styles.paymentRow}>
+                    <span>Status:</span>
+                    <span className={`${styles.paymentBadge} ${styles[selectedOrder.payment?.status || 'pending']}`}>
+                      {(selectedOrder.payment?.status || 'pending').replace('_', ' ').toUpperCase()}
+                    </span>
+                  </div>
+                  
+                  <div className={styles.paymentRow}>
+                    <span>Total Amount:</span>
+                    <strong>₹{selectedOrder.totalAmount?.toLocaleString('en-IN') || '0'}</strong>
+                  </div>
+                  
+                  {selectedOrder.payment?.advanceAmount > 0 && (
+                    <>
+                      <div className={styles.paymentRow}>
+                        <span>Advance Paid:</span>
+                        <strong className={styles.paidAmount}>
+                          ₹{selectedOrder.payment.advanceAmount?.toLocaleString('en-IN')}
+                        </strong>
+                      </div>
+                      
+                      <div className={styles.paymentRow}>
+                        <span>Remaining Balance:</span>
+                        <strong className={styles.remainingAmount}>
+                          ₹{selectedOrder.payment.remainingAmount?.toLocaleString('en-IN')}
+                        </strong>
+                      </div>
+                      
+                      <div className={styles.paymentRow}>
+                        <span>Payment Method:</span>
+                        <span>{(selectedOrder.payment.method || 'manual').toUpperCase()}</span>
+                      </div>
+                    </>
+                  )}
+                  
+                  {selectedOrder.payment?.paymentNotes && (
+                    <div className={styles.paymentNotes}>
+                      <p><strong>Note:</strong> {selectedOrder.payment.paymentNotes}</p>
+                    </div>
+                  )}
+                  
+                  {selectedOrder.payment?.status === 'pending' && (
+                    <div className={styles.paymentAlert}>
+                      <p>ℹ️ Our team will contact you shortly to collect the advance payment and confirm your order.</p>
+                    </div>
                   )}
                 </div>
               </div>

@@ -743,6 +743,98 @@
   color: var(--color-primary);
 }
 
+/* ==================== Payment Styles ==================== */
+
+.paymentBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.paymentBadge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.paymentBadge.advance_paid {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.paymentBadge.fully_paid {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.paymentBadge.cod {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.paymentDetails {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+}
+
+.paidAmount {
+  color: #10b981;
+}
+
+.remainingAmount {
+  color: #f59e0b;
+}
+
+.paymentInfo {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.paymentRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.paymentRow span:first-child {
+  color: var(--color-gray-600);
+}
+
+.paymentNotes {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.paymentNotes p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-gray-700);
+}
+
+.paymentAlert {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0.25rem;
+}
+
+.paymentAlert p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #1e40af;
+}
+
 /* ==================== Responsive Design ==================== */
 
 /* Tablet (768px - 1024px) */

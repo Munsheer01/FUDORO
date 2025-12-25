@@ -7,6 +7,13 @@ import styles from './OrderCard.module.css';
 const OrderCard = ({ order, onStatusUpdate }) => {
   const [updating, setUpdating] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(order.status);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentData, setPaymentData] = useState({
+    status: order.payment?.status || 'pending',
+    method: order.payment?.method || 'manual',
+    advanceAmount: order.payment?.advanceAmount || 0,
+    notes: order.payment?.paymentNotes || ''
+  });
 
   // ✅ Safe timestamp conversion function
   const getDateFromTimestamp = (timestamp) => {
@@ -71,6 +78,56 @@ const OrderCard = ({ order, onStatusUpdate }) => {
     } catch (error) {
       console.error('❌ Error updating order status:', error);
       alert('Failed to update order status. Please try again.');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handlePaymentUpdate = async () => {
+    setUpdating(true);
+    try {
+      const orderRef = doc(db, 'orders', order.id);
+      const remainingAmount = order.totalAmount - paymentData.advanceAmount;
+      
+      const paymentUpdate = {
+        'payment.status': paymentData.status,
+        'payment.method': paymentData.method,
+        'payment.advanceAmount': Number(paymentData.advanceAmount),
+        'payment.remainingAmount': remainingAmount,
+        'payment.paymentNotes': paymentData.notes,
+        'payment.lastUpdated': serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+
+      // Add payment date if marking as paid
+      if (paymentData.status === 'advance_paid' && !order.payment?.advancePaidDate) {
+        paymentUpdate['payment.advancePaidDate'] = serverTimestamp();
+      }
+      if (paymentData.status === 'fully_paid' && !order.payment?.fullyPaidDate) {
+        paymentUpdate['payment.fullyPaidDate'] = serverTimestamp();
+      }
+
+      // Add to payment history
+      const historyEntry = {
+        timestamp: new Date().toISOString(),
+        action: paymentData.status,
+        amount: Number(paymentData.advanceAmount),
+        method: paymentData.method,
+        notes: paymentData.notes,
+        updatedBy: 'admin'
+      };
+
+      await updateDoc(orderRef, {
+        ...paymentUpdate,
+        'payment.history': [...(order.payment?.history || []), historyEntry]
+      });
+
+      setShowPaymentModal(false);
+      console.log(`✅ Payment updated for order ${order.id}`);
+      
+    } catch (error) {
+      console.error('❌ Error updating payment:', error);
+      alert('Failed to update payment. Please try again.');
     } finally {
       setUpdating(false);
     }
@@ -159,6 +216,151 @@ const OrderCard = ({ order, onStatusUpdate }) => {
         <div className={styles.specialInstructions}>
           <strong>📝 Special Instructions:</strong>
           <p>{order.specialInstructions}</p>
+        </div>
+      )}
+
+      {/* Payment Information */}
+      <div className={styles.paymentSection}>
+        <div className={styles.paymentHeader}>
+          <h4>💰 Payment Status</h4>
+          <button 
+            className={styles.updatePaymentBtn}
+            onClick={() => setShowPaymentModal(true)}
+          >
+            ✏️ Update Payment
+          </button>
+        </div>
+        
+        <div className={styles.paymentInfo}>
+          <div className={styles.paymentRow}>
+            <span>Status:</span>
+            <span className={`${styles.paymentBadge} ${styles[order.payment?.status || 'pending']}`}>
+              {(order.payment?.status || 'pending').replace('_', ' ').toUpperCase()}
+            </span>
+          </div>
+          
+          <div className={styles.paymentRow}>
+            <span>Method:</span>
+            <span>{(order.payment?.method || 'manual').toUpperCase()}</span>
+          </div>
+          
+          <div className={styles.paymentRow}>
+            <span>Total Amount:</span>
+            <strong>₹{order.totalAmount?.toLocaleString('en-IN')}</strong>
+          </div>
+          
+          {order.payment?.advanceAmount > 0 && (
+            <>
+              <div className={styles.paymentRow}>
+                <span>Advance Paid:</span>
+                <strong className={styles.paidAmount}>
+                  ₹{order.payment.advanceAmount?.toLocaleString('en-IN')}
+                </strong>
+              </div>
+              
+              <div className={styles.paymentRow}>
+                <span>Remaining:</span>
+                <strong className={styles.remainingAmount}>
+                  ₹{order.payment.remainingAmount?.toLocaleString('en-IN')}
+                </strong>
+              </div>
+            </>
+          )}
+          
+          {order.payment?.paymentNotes && (
+            <div className={styles.paymentNotes}>
+              <em>Note: {order.payment.paymentNotes}</em>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <h3>💰 Update Payment</h3>
+              <button 
+                className={styles.closeBtn}
+                onClick={() => setShowPaymentModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className={styles.modalBody}>
+              <div className={styles.formGroup}>
+                <label>Payment Status</label>
+                <select 
+                  value={paymentData.status}
+                  onChange={(e) => setPaymentData({...paymentData, status: e.target.value})}
+                  className={styles.formSelect}
+                >
+                  <option value="pending">Pending (No payment yet)</option>
+                  <option value="advance_paid">Advance Paid</option>
+                  <option value="fully_paid">Fully Paid</option>
+                  <option value="cod">Cash on Delivery</option>
+                </select>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label>Payment Method</label>
+                <select 
+                  value={paymentData.method}
+                  onChange={(e) => setPaymentData({...paymentData, method: e.target.value})}
+                  className={styles.formSelect}
+                >
+                  <option value="manual">Manual/Offline</option>
+                  <option value="cash">Cash</option>
+                  <option value="upi">UPI</option>
+                  <option value="bank_transfer">Bank Transfer</option>
+                  <option value="online">Online Payment</option>
+                </select>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label>Advance Amount (₹)</label>
+                <input 
+                  type="number"
+                  value={paymentData.advanceAmount}
+                  onChange={(e) => setPaymentData({...paymentData, advanceAmount: e.target.value})}
+                  className={styles.formInput}
+                  placeholder="Enter advance amount"
+                  min="0"
+                  max={order.totalAmount}
+                />
+                <small>Remaining: ₹{(order.totalAmount - paymentData.advanceAmount).toLocaleString('en-IN')}</small>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label>Payment Notes</label>
+                <textarea 
+                  value={paymentData.notes}
+                  onChange={(e) => setPaymentData({...paymentData, notes: e.target.value})}
+                  className={styles.formTextarea}
+                  placeholder="Add any notes about the payment..."
+                  rows="3"
+                />
+              </div>
+            </div>
+            
+            <div className={styles.modalFooter}>
+              <button 
+                className={styles.cancelBtn}
+                onClick={() => setShowPaymentModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className={styles.saveBtn}
+                onClick={handlePaymentUpdate}
+                disabled={updating}
+              >
+                {updating ? 'Saving...' : '💾 Save Payment'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
