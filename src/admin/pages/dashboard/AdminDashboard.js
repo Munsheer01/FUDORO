@@ -47,10 +47,10 @@ const AdminDashboard = () => {
       limit(5)
     );
 
-    // Low stock query
+    // Low stock query (optional - only if inventory collection exists)
     const lowStockQuery = query(collection(db, 'inventory'));
 
-    // ✅ NEW: MealBoxes query
+    // ✅ NEW: MealBoxes query (optional - only if MealBoxes collection exists)
     const mealBoxesQuery = query(collection(db, 'MealBoxes'));
 
     const unsubscribeToday = onSnapshot(todayOrdersQuery, (snapshot) => {
@@ -97,6 +97,7 @@ const AdminDashboard = () => {
       setLowStockItems(lowStock);
     }, (error) => {
       console.error('Error fetching inventory:', error);
+      setLowStockItems([]); // Set empty on error
     });
 
     // ✅ NEW: MealBoxes listener
@@ -111,6 +112,7 @@ const AdminDashboard = () => {
       }));
     }, (error) => {
       console.error('Error fetching meal boxes:', error);
+      setMealBoxes([]); // Set empty on error
     });
 
     return () => {

@@ -22,13 +22,6 @@ const AdminSidebar = ({ isOpen, currentPath, onToggle }) => {
       label: 'Menu',
       description: 'Manage Platters'
     },
-    // ✅ NEW: MealBoxes Management
-    {
-      path: '/admin/meal-boxes',
-      icon: '🍱',
-      label: 'Meal Boxes',
-      description: 'Manage Meal Boxes'
-    },
     {
       path: '/admin/inventory',
       icon: '📦',
