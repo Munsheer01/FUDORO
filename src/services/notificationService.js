@@ -380,7 +380,7 @@ export const sendOrderNotification = async (orderData) => {
  * Format customer order confirmation message
  */
 const formatCustomerConfirmationMessage = (orderData) => {
-  const { orderReference, customerInfo, items, totalAmount, eventDate, eventTime, deliveryAddress } = orderData;
+  const { orderReference, items, totalAmount, eventDate, eventTime, deliveryAddress } = orderData;
   
   const itemsList = items.map(item => 
     `${item.quantity}x ${item.platterName || item.mealBoxName}`
@@ -772,10 +772,12 @@ export const sendCustomerOrderEmail = async (orderData) => {
   }
 };
 
-export default {
+const notificationService = {
   sendOrderNotification,
   sendCustomerOrderConfirmation,
   sendCustomerOrderEmail,
   sendStatusUpdateNotification,
   NOTIFICATION_CONFIG
 };
+
+export default notificationService;

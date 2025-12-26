@@ -3,17 +3,26 @@
   width: 280px;
   background: linear-gradient(180deg, #0A5247 0%, #0F4B2E 100%);
   color: white;
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
   position: fixed;
   height: 100vh;
   left: 0;
   top: 0;
   z-index: 1000;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.closed {
   width: 80px;
+}
+
+.sidebar.closed .navLabel,
+.sidebar.closed .navDescription,
+.sidebar.closed .logoText {
+  display: none;
 }
 
 .sidebarHeader {
@@ -96,10 +105,8 @@
 }
 
 .sidebarFooter {
-  position: absolute;
-  bottom: 2rem;
-  left: 1.5rem;
-  right: 1.5rem;
+  margin-top: auto;
+  padding: 1.5rem;
 }
 
 .toggleButton {
@@ -118,9 +125,10 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   }
   
   .sidebar:not(.closed) {

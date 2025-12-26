@@ -8,12 +8,31 @@ const OrderCard = ({ order, onStatusUpdate }) => {
   const [updating, setUpdating] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(order.status);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [paymentData, setPaymentData] = useState({
     status: order.payment?.status || 'pending',
     method: order.payment?.method || 'manual',
     advanceAmount: order.payment?.advanceAmount || 0,
     notes: order.payment?.paymentNotes || ''
   });
+
+  // ESC key handler
+  React.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        if (showDetailsModal) {
+          setShowDetailsModal(false);
+        } else if (showPaymentModal) {
+          setShowPaymentModal(false);
+        }
+      }
+    };
+
+    if (showDetailsModal || showPaymentModal) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [showDetailsModal, showPaymentModal]);
 
   // ✅ Safe timestamp conversion function
   const getDateFromTimestamp = (timestamp) => {
@@ -202,13 +221,29 @@ const OrderCard = ({ order, onStatusUpdate }) => {
         <h4>Order Items:</h4>
         {order.items?.map((item, index) => (
           <div key={index} className={styles.orderItem}>
-            <span className={styles.itemName}>{item.platterName}</span>
-            <span className={styles.itemQuantity}>×{item.quantity}</span>
-            <span className={styles.itemPrice}>₹{item.totalPrice?.toLocaleString('en-IN')}</span>
+            <div className={styles.itemHeader}>
+              <span className={styles.itemName}>
+                {item.platterName || item.mealBoxName || item.name}
+              </span>
+              <span className={styles.itemQuantity}>×{item.quantity}</span>
+              <span className={styles.itemPrice}>₹{item.totalPrice?.toLocaleString('en-IN')}</span>
+            </div>
+            {item.selections && item.selections.length > 0 && (
+              <div className={styles.quickSelections}>
+                {item.selections.slice(0, 3).map((selection, idx) => (
+                  <span key={idx} className={styles.quickSelection}>
+                    <strong>{selection.categoryName}:</strong> {selection.items.map(i => i.name).join(', ')}
+                  </span>
+                ))}
+                {item.selections.length > 3 && (
+                  <span className={styles.moreSelections}>+ {item.selections.length - 3} more categories</span>
+                )}
+              </div>
+            )}
           </div>
         ))}
         <div className={styles.orderTotal}>
-          <strong>Total: {order.totalQuantity} plates • ₹{order.totalAmount?.toLocaleString('en-IN')}</strong>
+          <strong>Total: {order.totalQuantity} {order.items?.[0]?.type === 'meal-box' ? 'boxes' : 'platters'} • ₹{order.totalAmount?.toLocaleString('en-IN')}</strong>
         </div>
       </div>
 
@@ -277,7 +312,9 @@ const OrderCard = ({ order, onStatusUpdate }) => {
 
       {/* Payment Modal */}
       {showPaymentModal && (
-        <div className={styles.modal}>
+        <div className={styles.modal} onClick={(e) => {
+          if (e.target === e.currentTarget) setShowPaymentModal(false);
+        }}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <h3>💰 Update Payment</h3>
@@ -364,10 +401,276 @@ const OrderCard = ({ order, onStatusUpdate }) => {
         </div>
       )}
 
+      {/* Order Details Modal */}
+      {showDetailsModal && (
+        <div className={styles.modal} onClick={(e) => {
+          if (e.target === e.currentTarget) setShowDetailsModal(false);
+        }}>
+          <div className={`${styles.modalContent} ${styles.largeModal}`}>
+            <div className={styles.modalHeader}>
+              <div>
+                <h3>📋 Order Details - #{order.id.slice(-6)}</h3>
+                <small>Order ID: {order.id}</small>
+              </div>
+              <button 
+                className={styles.closeBtn}
+                onClick={() => setShowDetailsModal(false)}
+                title="Close (ESC)"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className={styles.modalBody}>
+              {/* Order Info */}
+              <div className={styles.detailsSection}>
+                <h4>📦 Order Information</h4>
+                <div className={styles.detailsGrid}>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Order Type:</span>
+                    <span className={styles.detailValue}>{order.orderType?.toUpperCase() || 'BULK'}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Order Status:</span>
+                    <span className={`${styles.detailValue} ${styles.statusBadge}`} style={{ backgroundColor: getStatusColor(currentStatus) }}>
+                      {currentStatus.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Order Date:</span>
+                    <span className={styles.detailValue}>{createdAtDate.toLocaleString()}</span>
+                  </div>
+                  {order.orderReference && (
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Reference No:</span>
+                      <span className={styles.detailValue}>{order.orderReference}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Customer Details */}
+              <div className={styles.detailsSection}>
+                <h4>👤 Customer Details</h4>
+                <div className={styles.detailsGrid}>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Name:</span>
+                    <span className={styles.detailValue}>{order.customerInfo?.name || 'Anonymous'}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Phone:</span>
+                    <span className={styles.detailValue}>{order.customerInfo?.phone}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Email:</span>
+                    <span className={styles.detailValue}>{order.customerInfo?.email}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Address:</span>
+                    <span className={styles.detailValue}>{order.customerInfo?.address}</span>
+                  </div>
+                  {order.customerInfo?.pincode && (
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Pincode:</span>
+                      <span className={styles.detailValue}>{order.customerInfo.pincode}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Event Details */}
+              {(order.eventDate || order.eventTime) && (
+                <div className={styles.detailsSection}>
+                  <h4>🎉 Event Details</h4>
+                  <div className={styles.detailsGrid}>
+                    {order.eventDate && (
+                      <div className={styles.detailRow}>
+                        <span className={styles.detailLabel}>Event Date:</span>
+                        <span className={styles.detailValue}>{order.eventDate}</span>
+                      </div>
+                    )}
+                    {order.eventTime && (
+                      <div className={styles.detailRow}>
+                        <span className={styles.detailLabel}>Event Time:</span>
+                        <span className={styles.detailValue}>{order.eventTime}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Order Items - Detailed */}
+              <div className={styles.detailsSection}>
+                <h4>🍽️ Order Items</h4>
+                <div className={styles.itemsTable}>
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>Item Details</th>
+                        <th>Menu Selections</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order.items?.map((item, index) => (
+                        <tr key={index}>
+                          <td>
+                            <div>
+                              <strong>{item.platterName || item.mealBoxName || item.name || 'Item'}</strong>
+                              {item.cuisine && <div className={styles.itemCategory}>Cuisine: {item.cuisine}</div>}
+                              {item.mealType && <div className={styles.itemCategory}>Type: {item.mealType}</div>}
+                            </div>
+                          </td>
+                          <td>
+                            {item.selections && item.selections.length > 0 ? (
+                              <div className={styles.menuSelections}>
+                                {item.selections.map((selection, selIdx) => (
+                                  <div key={selIdx} className={styles.selectionCategory}>
+                                    <strong className={styles.categoryName}>{selection.categoryName}:</strong>
+                                    <div className={styles.selectedItems}>
+                                      {selection.items.map((selectedItem, itemIdx) => (
+                                        <div key={itemIdx} className={styles.selectedItem}>
+                                          • {selectedItem.name}
+                                          {selectedItem.extraPrice > 0 && (
+                                            <span className={styles.extraPrice}> (+₹{selectedItem.extraPrice})</span>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className={styles.noCustomizations}>No selections specified</span>
+                            )}
+                          </td>
+                          <td className={styles.centered}>
+                            <strong>×{item.quantity}</strong>
+                            {item.type === 'platter' && <div className={styles.smallText}>platters</div>}
+                            {item.type === 'meal-box' && <div className={styles.smallText}>boxes</div>}
+                          </td>
+                          <td className={styles.rightAlign}>
+                            <div className={styles.priceBreakdown}>
+                              {item.priceSnapshot ? (
+                                <>
+                                  <div>Base: ₹{item.priceSnapshot.basePrice?.toLocaleString('en-IN')}</div>
+                                  {item.priceSnapshot.extrasTotal > 0 && (
+                                    <div className={styles.extrasPrice}>Extras: +₹{item.priceSnapshot.extrasTotal?.toLocaleString('en-IN')}</div>
+                                  )}
+                                  <div className={styles.totalPrice}><strong>₹{item.totalPrice?.toLocaleString('en-IN')}</strong></div>
+                                </>
+                              ) : (
+                                <strong>₹{item.totalPrice?.toLocaleString('en-IN')}</strong>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className={styles.totalRow}>
+                        <td colSpan="2"><strong>Total Order</strong></td>
+                        <td className={styles.centered}><strong>{order.totalQuantity} {order.items?.[0]?.type === 'meal-box' ? 'boxes' : 'platters'}</strong></td>
+                        <td className={styles.rightAlign}><strong>₹{order.totalAmount?.toLocaleString('en-IN')}</strong></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+
+              {/* Special Instructions */}
+              {order.specialInstructions && (
+                <div className={styles.detailsSection}>
+                  <h4>📝 Special Instructions</h4>
+                  <div className={styles.instructionsBox}>
+                    {order.specialInstructions}
+                  </div>
+                </div>
+              )}
+
+              {/* Payment Summary */}
+              <div className={styles.detailsSection}>
+                <h4>💰 Payment Summary</h4>
+                <div className={styles.paymentSummaryTable}>
+                  <div className={styles.summaryRow}>
+                    <span>Subtotal:</span>
+                    <span>₹{order.totalAmount?.toLocaleString('en-IN')}</span>
+                  </div>
+                  {order.payment?.advanceAmount > 0 && (
+                    <>
+                      <div className={styles.summaryRow}>
+                        <span>Advance Paid:</span>
+                        <span className={styles.paidAmount}>-₹{order.payment.advanceAmount?.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className={styles.summaryRow}>
+                        <span>Remaining Amount:</span>
+                        <span className={styles.remainingAmount}>₹{order.payment.remainingAmount?.toLocaleString('en-IN')}</span>
+                      </div>
+                    </>
+                  )}
+                  <div className={`${styles.summaryRow} ${styles.totalRow}`}>
+                    <span><strong>Total Amount:</strong></span>
+                    <span><strong>₹{order.totalAmount?.toLocaleString('en-IN')}</strong></span>
+                  </div>
+                  <div className={styles.summaryRow}>
+                    <span>Payment Status:</span>
+                    <span className={`${styles.paymentBadge} ${styles[order.payment?.status || 'pending']}`}>
+                      {(order.payment?.status || 'pending').replace('_', ' ').toUpperCase()}
+                    </span>
+                  </div>
+                  <div className={styles.summaryRow}>
+                    <span>Payment Method:</span>
+                    <span>{(order.payment?.method || 'manual').toUpperCase()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment History */}
+              {order.payment?.history && order.payment.history.length > 0 && (
+                <div className={styles.detailsSection}>
+                  <h4>📜 Payment History</h4>
+                  <div className={styles.historyList}>
+                    {order.payment.history.map((entry, index) => (
+                      <div key={index} className={styles.historyItem}>
+                        <div className={styles.historyTime}>
+                          {new Date(entry.timestamp).toLocaleString()}
+                        </div>
+                        <div className={styles.historyDetails}>
+                          <strong>{entry.action.replace('_', ' ').toUpperCase()}</strong>
+                          {entry.amount > 0 && ` - ₹${entry.amount.toLocaleString('en-IN')}`}
+                          {entry.method && ` via ${entry.method.toUpperCase()}`}
+                          {entry.notes && <div className={styles.historyNotes}>{entry.notes}</div>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className={styles.modalFooter}>
+              <button 
+                className={styles.printBtn}
+                onClick={() => window.print()}
+              >
+                🖨️ Print Order
+              </button>
+              <button 
+                className={styles.closeBtn}
+                onClick={() => setShowDetailsModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.cardActions}>
         <button 
           className={styles.viewDetailsBtn}
-          onClick={() => alert(`Order placed: ${createdAtDate.toLocaleString()}`)}
+          onClick={() => setShowDetailsModal(true)}
         >
           📄 View Details
         </button>
