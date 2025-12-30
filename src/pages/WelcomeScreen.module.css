@@ -65,15 +65,27 @@
   width: 100vw;
   height: 70px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   background: var(--primary-bg);
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   z-index: 1000;
   border-radius: 0 0 1rem 1rem;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   text-align: center;
+}
+
+.headerCenter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerLogin {
+  flex-shrink: 0;
 }
 
 .logo {
@@ -134,13 +146,19 @@
   min-height: 48px; /* Touch target */
 }
 
-.ctaBtn:hover,
 .ctaBtn:focus {
   background-color: var(--white);
   color: var(--accent);
   outline: none;
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(15, 75, 46, 0.22);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ctaBtn:hover {
+    background-color: var(--white);
+    color: var(--accent);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(15, 75, 46, 0.22);
+  }
 }
 
 .ctaBtn:focus-visible {
@@ -204,11 +222,16 @@
   min-height: 48px; /* Touch target */
 }
 
-.card:hover,
 .card:focus {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(15, 75, 46, 0.28);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .card:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(15, 75, 46, 0.28);
+  }
 }
 
 .card:focus-visible {
@@ -279,12 +302,18 @@
   min-height: 48px;
 }
 
-.signOutButton:hover,
 .signOutButton:focus {
   background-color: var(--accent);
   color: var(--white);
   outline: none;
-  transform: scale(1.02);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .signOutButton:hover {
+    background-color: var(--accent);
+    color: var(--white);
+    transform: scale(1.02);
+  }
 }
 
 .loginForm {
@@ -342,11 +371,16 @@
   min-height: 48px;
 }
 
-.authButton:hover,
 .authButton:focus {
   background-color: #0a3c2e;
-  transform: scale(1.04);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .authButton:hover {
+    background-color: #0a3c2e;
+    transform: scale(1.04);
+  }
 }
 
 .authButton:active {
@@ -378,10 +412,15 @@
   margin-left: 0.3rem;
 }
 
-.toggleButton:hover,
 .toggleButton:focus {
   color: var(--primary-bg);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .toggleButton:hover {
+    color: var(--primary-bg);
+  }
 }
 
 /* Error Text */
@@ -422,8 +461,10 @@
   min-height: 48px;
 }
 
-.authModeBtn:hover {
-  background-color: rgba(10, 82, 71, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .authModeBtn:hover {
+    background-color: rgba(10, 82, 71, 0.1);
+  }
 }
 
 .authModeBtn.active {
@@ -453,9 +494,11 @@
   transition: color 0.2s ease;
 }
 
-.backToEmailBtn:hover:not(:disabled) {
-  color: var(--primary-bg);
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .backToEmailBtn:hover:not(:disabled) {
+    color: var(--primary-bg);
+    text-decoration: underline;
+  }
 }
 
 .backToEmailBtn:disabled {
@@ -569,10 +612,12 @@
   min-height: 44px;
 }
 
-.resendButton:hover:not(:disabled) {
-  background-color: var(--accent);
-  color: var(--white);
-  transform: scale(1.02);
+@media (hover: hover) and (pointer: fine) {
+  .resendButton:hover:not(:disabled) {
+    background-color: var(--accent);
+    color: var(--white);
+    transform: scale(1.02);
+  }
 }
 
 .resendButton:disabled {
@@ -754,21 +799,46 @@
   transition: color 0.2s ease;
 }
 
-.contactLink:hover,
 .contactLink:focus {
   color: var(--primary-bg);
   outline: none;
   text-decoration: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .contactLink:hover {
+    color: var(--primary-bg);
+    text-decoration: none;
+  }
+}
+
 /* Mobile Responsive Styles */
-@media (max-width: 520px) {
+
+/* Small Mobile (<480px) */
+@media (max-width: 480px) {
   .wrapper {
     padding: 60px 0.5rem 70px;
   }
 
   .header {
     height: 60px;
+    padding: 0 0.5rem;
+  }
+
+  .headerCenter {
+    margin-right: 0;
+  }
+
+  .headerLogin {
+    min-width: 60px;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .tagline {
+    font-size: 0.75rem;
   }
 
   .hero {
@@ -777,17 +847,18 @@
   }
 
   .heroLogo {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
   }
 
   .heroTagline {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .ctaBtn {
     width: 100%;
     min-width: unset;
     padding: 1rem 2rem;
+    font-size: 1rem;
   }
 
   .cardsStack {
@@ -805,6 +876,7 @@
   .signedInActions {
     flex-direction: column;
     max-width: 100%;
+    gap: 1rem;
   }
 
   .howItWorksSection,
@@ -815,23 +887,103 @@
     margin-right: 0.5rem;
     padding: 1.5rem 1rem;
   }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+  
+  .authModeToggle {
+    gap: 0.5rem;
+    padding: 0.4rem;
+  }
+  
+  .authModeBtn {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.75rem;
+  }
 }
 
-@media (min-width: 520px) and (max-width: 768px) {
+/* Medium Mobile (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .wrapper {
+    padding: 70px 1rem 80px;
+  }
+  
+  .header {
+    height: 70px;
+    padding: 0 1rem;
+  }
+  
+  .headerLogin {
+    min-width: 80px;
+  }
+  
+  .hero {
+    max-width: 520px;
+    padding: 2rem 1.5rem;
+  }
+  
+  .heroLogo {
+    font-size: 3rem;
+  }
+  
+  .heroTagline {
+    font-size: 1.2rem;
+  }
+  
   .signedInActions {
     flex-direction: row;
     justify-content: center;
     max-width: 400px;
+    gap: 1.2rem;
+  }
+  
+  .cardsStack {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .loginSection {
+    max-width: 480px;
+    padding: 2rem 1.5rem;
   }
 }
 
-@media (min-width: 992px) {
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .header {
+    padding: 0 1.5rem;
+  }
+  
+  .cardsStack {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  .hero {
+    max-width: 600px;
+  }
+  
+  .servicesSection,
+  .howItWorksSection,
+  .eventsSection,
+  .testimonialsSection,
+  .contactSection {
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Desktop (>1024px) */
+@media (min-width: 1025px) {
   .wrapper {
     padding-top: 80px;
   }
 
   .header {
     height: 80px;
+    padding: 0 2rem;
   }
 
   .hero {
@@ -850,13 +1002,155 @@
   }
 }
 
+/* Landscape Mode Optimizations */
+@media (max-height: 600px) and (orientation: landscape) {
+  .wrapper {
+    padding-top: 50px;
+    padding-bottom: 60px;
+  }
+  
+  .header {
+    height: 50px;
+    padding: 0 0.75rem;
+  }
+  
+  .headerLogin {
+    min-width: 70px;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .tagline {
+    font-size: 0.75rem;
+  }
+  
+  .hero {
+    margin: 1rem auto;
+    padding: 1.2rem 1rem;
+  }
+  
+  .heroLogo {
+    font-size: 2rem;
+  }
+  
+  .heroTagline {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  
+  .servicesSection,
+  .howItWorksSection,
+  .eventsSection,
+  .testimonialsSection,
+  .contactSection {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .loginSection {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 /* Accessibility Improvements */
-@media (prefers-reduced-motion: reduce) {
+
+/* Focus Indicators - WCAG 2.1 Level AA */
+*:focus-visible,
+.ctaBtn:focus-visible,
+.authButton:focus-visible,
+.signOutButton:focus-visible,
+.authModeBtn:focus-visible,
+.toggleButton:focus-visible,
+.resendButton:focus-visible,
+.backToEmailBtn:focus-visible,
+.input:focus-visible,
+.phoneInput:focus-visible,
+.otpInput:focus-visible,
+.contactLink:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--text-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .ctaBtn,
+  .authButton,
+  .signOutButton {
+    border: 2px solid currentColor;
+  }
+  
+  .input,
+  .phoneInput,
+  .otpInput {
+    border-width: 2px;
+  }
+  
+  .card {
+    border: 2px solid var(--accent);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+  /* Larger touch targets on touch devices */
   .ctaBtn,
   .authButton,
   .signOutButton,
+  .authModeBtn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.9rem 2rem;
+  }
+  
+  .input,
+  .phoneInput {
+    min-height: 52px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .otpInput {
+    min-height: 60px;
+  }
+  
+  .resendButton,
+  .backToEmailBtn {
+    min-height: 48px;
+  }
+  
   .card {
-    transition: none;
+    min-height: 80px;
+    padding: 1.5rem;
+  }
+  
+  /* Increase tap target spacing */
+  .cardsStack {
+    gap: 1.8rem;
+  }
+  
+  .signedInActions {
+    gap: 1.5rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
   
   .loadingSpinner {
@@ -864,6 +1158,40 @@
   }
 }
 
+/* Skip to Main Content Link (Screen Readers) */
+.skipToMain {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-bg);
+  color: var(--heading-color);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.skipToMain:focus {
+  top: 0;
+  outline: 3px solid var(--text-color);
+  outline-offset: 2px;
+}
+
+/* Screen Reader Only Text */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Print Styles */
 @media print {
   .header {
     position: static;
@@ -879,5 +1207,10 @@
     background: transparent !important;
     color: var(--dark-text) !important;
     border: 2px solid var(--dark-text) !important;
+  }
+  
+  .loginSection,
+  .authModeToggle {
+    display: none;
   }
 }

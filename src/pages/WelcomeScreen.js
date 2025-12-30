@@ -289,6 +289,18 @@ export default function WelcomeScreen() {
     return () => unsubscribe();
   }, []);
 
+  // Keyboard navigation - ESC key closes error messages
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && error) {
+        setError('');
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [error]);
+
   // Initialize reCAPTCHA when switching to phone auth
   useEffect(() => {
     if (authMode === "phone" && !recaptchaVerifier) {
@@ -506,8 +518,13 @@ export default function WelcomeScreen() {
   );
 
   return (
-    <main className={styles.wrapper} role="main" tabIndex={-1}>
-      <header className={styles.header}>
+    <main className={styles.wrapper} role="main" id="main-content">
+      {/* Skip to main content link for screen readers */}
+      <a href="#main-content" className={styles.skipToMain}>
+        Skip to main content
+      </a>
+      
+      <header className={styles.header} role="banner">
         <div className={styles.headerCenter}>
           <div className={styles.logo} aria-label="Fudoro logo">
             FUDORO
@@ -516,35 +533,33 @@ export default function WelcomeScreen() {
             Reliable, hygienic food delivery for your needs
           </div>
         </div>
-        <button
-          className={styles.ctaBtn}
-          style={{
-            position: "absolute",
-            right: 32,
-            top: "50%",
-            transform: "translateY(-50%)",
-            fontSize: "0.95rem",
-            padding: "0.5rem 1.5rem",
-            minWidth: 100,
-            minHeight: 36,
-          }}
-          onClick={() => {
-            const loginSection = document.querySelector(
-              `.${styles.loginSection}`
-            );
-            if (loginSection) {
-              const yOffset = -100;
-              const y =
-                loginSection.getBoundingClientRect().top +
-                window.pageYOffset +
-                yOffset;
-              window.scrollTo({ top: y, behavior: "smooth" });
-            }
-          }}
-          aria-label="Login"
-        >
-          Login
-        </button>
+        <div className={styles.headerLogin}>
+          <button
+            className={styles.ctaBtn}
+            style={{
+              fontSize: "0.9rem",
+              padding: "0.5rem 1.2rem",
+              minWidth: "auto",
+              minHeight: 40,
+            }}
+            onClick={() => {
+              const loginSection = document.querySelector(
+                `.${styles.loginSection}`
+              );
+              if (loginSection) {
+                const yOffset = -100;
+                const y =
+                  loginSection.getBoundingClientRect().top +
+                  window.pageYOffset +
+                  yOffset;
+                window.scrollTo({ top: y, behavior: "smooth" });
+              }
+            }}
+            aria-label="Scroll to login section"
+          >
+            Login
+          </button>
+        </div>
       </header>
 
       <section
@@ -593,11 +608,11 @@ export default function WelcomeScreen() {
 
       <section
         className={styles.loginSection}
-        aria-label={user ? "User signed in" : "User sign in or sign up"}
+        aria-labelledby="auth-section-title"
       >
         {user ? (
           <div className={styles.signedInContainer}>
-            <h2 className={styles.sectionTitle}>Welcome back!</h2>
+            <h2 id="auth-section-title" className={styles.sectionTitle}>Welcome back!</h2>
             <p className={styles.userWelcome}>
               Signed in as <strong>{user.displayName || user.email}</strong>
             </p>
@@ -605,12 +620,14 @@ export default function WelcomeScreen() {
               <button
                 onClick={() => navigate("/home")}
                 className={styles.ctaBtn}
+                aria-label="Navigate to home page"
               >
                 Go to Home
               </button>
               <button
                 onClick={handleSignOut}
                 className={styles.signOutButton}
+                aria-label="Sign out of your account"
               >
                 Sign Out
               </button>
@@ -618,12 +635,15 @@ export default function WelcomeScreen() {
           </div>
         ) : (
           <>
-            <h2 className={styles.sectionTitle}>Sign In / Register</h2>
+            <h2 id="auth-section-title" className={styles.sectionTitle}>Sign In / Register</h2>
             
             {/* Auth Mode Toggle */}
-            <div className={styles.authModeToggle}>
+            <div className={styles.authModeToggle} role="tablist" aria-label="Authentication method">
               <button
                 type="button"
+                role="tab"
+                aria-selected={authMode === "email"}
+                aria-controls="auth-form-panel"
                 className={`${styles.authModeBtn} ${authMode === "email" ? styles.active : ""}`}
                 onClick={() => {
                   setAuthMode("email");
@@ -634,6 +654,9 @@ export default function WelcomeScreen() {
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={authMode === "phone"}
+                aria-controls="auth-form-panel"
                 className={`${styles.authModeBtn} ${authMode === "phone" ? styles.active : ""}`}
                 onClick={() => {
                   setAuthMode("phone");
@@ -644,32 +667,34 @@ export default function WelcomeScreen() {
               </button>
             </div>
 
-            {authMode === "email" ? (
-              <AuthForm
-                isLogin={isLogin}
-                email={email}
-                password={password}
-                error={error}
-                loading={loading}
-                onEmailChange={(e) => setEmail(e.target.value)}
-                onPasswordChange={(e) => setPassword(e.target.value)}
-                onSubmit={isLogin ? handleSignIn : handleSignUp}
-                onToggleMode={(nextIsLogin) => {
-                  setIsLogin(nextIsLogin);
-                  setError("");
-                }}
-              />
-            ) : (
-              <PhoneAuthForm
-                onBack={() => {
-                  setAuthMode("email");
-                  setError("");
-                }}
-                error={error}
-                loading={loading}
-                onSubmit={handlePhoneAuth}
-              />
-            )}
+            <div id="auth-form-panel" role="tabpanel" aria-labelledby="auth-section-title">
+              {authMode === "email" ? (
+                <AuthForm
+                  isLogin={isLogin}
+                  email={email}
+                  password={password}
+                  error={error}
+                  loading={loading}
+                  onEmailChange={(e) => setEmail(e.target.value)}
+                  onPasswordChange={(e) => setPassword(e.target.value)}
+                  onSubmit={isLogin ? handleSignIn : handleSignUp}
+                  onToggleMode={(nextIsLogin) => {
+                    setIsLogin(nextIsLogin);
+                    setError("");
+                  }}
+                />
+              ) : (
+                <PhoneAuthForm
+                  onBack={() => {
+                    setAuthMode("email");
+                    setError("");
+                  }}
+                  error={error}
+                  loading={loading}
+                  onSubmit={handlePhoneAuth}
+                />
+              )}
+            </div>
           </>
         )}
       </section>
