@@ -491,6 +491,26 @@ const MyOrders = () => {
       <GlobalHeader />
       
       <main className={styles.main} id="main-content" role="main">
+        {/* Back Button */}
+        <div className={styles.backButtonContainer}>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate('/home')}
+            aria-label="Go back to home page"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Home
+          </button>
+        </div>
+
         {/* Hero Section */}
         <section className={styles.heroSection} aria-labelledby="page-title">
           <div className={styles.heroContent}>

@@ -39,6 +39,58 @@
   padding-bottom: 4rem;
 }
 
+/* ==================== Back Button ==================== */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family);
+  text-decoration: none;
+  margin: 1rem auto;
+  max-width: 1200px;
+  min-height: 44px;
+}
+
+.backButton:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backButton:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    transform: translateX(-4px);
+  }
+}
+
+.backButton svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform var(--transition-fast);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backButton:hover svg {
+    transform: translateX(-4px);
+  }
+}
+
+.backButtonContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0;
+}
+
 /* ==================== Loading & Error States ==================== */
 .loadingContainer, .errorContainer {
   display: flex;
@@ -904,6 +956,11 @@
 
 /* Touch Device Optimizations */
 @media (pointer: coarse) {
+  .backButton {
+    min-height: 48px;
+    padding: 0.85rem 1.75rem;
+  }
+  
   .retryButton,
   .filterTab,
   .viewDetailsBtn,
@@ -939,6 +996,10 @@
 @media (max-width: 768px) {
   .main {
     padding-top: 70px;
+  }
+  
+  .backButtonContainer {
+    padding: 1rem 1rem 0;
   }
   
   .heroTitle {
@@ -1003,6 +1064,16 @@
 @media (max-width: 480px) {
   .main {
     padding-top: 60px;
+  }
+  
+  .backButtonContainer {
+    padding: 0.75rem 0.75rem 0;
+  }
+  
+  .backButton {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
   }
   
   .ordersSection {
