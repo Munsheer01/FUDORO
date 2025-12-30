@@ -397,6 +397,31 @@ const MyOrders = () => {
     setSelectedOrder(null);
   };
 
+  // Keyboard navigation for modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && selectedOrder) {
+        closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [selectedOrder]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (selectedOrder) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedOrder]);
+
   const handleRetry = () => {
     setRetryCount(0);
     fetchOrders(false);
@@ -458,17 +483,22 @@ const MyOrders = () => {
 
   return (
     <div className={styles.wrapper}>
+      {/* Skip to main content link for screen readers */}
+      <a href="#main-content" className={styles.skipToMain}>
+        Skip to main content
+      </a>
+      
       <GlobalHeader />
       
-      <main className={styles.main}>
+      <main className={styles.main} id="main-content" role="main">
         {/* Hero Section */}
-        <section className={styles.heroSection}>
+        <section className={styles.heroSection} aria-labelledby="page-title">
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>My Orders</h1>
+            <h1 id="page-title" className={styles.heroTitle}>My Orders</h1>
             <p className={styles.heroDescription}>
               Track your FUDORO orders and reorder your favorites
             </p>
-            <div className={styles.heroStats}>
+            <div className={styles.heroStats} role="group" aria-label="Order statistics">
               <div className={styles.stat}>
                 <span className={styles.statNumber}>{orders.length}</span>
                 <span className={styles.statLabel}>Total Orders</span>
@@ -490,19 +520,21 @@ const MyOrders = () => {
         </section>
 
         {/* Filters Section */}
-        <section className={styles.filtersSection}>
+        <section className={styles.filtersSection} aria-label="Order filters">
           <div className={styles.filtersContainer}>
-            <div className={styles.filterGroups}>
+            <div className={styles.filterGroups} role="tablist" aria-label="Order filter tabs">
               {tabs.map(tab => (
                 <button
                   key={tab.key}
+                  role="tab"
                   className={`${styles.filterTab} ${selectedTab === tab.key ? styles.active : ''}`}
                   onClick={() => setSelectedTab(tab.key)}
                   aria-pressed={selectedTab === tab.key}
-                  aria-label={`Filter by ${tab.label}`}
+                  aria-selected={selectedTab === tab.key}
+                  aria-label={`Filter by ${tab.label}, ${tab.count} ${tab.count === 1 ? 'order' : 'orders'}`}
                 >
                   {tab.label}
-                  <span className={styles.tabCount}>{tab.count}</span>
+                  <span className={styles.tabCount} aria-hidden="true">{tab.count}</span>
                 </button>
               ))}
             </div>
@@ -513,10 +545,10 @@ const MyOrders = () => {
         </section>
 
         {/* Orders Section */}
-        <section className={styles.ordersSection}>
+        <section className={styles.ordersSection} aria-labelledby="orders-heading">
           <div className={styles.ordersContainer}>
             {filteredOrders.length === 0 ? (
-              <div className={styles.noResults}>
+              <div className={styles.noResults} role="status" aria-live="polite">
                 <span className={styles.noResultsIcon}>📦</span>
                 <h3>No orders found</h3>
                 <p>
@@ -646,9 +678,11 @@ const MyOrders = () => {
         <div 
           className={styles.modalOverlay} 
           onClick={closeModal}
+          onKeyDown={(e) => e.key === 'Escape' && closeModal()}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
+          aria-describedby="modal-description"
         >
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
@@ -656,11 +690,17 @@ const MyOrders = () => {
               <button 
                 className={styles.modalCloseBtn} 
                 onClick={closeModal}
-                aria-label="Close modal"
+                aria-label="Close order details modal"
+                title="Close (ESC)"
               >
                 ×
               </button>
             </div>
+            
+            {/* Hidden description for screen readers */}
+            <p id="modal-description" className={styles.srOnly}>
+              Viewing details for order {selectedOrder.id.slice(-6).toUpperCase()}
+            </p>
 
             <div className={styles.modalBody}>
               {/* Order Status */}
