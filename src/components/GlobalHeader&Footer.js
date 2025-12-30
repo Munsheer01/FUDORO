@@ -694,6 +694,32 @@ export const GlobalHeader = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle escape key to close menus
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+        if (isUserMenuOpen) setIsUserMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen, isUserMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   // Handle navigation
   const handleNavigation = (path) => {
     navigate(path);
@@ -736,6 +762,7 @@ export const GlobalHeader = () => {
               className="action-btn"
               onClick={() => navigate('/cart')}
               title="Shopping Cart"
+              aria-label={`Shopping cart with ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
             >
               <div className="cart-icon-container">
                 <CartIcon />
@@ -765,6 +792,9 @@ export const GlobalHeader = () => {
             <button
               className="mobile-menu-btn action-btn"
               onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               ☰
             </button>
@@ -790,8 +820,18 @@ export const GlobalHeader = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <>
-          <div className="menu-overlay" onClick={() => setIsMobileMenuOpen(false)} />
-          <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+          <div 
+            className="menu-overlay" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            role="presentation"
+            aria-hidden="true"
+          />
+          <nav 
+            id="mobile-menu"
+            className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}
+            role="navigation"
+            aria-label="Mobile navigation"
+          >
             <div className="mobile-menu-content">
               <div className="mobile-menu-header">
                 <div className="mobile-logo">
@@ -801,6 +841,7 @@ export const GlobalHeader = () => {
                 <button
                   className="mobile-close-btn"
                   onClick={() => setIsMobileMenuOpen(false)}
+                  aria-label="Close navigation menu"
                 >
                   ×
                 </button>
@@ -864,12 +905,13 @@ export const GlobalHeader = () => {
               <button
                 className="mobile-cart-btn"
                 onClick={() => handleNavigation('/cart')}
+                aria-label={`View shopping cart with ${cartCount} items`}
               >
                 <CartIcon />
                 Cart {cartCount > 0 && `(${cartCount})`}
               </button>
             </div>
-          </div>
+          </nav>
         </>
       )}
     </>
