@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "./HomeScreen.module.css";
 import { GlobalHeader, GlobalFooter } from "../components/GlobalHeader&Footer";
+import locationService from "../services/locationService";
 
 // Static service sections configuration
 const SERVICE_SECTIONS = [
@@ -82,40 +83,31 @@ const QuickOrderModal = React.memo(
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [detectingLocation, setDetectingLocation] = useState(false);
+    const [locationDetected, setLocationDetected] = useState(false);
 
-    const hyderabadPincodes = useMemo(
-      () => [
-        "500001",
-        "500002",
-        "500003",
-        "500004",
-        "500008",
-        "500016",
-        "500032",
-        "500081",
-        "500018",
-        "500020",
-        "500034",
-        "500038",
-      ],
-      []
-    );
-
+    // Remove hardcoded pincodes - now using dynamic service area
     const checkDeliveryAvailability = useCallback(
       async (pincode) => {
         setLoading(true);
         try {
-          await new Promise((resolve) => setTimeout(resolve, 1200));
+          await new Promise((resolve) => setTimeout(resolve, 800));
 
-          const isAvailable = hyderabadPincodes.some((code) =>
-            pincode.startsWith(code.substring(0, 3))
-          );
+          // Use locationService for delivery check
+          const deliveryCheck = await locationService.checkDeliveryAvailability(pincode);
 
           setFormData((prev) => ({
             ...prev,
-            isDeliveryAvailable: isAvailable,
+            isDeliveryAvailable: deliveryCheck.available,
           }));
-          setStep(isAvailable ? 3 : 2);
+          
+          if (!deliveryCheck.available) {
+            setErrors({
+              pincode: deliveryCheck.message
+            });
+          }
+          
+          setStep(deliveryCheck.available ? 3 : 2);
         } catch (error) {
           setErrors({
             pincode: "Unable to check delivery. Please try again.",
@@ -124,8 +116,40 @@ const QuickOrderModal = React.memo(
           setLoading(false);
         }
       },
-      [hyderabadPincodes]
+      []
     );
+
+    // Auto-detect location using GPS
+    const handleDetectLocation = useCallback(async () => {
+      setDetectingLocation(true);
+      setErrors({});
+      
+      try {
+        const locationData = await locationService.detectLocationWithPincode();
+        
+        if (locationData.pincode) {
+          setFormData((prev) => ({
+            ...prev,
+            pincode: locationData.pincode,
+          }));
+          setLocationDetected(true);
+          
+          // Auto-check delivery availability
+          await checkDeliveryAvailability(locationData.pincode);
+        } else {
+          setErrors({
+            pincode: 'Could not determine pincode from your location. Please enter manually.'
+          });
+        }
+      } catch (error) {
+        console.error('Location detection failed:', error);
+        setErrors({
+          pincode: error.message || 'Unable to detect location. Please enter pincode manually.'
+        });
+      } finally {
+        setDetectingLocation(false);
+      }
+    }, [checkDeliveryAvailability]);
 
     const handlePincodeSubmit = useCallback(
       (e) => {
@@ -199,7 +223,7 @@ const QuickOrderModal = React.memo(
                 Quick Order
               </h2>
               <p className={styles.modalDesc}>
-                Enter your pincode to check delivery availability in Hyderabad
+                Enter your pincode or use GPS to detect your location
               </p>
 
               <form
@@ -208,27 +232,48 @@ const QuickOrderModal = React.memo(
               >
                 <div className={styles.inputGroup}>
                   <label htmlFor="pincode">Pincode</label>
-                  <input
-                    id="pincode"
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]{6}"
-                    className={`${styles.modalInput} ${
-                      errors.pincode ? styles.inputError : ""
-                    }`}
-                    placeholder="Enter 6-digit pincode"
-                    value={formData.pincode}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        pincode: e.target.value.replace(/\D/g, "").slice(0, 6),
-                      }))
-                    }
-                    autoComplete="postal-code"
-                    aria-describedby={
-                      errors.pincode ? "pincode-error" : undefined
-                    }
-                  />
+                  <div className={styles.inputWithButton}>
+                    <input
+                      id="pincode"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]{6}"
+                      className={`${styles.modalInput} ${
+                        errors.pincode ? styles.inputError : ""
+                      } ${styles.inputWithIcon}`}
+                      placeholder="Enter 6-digit pincode"
+                      value={formData.pincode}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          pincode: e.target.value.replace(/\D/g, "").slice(0, 6),
+                        }))
+                      }
+                      autoComplete="postal-code"
+                      aria-describedby={
+                        errors.pincode ? "pincode-error" : undefined
+                      }
+                    />
+                    <button
+                      type="button"
+                      className={styles.detectLocationBtn}
+                      onClick={handleDetectLocation}
+                      disabled={detectingLocation || loading}
+                      title="Detect my location"
+                      aria-label="Detect my location using GPS"
+                    >
+                      {detectingLocation ? (
+                        <span className={styles.spinner} aria-hidden="true"></span>
+                      ) : (
+                        <span>📍</span>
+                      )}
+                    </button>
+                  </div>
+                  {locationDetected && !errors.pincode && (
+                    <span className={styles.successText}>
+                      ✓ Location detected successfully!
+                    </span>
+                  )}
                   {errors.pincode && (
                     <span
                       id="pincode-error"

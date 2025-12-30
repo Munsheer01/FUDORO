@@ -3,9 +3,11 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './OrderSummary.module.css';
 import { GlobalHeader, GlobalFooter } from '../components/GlobalHeader&Footer';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import { sendOrderNotification, sendCustomerOrderConfirmation, sendCustomerOrderEmail } from '../services/notificationService';
+import { checkDeliveryAvailability, isValidPincode } from '../services/locationService';
 
 // Enhanced Validation utilities with helpful suggestions
 const validators = {
@@ -94,9 +96,19 @@ const validators = {
       return { error: 'Invalid pincode format', suggestion: 'Pincode must be 6 digits (e.g., 500001)' };
     }
     // Basic Indian pincode validation (starts with 1-9)
-    if (!/^[1-9]\d{5}$/.test(cleanPincode)) {
+    if (!isValidPincode(cleanPincode)) {
       return { error: 'Invalid pincode', suggestion: 'Please enter a valid Indian pincode' };
     }
+    
+    // Check if pincode is in Hyderabad metro service area
+    const deliveryCheck = checkDeliveryAvailability(cleanPincode);
+    if (!deliveryCheck.available) {
+      return { 
+        error: 'Delivery not available', 
+        suggestion: 'We currently deliver only in Hyderabad metro area (500xxx). We\'re expanding soon!' 
+      };
+    }
+    
     return null;
   },
 
@@ -201,6 +213,9 @@ const OrderSummary = () => {
   const [toast, setToast] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showAllErrors, setShowAllErrors] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingAddresses, setLoadingAddresses] = useState(true);
 
   // Generate unique order reference number
   const generateOrderReference = useCallback(() => {
@@ -234,6 +249,98 @@ const OrderSummary = () => {
       window.removeEventListener('offline', handleOffline);
     };
   }, [showToast]);
+
+  // Load saved addresses from past orders
+  const loadSavedAddresses = useCallback(async (userId) => {
+    try {
+      setLoadingAddresses(true);
+      
+      // Query orders collection for user's past orders
+      const ordersRef = collection(db, 'orders');
+      const ordersQuery = query(
+        ordersRef,
+        where('userId', '==', userId),
+        orderBy('createdAt', 'desc'),
+        limit(50) // Last 50 orders
+      );
+      
+      const snapshot = await getDocs(ordersQuery);
+      
+      // Extract unique addresses from orders
+      const addressMap = new Map();
+      
+      snapshot.docs.forEach(doc => {
+        const orderData = doc.data();
+        const customerInfo = orderData.customerInfo;
+        
+        if (customerInfo && customerInfo.address && customerInfo.pincode) {
+          // Create unique key based on address + pincode
+          const addressKey = `${customerInfo.address.trim()}_${customerInfo.pincode.trim()}`;
+          
+          // Only add if not already in map (keeps most recent)
+          if (!addressMap.has(addressKey)) {
+            addressMap.set(addressKey, {
+              id: addressKey,
+              name: customerInfo.name || '',
+              phone: customerInfo.phone || '',
+              email: customerInfo.email || '',
+              address: customerInfo.address || '',
+              pincode: customerInfo.pincode || '',
+              lastUsed: orderData.createdAt,
+              orderReference: orderData.orderReference
+            });
+          }
+        }
+      });
+      
+      // Convert map to array and sort by last used
+      const addresses = Array.from(addressMap.values());
+      setSavedAddresses(addresses);
+      
+    } catch (error) {
+      console.error('Error loading addresses:', error);
+      showToast('Failed to load past addresses', 'error');
+    } finally {
+      setLoadingAddresses(false);
+    }
+  }, [showToast]);
+
+  // Monitor auth state and load addresses
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (user) {
+        loadSavedAddresses(user.uid);
+      } else {
+        setSavedAddresses([]);
+        setLoadingAddresses(false);
+      }
+    });
+    return () => unsubscribe();
+  }, [loadSavedAddresses]);
+
+  // Select a saved address
+  const selectSavedAddress = (address) => {
+    setDeliveryInfo({
+      ...deliveryInfo,
+      name: address.name,
+      phone: address.phone,
+      email: address.email,
+      address: address.address,
+      pincode: address.pincode
+    });
+    
+    // Mark all fields as touched to show validation
+    setTouched({
+      name: true,
+      phone: true,
+      email: true,
+      address: true,
+      pincode: true
+    });
+    
+    showToast(`Address selected from past order`, 'success');
+  };
 
   // Form state persistence
   useEffect(() => {
@@ -774,6 +881,53 @@ const OrderSummary = () => {
                 </div>
               ))}
             </section>
+
+            {/* Saved Addresses Section */}
+            {currentUser && (
+              <section className={styles.savedAddressesSection} aria-label="Past Addresses">
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Addresses from Past Orders</h2>
+                  {loadingAddresses && <span className={styles.loadingText}>Loading...</span>}
+                </div>
+                
+                {!loadingAddresses && savedAddresses.length === 0 && (
+                  <div className={styles.noAddresses}>
+                    <p>No past orders found. Your addresses will be saved automatically when you place orders.</p>
+                  </div>
+                )}
+
+                {!loadingAddresses && savedAddresses.length > 0 && (
+                  <div className={styles.addressesList}>
+                    {savedAddresses.map((addr) => (
+                      <div key={addr.id} className={styles.savedAddressCard}>
+                        <div className={styles.addressHeader}>
+                          <h3 className={styles.addressNickname}>
+                            📍 Delivery Address
+                          </h3>
+                        </div>
+                        <div className={styles.addressDetails}>
+                          <p><strong>{addr.name}</strong></p>
+                          <p>{addr.address}</p>
+                          <p>Pincode: {addr.pincode}</p>
+                          <p>Phone: {addr.phone}</p>
+                          <p>Email: {addr.email}</p>
+                        </div>
+                        <button
+                          onClick={() => selectSavedAddress(addr)}
+                          className={styles.selectAddressBtn}
+                        >
+                          Use This Address
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                <div className={styles.addressNote}>
+                  <p>💡 <strong>Note:</strong> Your delivery addresses are automatically saved from your orders. Simply select a past address to reuse it.</p>
+                </div>
+              </section>
+            )}
 
             {/* Delivery Information Section */}
             <section className={styles.deliverySection} aria-label="Delivery Information">

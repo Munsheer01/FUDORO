@@ -229,6 +229,216 @@
   min-width: 120px;
 }
 
+/* Saved Addresses Section */
+.savedAddressesSection {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.noAddresses {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.loadingText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.addressesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.savedAddressCard {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: all 0.2s var(--transition);
+}
+
+.savedAddressCard:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.addressNickname {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.defaultBadge {
+  background: var(--success-color);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+.deleteAddressBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.deleteAddressBtn:hover {
+  opacity: 1;
+}
+
+.addressDetails {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.addressDetails p {
+  margin: 0.25rem 0;
+}
+
+.addressDetails strong {
+  color: #1f2937;
+}
+
+.selectAddressBtn {
+  width: 100%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+}
+
+.selectAddressBtn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.addressNote {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #78350f;
+}
+
+.addressNote p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.addressNote strong {
+  color: #92400e;
+}
+
+/* Save Address Section */
+.saveAddressSection {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px dashed #e5e7eb;
+}
+
+.showSaveAddressBtn {
+  background: transparent;
+  border: 2px dashed var(--primary-color);
+  color: var(--primary-color);
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s var(--transition);
+  font-size: 0.95rem;
+}
+
+.showSaveAddressBtn:hover {
+  background: rgba(10, 82, 71, 0.05);
+  border-color: var(--secondary-color);
+}
+
+.saveAddressForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.saveAddressInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.saveAddressActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.saveAddressBtn {
+  flex: 1;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+}
+
+.saveAddressBtn:hover {
+  background: var(--secondary-color);
+}
+
+.cancelSaveBtn {
+  flex: 1;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+}
+
+.cancelSaveBtn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
 /* Delivery Section */
 .deliverySection {
   background: var(--white);
@@ -493,8 +703,22 @@
   
   .itemsSection,
   .deliverySection,
-  .orderSummaryCard {
+  .orderSummaryCard,
+  .savedAddressesSection {
     padding: 1.5rem;
+  }
+  
+  .addressesList {
+    grid-template-columns: 1fr;
+  }
+  
+  .saveAddressActions {
+    flex-direction: column;
+  }
+  
+  .saveAddressBtn,
+  .cancelSaveBtn {
+    width: 100%;
   }
   
   .orderItem {
