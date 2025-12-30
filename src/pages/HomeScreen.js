@@ -38,6 +38,7 @@ const SERVICE_SECTIONS = [
     gradient: "linear-gradient(135deg, #0A5247 0%, #0F4B2E 100%)",
     featured: true,
     comingSoon: false,
+    availableNow: true,
   },
   {
     key: "catering-services",
@@ -464,13 +465,20 @@ const ServiceCard = React.memo(
               <div className={styles.comingSoonContent}>
                 <h4 className={styles.comingSoonText}>Coming Soon</h4>
                 <p className={styles.comingSoonSubtext}>
-                  Available in the future
+                  Stay tuned for updates
                 </p>
               </div>
             </div>
           )}
 
-          {service.featured && (
+          {service.availableNow && (
+            <div className={styles.availableNowBadge}>
+              <span className={styles.availablePulse}>●</span>
+              <span>AVAILABLE NOW</span>
+            </div>
+          )}
+
+          {service.featured && !service.availableNow && (
             <div className={styles.featuredBadge}>
               <span>⭐ Popular</span>
             </div>

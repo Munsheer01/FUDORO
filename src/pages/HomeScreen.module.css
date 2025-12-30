@@ -219,13 +219,15 @@
 }
 
 .serviceCard.comingSoonCard {
-  opacity: 0.85;
+  opacity: 0.5;
+  filter: grayscale(80%);
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .serviceCard.comingSoonCard:hover {
-  pointer-events: auto;
+  opacity: 0.5;
+  transform: none;
 }
 
 .serviceCard.featured {
@@ -319,48 +321,88 @@
 .comingSoonOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(10, 82, 71, 0.7);
-  backdrop-filter: blur(2px);
+  background: rgba(10, 82, 71, 0.85);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  opacity: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
 }
 
 .serviceCard.comingSoonCard:hover .comingSoonOverlay {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
-  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.2);
+  background: rgba(10, 82, 71, 0.85);
+  backdrop-filter: blur(3px);
 }
 
 .comingSoonContent {
   text-align: center;
   color: white;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .serviceCard.comingSoonCard:hover .comingSoonContent {
-  transform: scale(1.05);
+  transform: none;
 }
 
 .comingSoonText {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
   color: var(--accent-color);
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
 }
 
 .comingSoonSubtext {
-  font-size: 0.95rem;
+  font-size: 1rem;
   opacity: 0.95;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Available Now Badge */
+.availableNowBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius-lg);
+  font-size: 0.875rem;
+  font-weight: 800;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  animation: slideInLeft 0.6s ease-out;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.availablePulse {
+  color: #dcfce7;
+  font-size: 1.2rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .chevronBtn {
