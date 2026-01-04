@@ -1,0 +1,68 @@
+/* AdminLayout.module.css */
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 280px);
+}
+
+.mainContent.sidebarClosed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .mainContent {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .mainContent.sidebarClosed {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+}

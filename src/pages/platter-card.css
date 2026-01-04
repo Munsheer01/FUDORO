@@ -1,0 +1,148 @@
+/* src/components/PlatterCard.css */
+
+:root {
+  --text-color: #D4AF37; /* Gold/Yellow */
+  --bg-color: #FEFEFA; /* Off-white/Light background */
+  --heading-color: #EDD49B; /* Lighter Gold/Cream */
+  --green-text: #0A5247; /* Dark Green */
+  --dark-green-gradient-start: #0A5247;
+  --dark-green-gradient-end: #0F4B2E;
+  --light-green-gradient-start: #0F4B2E;
+  --light-green-gradient-end: #0A5247;
+}
+
+.platter-card {
+  background: linear-gradient(120deg, var(--dark-green-gradient-start) 60%, var(--dark-green-gradient-end) 100%); /* Consistent with sectionCard background */
+  border-radius: 1.3rem; /* Consistent with sectionCard border-radius */
+  box-shadow: 0 4px 24px 0 rgba(212, 175, 55, 0.08); /* Consistent with sectionCard shadow */
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow 0.3s, transform 0.3s; /* Added transform for subtle hover */
+  height: 100%; /* Ensure cards in grid stretch to same height */
+}
+
+.platter-card:hover,
+.platter-card:focus-within {
+  box-shadow: 0 8px 32px 0 rgba(212, 175, 55, 0.18); /* Consistent with sectionCard hover shadow */
+  transform: translateY(-5px); /* Subtle lift on hover */
+}
+
+/* Removed platter-card-border-glow as it's not part of the new design language */
+.platter-card-border-glow {
+  display: none;
+}
+
+.platter-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Consistent with home page imageContainer aspect-ratio for mobile */
+  overflow: hidden;
+  background: #222; /* Placeholder background */
+  border-radius: 1.3rem 1.3rem 0 0; /* Consistent with home page imageContainer border-radius for mobile */
+}
+
+.platter-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 1.3rem 1.3rem 0 0; /* Consistent with home page sectionImage border-radius for mobile */
+  transition: filter 0.3s, transform 0.3s; /* Added transform for subtle zoom */
+}
+
+.platter-card:hover.platter-image {
+  transform: scale(1.03); /* Subtle zoom on image on hover */
+}
+
+.platter-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15,75,46,0.1) 60%, rgba(15,75,46,0.85) 100%); /* Consistent with home page overlayFade */
+  pointer-events: none;
+  border-radius: 1.3rem 1.3rem 0 0; /* Consistent with home page overlayFade border-radius for mobile */
+  transition: background 0.3s ease-in-out;
+}
+
+.platter-content {
+  padding: 1.2rem; /* Consistent with home page sectionContent padding for mobile */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(120deg, var(--light-green-gradient-start) 60%, var(--light-green-gradient-end) 100%); /* Consistent with home page sectionContent background */
+  border-radius: 0 0 1.3rem 1.3rem; /* Match bottom border radius */
+}
+
+.platter-name {
+  font-size: 1.3rem; /* Consistent with home page sectionTitle */
+  color: var(--heading-color); /* Consistent with home page heading-color */
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.7rem; /* Consistent with home page sectionTitle margin */
+  letter-spacing: 1px;
+  text-shadow: none; /* Removed text-shadow */
+}
+
+.platter-description {
+  font-size: 1.05rem; /* Consistent with home page sectionDesc */
+  color: var(--heading-color); /* Consistent with home page heading-color */
+  line-height: 1.6;
+  margin-bottom: 1.2rem; /* Consistent with home page sectionDesc margin */
+  flex-grow: 1;
+}
+
+.platter-price {
+  font-size: 1.05rem; /* Adjusted to be consistent with other text sizes */
+  color: var(--text-color); /* Consistent with home page text-color */
+  font-weight: 600; /* Adjusted for consistency */
+  text-shadow: none; /* Removed text-shadow */
+  align-self: flex-start; /* Align price to the left, consistent with exploreLink */
+  padding: 0.6rem 0.8rem; /* Mimic button padding */
+  border-radius: 2rem; /* Mimic button border-radius */
+  background: var(--heading-color); /* Mimic button background */
+  color: var(--green-text); /* Mimic button text color */
+  box-shadow: 0 2px 8px 0 rgba(212, 175, 55, 0.08); /* Mimic button shadow */
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  width:max-content; /* Ensure price fits content */
+}
+
+
+
+/* Accessibility for keyboard navigation */
+.platter-card:focus {
+  outline: none;
+  box-shadow: 0 8px 32px 0 rgba(212, 175, 55, 0.18); /* Consistent with hover shadow */
+}
+
+/* Responsive adjustments for cards based on home page breakpoints */
+@media (min-width: 700px) { /* Desktop styles */
+ .platter-image-container {
+    width: 38%; /* Consistent with home page imageContainer width */
+    min-width: 220px;
+    max-width: 320px;
+    aspect-ratio: 1/1; /* Consistent with home page imageContainer aspect-ratio */
+    border-radius: 1.3rem 0 0 1.3rem; /* Consistent with home page imageContainer border-radius */
+  }
+ .platter-image,
+ .platter-image-overlay {
+    border-radius: 1.3rem 0 0 1.3rem; /* Consistent with home page sectionImage border-radius */
+  }
+ .platter-content {
+    width: 62%; /* Consistent with home page sectionContent width */
+    padding: 2.2rem 2rem; /* Consistent with home page sectionContent padding */
+    border-radius: 0 1.3rem 1.3rem 0; /* Match right border radius */
+  }
+ .platter-name {
+    font-size: 1.5rem; /* Slightly larger for desktop */
+  }
+ .platter-description {
+    font-size: 1.1rem; /* Slightly larger for desktop */
+  }
+ .platter-price {
+    font-size: 0.5rem;
+    width: auto; /* Slightly larger for desktop */
+  }
+}

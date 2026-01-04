@@ -1,0 +1,189 @@
+/* Admin UI Buttons and Inputs */
+.adminBtn {
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background: #e0e0e0;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+.adminBtn.primary {
+  background: #0a5247;
+  color: #fff;
+}
+.adminBtn.danger {
+  background: #e53935;
+  color: #fff;
+}
+.adminBtn.small {
+  font-size: 0.92rem;
+  padding: 0.22rem 0.6rem;
+}
+.adminBtn:hover {
+  background: #b2dfdb;
+}
+.adminBtn.primary:hover {
+  background: #0d6e5c;
+}
+.adminBtn.danger:hover {
+  background: #b71c1c;
+}
+
+.adminInput {
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  margin-right: 0.3rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.adminInput:focus {
+  border: 1.5px solid #0a5247;
+}
+.adminInput.small {
+  font-size: 0.92rem;
+  padding: 0.22rem 0.6rem;
+}
+.adminMenuWrapper {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 2rem;
+}
+
+.menuForm,
+.editForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.menuForm input,
+.editForm input {
+  flex: 1 1 150px;
+  padding: 0.7rem 1rem;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.menuForm button,
+.editForm button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: #0a5247;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menuForm button:hover,
+.editForm button:hover {
+  background: #0d6e5c;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menuItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.menuItemInfo {
+  flex: 1;
+}
+
+.menuDesc {
+  color: #555;
+  font-size: 0.98rem;
+  margin-top: 0.2rem;
+}
+
+.menuImg {
+  margin-top: 0.5rem;
+  max-width: 120px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.menuActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.menuActions .action-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #b0bec5;
+  background-color: #fff;
+  color: #37474f;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.menuActions .action-btn:hover {
+  background-color: #eceff1;
+  border-color: #90a4ae;
+}
+
+.menuActions .action-btn.delete-btn {
+  border-color: #e57373;
+  color: #c62828;
+}
+
+.menuActions .action-btn.delete-btn:hover {
+  background-color: #ffcdd2;
+  border-color: #c62828;
+  color: #b71c1c;
+}
+
+.menuActions .action-btn.expand-btn .expand-arrow {
+  transition: transform 0.2s ease-in-out;
+}
+
+.menuActions .action-btn.expand-btn.expanded .expand-arrow {
+  transform: rotate(180deg);
+}
+
+.deleteBtn {
+  background: #e53935;
+}
+
+.deleteBtn:hover {
+  background: #b71c1c;
+  color: #fff;
+}
+
+.admin-access-denied {
+  text-align: center;
+  color: #e53935;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+}
