@@ -549,7 +549,6 @@ const MyOrders = () => {
                   role="tab"
                   className={`${styles.filterTab} ${selectedTab === tab.key ? styles.active : ''}`}
                   onClick={() => setSelectedTab(tab.key)}
-                  aria-pressed={selectedTab === tab.key}
                   aria-selected={selectedTab === tab.key}
                   aria-label={`Filter by ${tab.label}, ${tab.count} ${tab.count === 1 ? 'order' : 'orders'}`}
                 >
